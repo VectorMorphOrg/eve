@@ -20,6 +20,8 @@ add_executable(eve_tests
     context_package_test.cpp
     capability_engine_test.cpp
     integration_test.cpp
+    contract_compliance_test.cpp
+    validation_engine_test.cpp
 )
 
 target_link_libraries(eve_tests

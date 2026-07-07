@@ -1,5 +1,8 @@
 #include "eve/core/platform_request.hpp"
 
+#include "eve/validation/validation_engine.hpp"
+#include "eve/validation/validators.hpp"
+
 #include <format>
 
 namespace eve {
@@ -41,14 +44,33 @@ std::string PlatformRequest::debug_string() const {
         to_string(interface_.type));
 }
 
+validation::ValidationResult validate_platform_request_structural(const PlatformRequest& request) {
+    return validation::StructuralValidator{}.validate(request);
+}
+
 std::optional<ValidationError> validate_platform_request(const PlatformRequest& request) {
-    if (!request.capability()) {
-        return ValidationError{"capability", "Capability identifier is required."};
+    return validate_platform_request_structural(request).first_error();
+}
+
+ValidatedPlatformRequest::ValidatedPlatformRequest(PlatformRequest request)
+    : request_(std::move(request)) {}
+
+std::expected<ValidatedPlatformRequest, validation::ValidationResult> ValidatedPlatformRequest::from(
+    PlatformRequest request,
+    const validation::ValidationEngine& engine) {
+    return engine.adopt_request(std::move(request));
+}
+
+std::expected<ValidatedPlatformRequest, ValidationError> ValidatedPlatformRequest::from(
+    PlatformRequest request) {
+    if (const auto error = validate_platform_request(request)) {
+        return std::unexpected(*error);
     }
-    if (request.capability().value.size() < 4) {
-        return ValidationError{"capability", "Capability identifier format is invalid."};
-    }
-    return std::nullopt;
+    return ValidatedPlatformRequest(std::move(request));
+}
+
+ValidatedPlatformRequest ValidatedPlatformRequest::adopt(PlatformRequest request) {
+    return ValidatedPlatformRequest(std::move(request));
 }
 
 }  // namespace eve

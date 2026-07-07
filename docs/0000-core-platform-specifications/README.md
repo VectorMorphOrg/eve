@@ -14,7 +14,7 @@
 | **Series** | 0000 |
 | **Title** | Core Platform Specifications |
 | **Status** | Complete |
-| **Documents** | 12 |
+| **Documents** | 13 |
 | **Depends On** | None |
 | **Referenced By** | Parts II–XIII |
 
@@ -45,6 +45,7 @@ The purpose of Part I is to define:
 - Service Architecture
 - Knowledge Architecture
 - Context Construction
+- Validation Architecture
 - AI Provider Integration
 - Documentation Integration
 - Core Platform Contracts
@@ -68,7 +69,8 @@ This series intentionally avoids implementation details.
 | EVE-0008 | Persona and Communication Specification | ✅ Complete |
 | EVE-0009 | Documentation Integration Specification | ✅ Complete |
 | EVE-0010 | Platform Request Specification | ✅ Complete |
-| EVE-0011 | Response Object Specification | ✅ Complete |
+| EVE-0011 | Platform Response Specification | ✅ Complete |
+| EVE-0012 | Validation Specification | ✅ Complete |
 
 ---
 
@@ -114,7 +116,7 @@ Specifications should be read sequentially.
 ↓
 
 0009
-```
+
 ↓
 
 0010
@@ -122,6 +124,12 @@ Specifications should be read sequentially.
 ↓
 
 0011
+
+↓
+
+0012
+```
+
 ---
 
 # Core Platform Pipeline
@@ -136,6 +144,14 @@ Interface
 ↓
 
 Platform Request
+
+↓
+
+Validation
+
+↓
+
+Validated Platform Request
 
 ↓
 
@@ -167,11 +183,19 @@ AI Provider
 
 ↓
 
-Response Object
+Platform Response
 
 ↓
 
-Formatter
+Validation
+
+↓
+
+Validated Platform Response
+
+↓
+
+Response Formatter
 
 ↓
 
@@ -231,6 +255,7 @@ established within the Core Platform.
 | Architecture | ✅ Complete |
 | Core Pipeline | ✅ Complete |
 | Knowledge Layer | ✅ Complete |
+| Validation Architecture | ✅ Complete |
 | AI Architecture | ✅ Complete |
 | Platform Contracts | ✅ Complete |
 

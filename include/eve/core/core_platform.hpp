@@ -9,6 +9,8 @@
 #include "eve/knowledge/in_memory_knowledge_store.hpp"
 #include "eve/services/service_interfaces.hpp"
 
+#include "eve/validation/validation_engine.hpp"
+
 #include <chrono>
 #include <expected>
 #include <filesystem>
@@ -26,6 +28,7 @@ struct CorePlatformDependencies {
     std::shared_ptr<IKnowledgeStore> knowledge_store;
     context::ContextBuilder context_builder;
     std::shared_ptr<ai::ProviderManager> provider_manager;
+    std::shared_ptr<validation::ValidationEngine> validation_engine;
     capability::CapabilityEngine capability_engine;
     dispatcher::CommandDispatcher dispatcher;
 };

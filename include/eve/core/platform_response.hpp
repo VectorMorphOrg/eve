@@ -3,12 +3,18 @@
 #include "eve/core/errors.hpp"
 #include "eve/core/platform_request.hpp"
 #include "eve/core/types.hpp"
+#include "eve/validation/validation_result.hpp"
 
+#include <expected>
 #include <optional>
 #include <string>
 #include <vector>
 
 namespace eve {
+
+namespace validation {
+class ValidationEngine;
+}
 
 struct ResponseMetadata {
     ResponseId response_id;
@@ -82,7 +88,10 @@ public:
     }
     [[nodiscard]] const ResponseTraceInformation& trace() const noexcept { return trace_; }
 
-    void set_trace(ResponseTraceInformation trace);
+    /// Returns a new Platform Response with trace information applied. Does not modify
+    /// this response (EVE-0011 immutability).
+    [[nodiscard]] PlatformResponse with_trace(ResponseTraceInformation trace) const;
+
     [[nodiscard]] std::string debug_string() const;
 
 private:
@@ -92,7 +101,8 @@ private:
         ResponseContent content,
         std::vector<Reference> references,
         std::vector<DiagnosticMessage> diagnostics,
-        std::vector<SuggestedAction> actions);
+        std::vector<SuggestedAction> actions,
+        ResponseTraceInformation trace = {});
 
     ResponseMetadata metadata_{};
     ResponseStatus status_{ResponseStatus::Failure};
@@ -101,6 +111,58 @@ private:
     std::vector<DiagnosticMessage> diagnostics_{};
     std::vector<SuggestedAction> actions_{};
     ResponseTraceInformation trace_{};
+};
+
+struct ResponseValidationError {
+    std::string field;
+    std::string message;
+};
+
+[[nodiscard]] std::optional<ResponseValidationError> validate_platform_response(
+    const PlatformResponse& response);
+
+/// Prefer ValidationEngine for full response validation.
+[[nodiscard]] validation::ValidationResult validate_platform_response_full(
+    const PlatformResponse& response);
+
+class ValidatedPlatformResponse {
+public:
+    [[nodiscard]] static std::expected<ValidatedPlatformResponse, validation::ValidationResult>
+    from(PlatformResponse response, const validation::ValidationEngine& engine);
+
+    /// Prefer from(response, engine) for pipeline-validated adoption.
+    [[nodiscard]] static std::expected<ValidatedPlatformResponse, ResponseValidationError> from(
+        PlatformResponse response);
+
+    /// Adopts a response that has already passed validate_platform_response().
+    [[nodiscard]] static ValidatedPlatformResponse adopt(PlatformResponse response);
+
+    [[nodiscard]] const PlatformResponse& response() const noexcept { return response_; }
+
+    [[nodiscard]] const ResponseMetadata& metadata() const noexcept {
+        return response_.metadata();
+    }
+    [[nodiscard]] ResponseStatus status() const noexcept { return response_.status(); }
+    [[nodiscard]] const ResponseContent& content() const noexcept { return response_.content(); }
+    [[nodiscard]] const std::vector<Reference>& references() const noexcept {
+        return response_.references();
+    }
+    [[nodiscard]] const std::vector<DiagnosticMessage>& diagnostics() const noexcept {
+        return response_.diagnostics();
+    }
+    [[nodiscard]] const std::vector<SuggestedAction>& actions() const noexcept {
+        return response_.actions();
+    }
+    [[nodiscard]] const ResponseTraceInformation& trace() const noexcept {
+        return response_.trace();
+    }
+
+    [[nodiscard]] PlatformResponse release() const { return response_; }
+
+private:
+    explicit ValidatedPlatformResponse(PlatformResponse response);
+
+    PlatformResponse response_;
 };
 
 }  // namespace eve

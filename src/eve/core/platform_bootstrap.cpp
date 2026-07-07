@@ -4,8 +4,10 @@
 #include "eve/capability/handlers/capability_handlers.hpp"
 #include "eve/knowledge/knowledge_object.hpp"
 #include "eve/services/service_implementations.hpp"
+#include "eve/validation/validation_engine.hpp"
 
 #include <format>
+#include <memory>
 
 namespace eve {
 
@@ -47,31 +49,31 @@ CorePlatform PlatformBootstrap::create(
 
     const context::ContextBuilder context_builder(configuration->context_limit_chars());
 
-    capability::CapabilityRegistry registry;
+    auto registry = std::make_shared<capability::CapabilityRegistry>();
     capability::handlers::register_core_handlers(
-        registry,
+        *registry,
         *configuration,
         *status,
         *diagnostics,
         context_builder);
     capability::handlers::register_documentation_handlers(
-        registry,
+        *registry,
         *documentation,
         *search,
         *status,
         context_builder,
         provider_manager);
 
-    const capability::CapabilityEngine capability_engine(std::move(registry));
-    auto validator = std::make_shared<dispatcher::RequestValidator>();
+    registry->register_alias("search", CapabilityId{"CAP-0102"});
+    registry->register_alias("status", CapabilityId{"CAP-0002-STATUS"});
+
+    const capability::CapabilityEngine capability_engine(registry);
+    auto validation_engine =
+        std::make_shared<validation::ValidationEngine>(capability_engine.registry());
     const dispatcher::CommandDispatcher dispatcher(
-        validator,
+        validation_engine,
         capability_engine,
-        logging,
-        std::map<std::string, CapabilityId>{
-            {"search", CapabilityId{"CAP-0102"}},
-            {"status", CapabilityId{"CAP-0002-STATUS"}},
-        });
+        logging);
 
     CorePlatformDependencies dependencies{
         .configuration = configuration,
@@ -83,6 +85,7 @@ CorePlatform PlatformBootstrap::create(
         .knowledge_store = knowledge_store,
         .context_builder = context_builder,
         .provider_manager = provider_manager,
+        .validation_engine = validation_engine,
         .capability_engine = capability_engine,
         .dispatcher = dispatcher,
     };

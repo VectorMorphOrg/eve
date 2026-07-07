@@ -22,5 +22,11 @@ TEST(PlatformRequestTest, RejectsMissingCapability) {
     EXPECT_TRUE(validate_platform_request(request).has_value());
 }
 
+TEST(PlatformRequestTest, ValidatedPlatformRequestRejectsInvalidRequest) {
+    const auto request = PlatformRequest::create(CapabilityId{}, InterfaceType::Internal);
+    const auto validated = ValidatedPlatformRequest::from(std::move(request));
+    EXPECT_FALSE(validated.has_value());
+}
+
 }  // namespace
 }  // namespace eve

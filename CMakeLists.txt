@@ -12,8 +12,12 @@ add_library(eve_core
     src/eve/core/identifiers.cpp
     src/eve/core/platform_request.cpp
     src/eve/core/platform_response.cpp
+    src/eve/validation/validation_result.cpp
+    src/eve/validation/validators.cpp
+    src/eve/validation/parameter_validator.cpp
+    src/eve/validation/policy_validator.cpp
+    src/eve/validation/validation_engine.cpp
     src/eve/dispatcher/command_dispatcher.cpp
-    src/eve/dispatcher/request_validator.cpp
     src/eve/capability/capability_engine.cpp
     src/eve/capability/handlers/core_handlers.cpp
     src/eve/capability/handlers/documentation_handlers.cpp

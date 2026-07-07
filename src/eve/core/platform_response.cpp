@@ -1,6 +1,10 @@
 #include "eve/core/platform_response.hpp"
 
+#include "eve/validation/validation_engine.hpp"
+#include "eve/validation/validators.hpp"
+
 #include <format>
+#include <utility>
 
 namespace eve {
 
@@ -10,7 +14,8 @@ PlatformResponse::PlatformResponse(
     ResponseContent content,
     std::vector<Reference> references,
     std::vector<DiagnosticMessage> diagnostics,
-    std::vector<SuggestedAction> actions)
+    std::vector<SuggestedAction> actions,
+    ResponseTraceInformation trace)
     : metadata_{
           .response_id = generate_response_id(),
           .request_id = request.metadata().request_id,
@@ -22,7 +27,8 @@ PlatformResponse::PlatformResponse(
       content_(std::move(content)),
       references_(std::move(references)),
       diagnostics_(std::move(diagnostics)),
-      actions_(std::move(actions)) {}
+      actions_(std::move(actions)),
+      trace_(std::move(trace)) {}
 
 PlatformResponse PlatformResponse::success(
     const PlatformRequest& request,
@@ -85,7 +91,7 @@ PlatformResponse PlatformResponse::unauthorized(
     return PlatformResponse(
         request,
         ResponseStatus::Unauthorized,
-        ResponseContent{.primary = message},
+        ResponseContent{.primary = message, .sections = {}, .structured = {}},
         {},
         {DiagnosticMessage{"error", message}},
         {});
@@ -97,7 +103,7 @@ PlatformResponse PlatformResponse::not_found(
     return PlatformResponse(
         request,
         ResponseStatus::NotFound,
-        ResponseContent{.primary = message},
+        ResponseContent{.primary = message, .sections = {}, .structured = {}},
         {},
         {DiagnosticMessage{"error", message}},
         {});
@@ -109,14 +115,48 @@ PlatformResponse PlatformResponse::unsupported(
     return PlatformResponse(
         request,
         ResponseStatus::Unsupported,
-        ResponseContent{.primary = message},
+        ResponseContent{.primary = message, .sections = {}, .structured = {}},
         {},
         {DiagnosticMessage{"error", message}},
         {});
 }
 
-void PlatformResponse::set_trace(ResponseTraceInformation trace) {
-    trace_ = std::move(trace);
+PlatformResponse PlatformResponse::with_trace(ResponseTraceInformation trace) const {
+    PlatformResponse response = *this;
+    response.trace_ = std::move(trace);
+    return response;
+}
+
+validation::ValidationResult validate_platform_response_full(const PlatformResponse& response) {
+    return validation::ResponseValidator{}.validate(response);
+}
+
+std::optional<ResponseValidationError> validate_platform_response(const PlatformResponse& response) {
+    if (const auto error = validate_platform_response_full(response).first_error()) {
+        return ResponseValidationError{error->field, error->message};
+    }
+    return std::nullopt;
+}
+
+ValidatedPlatformResponse::ValidatedPlatformResponse(PlatformResponse response)
+    : response_(std::move(response)) {}
+
+std::expected<ValidatedPlatformResponse, validation::ValidationResult> ValidatedPlatformResponse::from(
+    PlatformResponse response,
+    const validation::ValidationEngine& engine) {
+    return engine.adopt_response(std::move(response));
+}
+
+std::expected<ValidatedPlatformResponse, ResponseValidationError> ValidatedPlatformResponse::from(
+    PlatformResponse response) {
+    if (const auto error = validate_platform_response(response)) {
+        return std::unexpected(*error);
+    }
+    return ValidatedPlatformResponse(std::move(response));
+}
+
+ValidatedPlatformResponse ValidatedPlatformResponse::adopt(PlatformResponse response) {
+    return ValidatedPlatformResponse(std::move(response));
 }
 
 std::string PlatformResponse::debug_string() const {

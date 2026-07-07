@@ -24,6 +24,7 @@ class CapabilityRegistry {
 public:
     void register_handler(std::shared_ptr<ICapabilityHandler> handler);
     void register_alias(std::string alias, CapabilityId target);
+    [[nodiscard]] CapabilityId resolve_capability(CapabilityId capability) const;
     [[nodiscard]] std::shared_ptr<ICapabilityHandler> resolve(
         CapabilityId capability) const;
     [[nodiscard]] std::vector<CapabilityId> list_capabilities() const;
@@ -35,14 +36,15 @@ private:
 
 class CapabilityEngine {
 public:
+    explicit CapabilityEngine(std::shared_ptr<CapabilityRegistry> registry);
     explicit CapabilityEngine(CapabilityRegistry registry);
 
-    [[nodiscard]] const CapabilityRegistry& registry() const noexcept { return registry_; }
+    [[nodiscard]] const CapabilityRegistry& registry() const noexcept { return *registry_; }
     [[nodiscard]] std::expected<PlatformResponse, CapabilityError> execute(
         const PlatformRequest& request) const;
 
 private:
-    CapabilityRegistry registry_;
+    std::shared_ptr<CapabilityRegistry> registry_;
 };
 
 }  // namespace eve::capability

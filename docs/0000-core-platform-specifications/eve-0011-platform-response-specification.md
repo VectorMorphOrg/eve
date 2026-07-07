@@ -1,6 +1,6 @@
 # EVE-0011
 
-# Response Object Specification
+# Platform Response Specification
 
 **Project:** Evolutionary Virtual Engineer (E.V.E.)
 
@@ -55,7 +55,7 @@ Platform Request.
 Regardless of which interface initiated the request, every
 capability returns the same logical response object.
 
-```
+```text
 Platform Request
 
 ↓
@@ -98,7 +98,7 @@ The response shall not contain interface-specific formatting.
 A Platform Response consists of the following logical
 components.
 
-```
+```text
 Platform Response
 
 ├── Metadata
@@ -223,13 +223,34 @@ Trace information supports observability.
 
 Examples include:
 
+- Processing timestamp
 - Processing duration
-- Services executed
+- Dispatcher route
 - Capability executed
-- Provider selected
-- Context version
+- Services executed
+- AI Provider selected
+- Context Package Identifier
+- Diagnostic identifiers
 
-Trace information shall not affect execution results.
+Trace Information shall not affect execution results.
+
+---
+
+# Validation
+
+Every Platform Response shall successfully complete
+validation before being delivered to an interface.
+
+Validation includes:
+
+- Structural validation
+- Status validation
+- Reference validation
+- Diagnostic validation
+
+Invalid Platform Responses shall not be delivered.
+
+Validation shall not modify the Platform Response.
 
 ---
 
@@ -237,7 +258,7 @@ Trace information shall not affect execution results.
 
 Every Platform Response follows the same lifecycle.
 
-```
+```text
 Platform Request
 
 ↓
@@ -246,15 +267,34 @@ Capability Execution
 
 ↓
 
+Platform Response Construction
+
+↓
+
+Validation
+
+↓
+
 Platform Response
 
 ↓
 
 Interface Rendering
+
+↓
+
+Delivery
 ```
 
+Once a Platform Response has been constructed and validated,
+its logical contents shall be immutable.
+
+Platform components may record execution metadata
+externally but shall never modify the logical contents of the
+Platform Response.
+
 Interfaces shall not modify the logical meaning of the
-response.
+Platform Response.
 
 ---
 
@@ -278,6 +318,10 @@ Platform Response.
 
 Every interface defined within EVE-SPEC shall consume a
 Platform Response.
+
+The AI Provider contributes generated content to the
+Platform Response but does not own or replace the Platform
+Response itself.
 
 The Platform Response is the canonical output object of the
 Core Platform.
@@ -309,7 +353,8 @@ between the Core Platform and every user interface.
 
 By requiring every capability to produce the same logical
 response object, E.V.E. achieves interface independence,
-consistent presentation, and long-term maintainability.
+consistent presentation, deterministic behavior, and
+long-term maintainability.
 
 ---
 

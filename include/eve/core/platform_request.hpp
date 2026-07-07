@@ -2,13 +2,19 @@
 
 #include "eve/core/errors.hpp"
 #include "eve/core/types.hpp"
+#include "eve/validation/validation_result.hpp"
 
+#include <expected>
 #include <map>
 #include <optional>
 #include <string>
 #include <vector>
 
 namespace eve {
+
+namespace validation {
+class ValidationEngine;
+}
 
 struct RequestMetadata {
     RequestId request_id;
@@ -90,5 +96,54 @@ private:
 
 [[nodiscard]] std::optional<ValidationError> validate_platform_request(
     const PlatformRequest& request);
+
+/// Runs structural validation only. Prefer ValidationEngine for full pipeline validation.
+[[nodiscard]] validation::ValidationResult validate_platform_request_structural(
+    const PlatformRequest& request);
+
+class ValidatedPlatformRequest {
+public:
+    [[nodiscard]] static std::expected<ValidatedPlatformRequest, validation::ValidationResult>
+    from(PlatformRequest request, const validation::ValidationEngine& engine);
+
+    /// Structural validation only. Prefer from(request, engine) for full pipeline validation.
+    [[nodiscard]] static std::expected<ValidatedPlatformRequest, ValidationError> from(
+        PlatformRequest request);
+
+    /// Adopts a request that has already passed validate_platform_request().
+    [[nodiscard]] static ValidatedPlatformRequest adopt(PlatformRequest request);
+
+    [[nodiscard]] const PlatformRequest& request() const noexcept { return request_; }
+
+    [[nodiscard]] const RequestMetadata& metadata() const noexcept {
+        return request_.metadata();
+    }
+    [[nodiscard]] const InterfaceInfo& interface_info() const noexcept {
+        return request_.interface_info();
+    }
+    [[nodiscard]] const UserInfo& user() const noexcept { return request_.user(); }
+    [[nodiscard]] const CapabilityId& capability() const noexcept {
+        return request_.capability();
+    }
+    [[nodiscard]] const ExecutionContext& execution_context() const noexcept {
+        return request_.execution_context();
+    }
+    [[nodiscard]] const ParameterMap& parameters() const noexcept {
+        return request_.parameters();
+    }
+    [[nodiscard]] const PermissionInfo& permissions() const noexcept {
+        return request_.permissions();
+    }
+    [[nodiscard]] const TraceInformation& trace() const noexcept { return request_.trace(); }
+
+    [[nodiscard]] std::optional<std::string> parameter(std::string_view key) const {
+        return request_.parameter(key);
+    }
+
+private:
+    explicit ValidatedPlatformRequest(PlatformRequest request);
+
+    PlatformRequest request_;
+};
 
 }  // namespace eve

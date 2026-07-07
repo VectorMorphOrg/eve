@@ -102,7 +102,7 @@ Platform Request
 ├── Interface
 ├── User
 ├── Capability
-├── Context
+├── Execution Context
 ├── Parameters
 ├── Permissions
 └── Trace Information
@@ -174,10 +174,11 @@ implementation details.
 
 ---
 
-# Context
+# Execution Context
 
-Context contains information required to execute the
-requested capability.
+Execution Context contains information supplied by the
+interface or execution environment that assists capability
+execution.
 
 Examples include:
 
@@ -187,7 +188,13 @@ Examples include:
 - Current project
 - Working session
 
-Context shall be assembled by the Context Builder.
+Execution Context is supplied by the originating interface or
+execution environment and remains immutable for the lifetime
+of the Platform Request.
+
+The Context Builder shall combine the Platform Request,
+Execution Context, platform knowledge, and service results to
+construct a Context Package as defined by EVE-0006.
 
 ---
 
@@ -226,15 +233,43 @@ Authorization decisions remain outside the request itself.
 
 Trace information supports diagnostics.
 
-Examples include:
+Trace Information may include:
 
 - Request origin
-- Processing history
-- Timing information
-- Service execution chain
+- Processing timestamp
+- Correlation identifier
+- Dispatcher route
+- Capability executed
+- Services invoked
+- Execution duration
+- Diagnostic identifiers
 
-Trace data should simplify debugging without affecting
-platform behavior.
+Trace Information exists solely to support diagnostics,
+observability, and debugging.
+
+Trace Information shall not affect platform behavior.
+
+---
+
+# Validation
+
+Every Platform Request shall successfully complete validation
+before entering the Core Platform.
+
+Validation includes:
+
+- Structural validation
+- Capability validation
+- Permission validation
+- Parameter validation
+
+Invalid Platform Requests shall not proceed beyond the
+Command Dispatcher.
+
+Validation shall not modify the Platform Request.
+
+Validation failures shall produce a Platform Response
+describing the validation error.
 
 ---
 
@@ -266,7 +301,15 @@ Service Execution
 Platform Response
 ```
 
-The request remains immutable throughout execution.
+No platform component shall modify the logical contents of a
+validated Platform Request.
+
+Platform components may record additional execution metadata
+externally but shall never modify the logical contents of the
+Platform Request.
+
+Capability aliases, routing decisions, and service
+delegation shall not alter the Platform Request.
 
 ---
 
