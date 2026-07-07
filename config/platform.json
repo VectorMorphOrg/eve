@@ -1,0 +1,8 @@
+{
+  "platform_version": "0.1.0",
+  "specification_version": "1.0.0",
+  "default_repository": "eve",
+  "documentation_paths": ["docs"],
+  "active_ai_provider": "AI-0000",
+  "context_limit_chars": 32000
+}
