@@ -27,6 +27,8 @@ add_executable(eve_tests
     metadata_extractor_test.cpp
     knowledge_object_builder_test.cpp
     relationship_builder_test.cpp
+    knowledge_graph_test.cpp
+    knowledge_index_test.cpp
 )
 
 target_link_libraries(eve_tests

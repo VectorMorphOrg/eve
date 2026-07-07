@@ -35,6 +35,8 @@ add_library(eve_core
     src/eve/knowledge/metadata_extractor.cpp
     src/eve/knowledge/knowledge_object_builder.cpp
     src/eve/knowledge/relationship_builder.cpp
+    src/eve/knowledge/knowledge_graph.cpp
+    src/eve/knowledge/knowledge_index.cpp
     src/eve/context/context_package.cpp
     src/eve/context/context_builder.cpp
     src/eve/ai/provider_manager.cpp
