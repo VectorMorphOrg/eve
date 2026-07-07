@@ -22,6 +22,11 @@ add_executable(eve_tests
     integration_test.cpp
     contract_compliance_test.cpp
     validation_engine_test.cpp
+    repository_discovery_test.cpp
+    markdown_parser_test.cpp
+    metadata_extractor_test.cpp
+    knowledge_object_builder_test.cpp
+    relationship_builder_test.cpp
 )
 
 target_link_libraries(eve_tests

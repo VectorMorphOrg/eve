@@ -6,6 +6,23 @@
 namespace eve {
 namespace {
 
+KnowledgeObject make_object(
+    KnowledgeObjectId id,
+    DocumentType type,
+    std::string title,
+    std::string excerpt,
+    int priority_rank) {
+    KnowledgeObject object;
+    object.identity.id = std::move(id);
+    object.identity.title = std::move(title);
+    object.identity.document_type = type;
+    object.identity.repository = "eve";
+    object.search.excerpt = std::move(excerpt);
+    object.search.search_text = object.search.excerpt;
+    object.search.priority_rank = priority_rank;
+    return object;
+}
+
 TEST(ContextPackageTest, ValidatesMissingCapability) {
     const auto request = PlatformRequest::create(CapabilityId{}, InterfaceType::Internal);
     const auto package = context::ContextPackage::create(
@@ -21,22 +38,18 @@ TEST(ContextPackageTest, ValidatesMissingCapability) {
 }
 
 TEST(ContextBuilderTest, RanksSpecificationsFirst) {
-    KnowledgeObject spec{
-        .identifier = KnowledgeObjectId{"KO-00000001"},
-        .repository = "eve",
-        .document_type = DocumentType::Specification,
-        .title = "Specification",
-        .excerpt = "spec content",
-        .priority_rank = 10,
-    };
-    KnowledgeObject readme{
-        .identifier = KnowledgeObjectId{"KO-00000002"},
-        .repository = "eve",
-        .document_type = DocumentType::Readme,
-        .title = "Readme",
-        .excerpt = "readme content",
-        .priority_rank = 60,
-    };
+    const KnowledgeObject spec = make_object(
+        KnowledgeObjectId{"KO-00000001"},
+        DocumentType::Specification,
+        "Specification",
+        "spec content",
+        10);
+    const KnowledgeObject readme = make_object(
+        KnowledgeObjectId{"KO-00000002"},
+        DocumentType::Readme,
+        "Readme",
+        "readme content",
+        60);
 
     const context::ContextBuilder builder;
     const auto request = PlatformRequest::create(
@@ -45,7 +58,7 @@ TEST(ContextBuilderTest, RanksSpecificationsFirst) {
     const auto package = builder.build(request, {readme, spec});
 
     ASSERT_FALSE(package.knowledge_objects().empty());
-    EXPECT_EQ(package.knowledge_objects().front().document_type, DocumentType::Specification);
+    EXPECT_EQ(package.knowledge_objects().front().identity.document_type, DocumentType::Specification);
 }
 
 }  // namespace

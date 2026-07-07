@@ -75,10 +75,10 @@ ContextBuilder::ContextBuilder(std::size_t context_limit_chars)
 std::vector<KnowledgeObject> ContextBuilder::rank_and_limit(
     std::vector<KnowledgeObject> objects) const {
     std::sort(objects.begin(), objects.end(), [](const KnowledgeObject& lhs, const KnowledgeObject& rhs) {
-        if (lhs.priority_rank != rhs.priority_rank) {
-            return lhs.priority_rank < rhs.priority_rank;
+        if (lhs.search.priority_rank != rhs.search.priority_rank) {
+            return lhs.search.priority_rank < rhs.search.priority_rank;
         }
-        return lhs.title < rhs.title;
+        return lhs.identity.title < rhs.identity.title;
     });
 
     std::vector<KnowledgeObject> selected;
@@ -86,16 +86,16 @@ std::vector<KnowledgeObject> ContextBuilder::rank_and_limit(
     std::size_t total_chars = 0;
 
     for (auto& object : objects) {
-        if (seen_titles.contains(object.title)) {
+        if (seen_titles.contains(object.identity.title)) {
             continue;
         }
 
-        const std::size_t object_size = object.excerpt.size();
+        const std::size_t object_size = object.search.excerpt.size();
         if (!selected.empty() && total_chars + object_size > context_limit_chars_) {
             break;
         }
 
-        seen_titles.insert(object.title);
+        seen_titles.insert(object.identity.title);
         total_chars += object_size;
         selected.push_back(std::move(object));
     }
@@ -108,8 +108,8 @@ std::vector<Citation> ContextBuilder::build_citations(
     std::vector<Citation> citations;
     for (const auto& object : objects) {
         citations.push_back(Citation{
-            .identifier = object.identifier.value,
-            .title = object.title,
+            .identifier = object.identity.id.value,
+            .title = object.identity.title,
             .section = std::nullopt,
         });
     }
@@ -122,12 +122,12 @@ std::vector<RepositoryMetadata> ContextBuilder::build_repositories(
     std::unordered_set<std::string> seen;
 
     for (const auto& object : objects) {
-        if (!seen.insert(object.repository).second) {
+        if (!seen.insert(object.identity.repository).second) {
             continue;
         }
         repositories.push_back(RepositoryMetadata{
-            .name = object.repository,
-            .last_updated = object.last_modified,
+            .name = object.identity.repository,
+            .last_updated = object.source.last_modified,
         });
     }
     return repositories;

@@ -30,6 +30,11 @@ add_library(eve_core
     src/eve/knowledge/knowledge_object.cpp
     src/eve/knowledge/in_memory_knowledge_store.cpp
     src/eve/knowledge/document_indexer.cpp
+    src/eve/knowledge/repository_discovery.cpp
+    src/eve/knowledge/markdown_parser.cpp
+    src/eve/knowledge/metadata_extractor.cpp
+    src/eve/knowledge/knowledge_object_builder.cpp
+    src/eve/knowledge/relationship_builder.cpp
     src/eve/context/context_package.cpp
     src/eve/context/context_builder.cpp
     src/eve/ai/provider_manager.cpp

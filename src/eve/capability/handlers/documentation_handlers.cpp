@@ -68,8 +68,8 @@ public:
         std::ostringstream stream;
         stream << "Search results for '" << *query << "':\n";
         for (const auto& result : *search_results) {
-            stream << "- " << result.object.title << " (" << result.object.identifier.value
-                   << ")\n";
+            stream << "- " << result.object.identity.title << " ("
+                   << result.object.identity.id.value << ")\n";
         }
         stream << "\nAI Provider:\n" << ai_response->generated_text;
 
@@ -78,8 +78,8 @@ public:
         for (const auto& result : *search_results) {
             references.push_back(Reference{
                 .kind = "document",
-                .identifier = result.object.identifier.value,
-                .title = result.object.title,
+                .identifier = result.object.identity.id.value,
+                .title = result.object.identity.title,
             });
         }
 

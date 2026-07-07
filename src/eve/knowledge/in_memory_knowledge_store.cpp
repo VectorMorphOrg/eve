@@ -21,7 +21,7 @@ std::optional<KnowledgeObject> InMemoryKnowledgeStore::get_by_id(
     const KnowledgeObjectId& id) const {
     const std::scoped_lock lock(mutex_);
     for (const auto& object : objects_) {
-        if (object.identifier.value == id.value) {
+        if (object.identity.id.value == id.value) {
             return object;
         }
     }
@@ -33,7 +33,7 @@ std::vector<KnowledgeObject> InMemoryKnowledgeStore::list_by_repository(
     const std::scoped_lock lock(mutex_);
     std::vector<KnowledgeObject> results;
     for (const auto& object : objects_) {
-        if (object.repository == repository) {
+        if (object.identity.repository == repository) {
             results.push_back(object);
         }
     }
@@ -47,24 +47,25 @@ std::vector<SearchResult> InMemoryKnowledgeStore::search(
     std::vector<SearchResult> results;
 
     for (const auto& object : objects_) {
-        if (repository && object.repository != *repository) {
+        if (repository && object.identity.repository != *repository) {
             continue;
         }
 
         double score = 0.0;
-        if (object.title.find(query) != std::string::npos) {
+        if (object.identity.title.find(query) != std::string::npos) {
             score += 3.0;
         }
-        if (object.excerpt.find(query) != std::string::npos) {
+        if (object.search.excerpt.find(query) != std::string::npos ||
+            object.search.search_text.find(query) != std::string::npos) {
             score += 1.0;
         }
-        for (const auto& section : object.sections) {
+        for (const auto& section : object.content.sections) {
             if (section.content.find(query) != std::string::npos) {
                 score += 0.5;
             }
         }
         if (score > 0.0) {
-            score += 100.0 / static_cast<double>(object.priority_rank);
+            score += 100.0 / static_cast<double>(object.search.priority_rank);
             results.push_back(SearchResult{.object = object, .score = score});
         }
     }

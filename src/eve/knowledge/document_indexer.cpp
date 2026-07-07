@@ -17,10 +17,6 @@ std::string to_lower(std::string value) {
     return value;
 }
 
-bool contains_case_insensitive(std::string_view haystack, std::string_view needle) {
-    return to_lower(std::string{haystack}).find(to_lower(std::string{needle})) != std::string::npos;
-}
-
 std::string trim(std::string value) {
     const auto not_space = [](unsigned char ch) { return !std::isspace(ch); };
     value.erase(value.begin(), std::find_if(value.begin(), value.end(), not_space));
@@ -71,37 +67,13 @@ DocumentType DocumentIndexer::classify_document(
 }
 
 int DocumentIndexer::priority_for(DocumentType type) {
-    switch (type) {
-        case DocumentType::Specification:
-            return 10;
-        case DocumentType::Rfc:
-            return 20;
-        case DocumentType::ReferenceCatalog:
-            return 30;
-        case DocumentType::Whitepaper:
-            return 40;
-        case DocumentType::Guide:
-            return 50;
-        case DocumentType::Readme:
-            return 60;
-        case DocumentType::Changelog:
-            return 70;
-        case DocumentType::Other:
-            return 100;
-    }
-    return 100;
+    return priority_rank_for_document_type(type);
 }
 
 KnowledgeObject DocumentIndexer::parse_markdown_file(
     const std::filesystem::path& path,
     std::string_view repository_name,
     std::uint32_t sequence) {
-    KnowledgeObject object;
-    object.identifier = generate_knowledge_object_id(sequence);
-    object.repository = std::string{repository_name};
-    object.source_path = path;
-    object.last_modified = "unknown";
-
     std::ifstream input(path, std::ios::binary);
     std::ostringstream buffer;
     buffer << input.rdbuf();
@@ -117,21 +89,31 @@ KnowledgeObject DocumentIndexer::parse_markdown_file(
         }
     }
 
-    object.title = title;
-    object.document_type = classify_document(path, title);
-    object.priority_rank = priority_for(object.document_type);
-    object.excerpt = content.substr(0, std::min(content.size(), std::size_t{512}));
-    object.sections.push_back(KnowledgeSection{
+    const auto document_type = classify_document(path, title);
+    KnowledgeObject object;
+    object.identity = KnowledgeObjectIdentity{
+        .id = generate_knowledge_object_id(sequence),
+        .title = title,
+        .document_type = document_type,
+        .repository = std::string{repository_name},
+    };
+    object.content.raw_markdown = content;
+    object.content.sections.push_back(KnowledgeSection{
         .identifier = "body",
         .title = title,
         .content = content,
-        .references = {},
     });
+    object.search.priority_rank = priority_for(document_type);
+    object.search.search_text = content;
+    object.search.excerpt = content.substr(0, std::min(content.size(), std::size_t{512}));
+    object.source.file_path = path;
 
-    if (auto last_write = std::filesystem::last_write_time(path); last_write != std::filesystem::file_time_type{}) {
+    if (auto last_write = std::filesystem::last_write_time(path);
+        last_write != std::filesystem::file_time_type{}) {
         const auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
             last_write - std::filesystem::file_time_type::clock::now() +
             std::chrono::system_clock::now());
+        object.source.last_modified_time = sctp;
         const auto time = std::chrono::system_clock::to_time_t(sctp);
         std::tm tm{};
 #if defined(_WIN32)
@@ -141,7 +123,9 @@ KnowledgeObject DocumentIndexer::parse_markdown_file(
 #endif
         std::ostringstream stream;
         stream << std::put_time(&tm, "%Y-%m-%dT%H:%M:%SZ");
-        object.last_modified = stream.str();
+        object.source.last_modified = stream.str();
+    } else {
+        object.source.last_modified = "unknown";
     }
 
     return object;
@@ -168,7 +152,7 @@ std::vector<KnowledgeObject> DocumentIndexer::index_directory(
     }
 
     std::sort(objects.begin(), objects.end(), [](const KnowledgeObject& lhs, const KnowledgeObject& rhs) {
-        return lhs.priority_rank < rhs.priority_rank;
+        return lhs.search.priority_rank < rhs.search.priority_rank;
     });
     return objects;
 }
