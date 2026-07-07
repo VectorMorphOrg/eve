@@ -27,6 +27,20 @@ std::string extract_json_string(std::string_view content, std::string_view key) 
     return std::string{content.substr(value_start, value_end - value_start)};
 }
 
+std::string extract_json_number_string(std::string_view content, std::string_view key) {
+    const auto pattern = std::format("\"{}\": ", key);
+    const auto start = content.find(pattern);
+    if (start == std::string_view::npos) {
+        return {};
+    }
+    const auto value_start = start + pattern.size();
+    const auto value_end = content.find_first_of(",}\r\n", value_start);
+    if (value_end == std::string_view::npos) {
+        return std::string{content.substr(value_start)};
+    }
+    return std::string{content.substr(value_start, value_end - value_start)};
+}
+
 std::size_t extract_json_number(std::string_view content, std::string_view key) {
     const auto pattern = std::format("\"{}\": ", key);
     const auto start = content.find(pattern);
@@ -48,6 +62,12 @@ ConfigurationService::ConfigurationService(std::filesystem::path config_path) {
         values_["active_ai_provider"] = extract_json_string(content, "active_ai_provider");
         values_["context_limit_chars"] =
             std::to_string(extract_json_number(content, "context_limit_chars"));
+        values_["ollama_base_url"] = extract_json_string(content, "ollama_base_url");
+        values_["ollama_model"] = extract_json_string(content, "ollama_model");
+        values_["ollama_temperature"] = extract_json_number_string(content, "ollama_temperature");
+        values_["ollama_top_p"] = extract_json_number_string(content, "ollama_top_p");
+        values_["ollama_context_length"] = extract_json_number_string(content, "ollama_context_length");
+        values_["ollama_timeout_ms"] = extract_json_number_string(content, "ollama_timeout_ms");
     }
 
     if (values_.empty()) {

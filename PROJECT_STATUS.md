@@ -10,8 +10,8 @@
 |----------|-------|
 | **Project** | Evolutionary Virtual Engineer (E.V.E.) |
 | **Repository** | VectorMorphOrg/eve |
-| **Current Version** | v0.5.0-alpha |
-| **Status** | Active Development |
+| **Current Version** | **v0.6.0-alpha** |
+| **Status** | **Operational Alpha** |
 | **Architecture** | C++23 |
 | **Specification** | EVE-SPEC |
 | **License** | MIT |
@@ -37,15 +37,16 @@ The platform is responsible for generating knowledge.
 
 # Current Milestone
 
-## Phase 4.1 — Reasoning Pipeline Integration
+## Phase 6 — Platform Interfaces
 
-Current objective:
+Current objectives:
 
-- Integrate the deterministic Reasoning Pipeline into the Core Platform
-- Replace legacy documentation retrieval
-- Prepare the platform for AI Provider integration
+- Build the CLI
+- Build the REST API
+- Build the Discord interface
+- Build the Website
 
-**Status: ✅ Complete**
+**Status: 🚧 In Progress**
 
 ---
 
@@ -88,11 +89,15 @@ Citation Engine
 
 ↓
 
-Context Builder 2.0
+Context Assembler
 
 ↓
 
-Context Package
+Provider Formatter
+
+↓
+
+Provider Manager
 
 ↓
 
@@ -101,10 +106,6 @@ AI Provider
 ↓
 
 Platform Response
-
-↓
-
-Response Formatter
 
 ↓
 
@@ -127,6 +128,7 @@ User
 | Service Layer | ✅ Complete |
 | Knowledge Layer | ✅ Complete |
 | Context Builder (Phase 1) | ✅ Complete |
+| Context Assembler (Phase 2) | ✅ Complete |
 | Context Package | ✅ Complete |
 | AI Provider Architecture | ✅ Complete |
 | Documentation Integration | ✅ Complete |
@@ -159,7 +161,7 @@ User
 | Search Engine | ✅ Complete |
 | Ranking Engine | ✅ Complete |
 | Citation Engine | ✅ Complete |
-| Context Builder 2.0 | ✅ Complete |
+| Context Assembler | ✅ Complete |
 | Pipeline Integration | ✅ Complete |
 
 ---
@@ -169,7 +171,9 @@ User
 | Provider | Status |
 |----------|--------|
 | Null Provider | ✅ Complete |
-| Ollama | ⏳ Planned |
+| Ollama Provider | ✅ Complete |
+| Provider Formatter | ✅ Complete |
+| Live Ollama Integration | ✅ Complete |
 | OpenAI | ⏳ Planned |
 | Anthropic | ⏳ Planned |
 | LM Studio | ⏳ Planned |
@@ -180,9 +184,9 @@ User
 
 | Interface | Status |
 |----------|--------|
-| CLI | ⏳ Planned |
-| Discord | ⏳ Planned |
+| CLI | 🚧 Next |
 | REST API | ⏳ Planned |
+| Discord | ⏳ Planned |
 | Website | ⏳ Planned |
 
 ---
@@ -193,6 +197,7 @@ User
 |------|--------|
 | Unit Tests | ✅ Passing |
 | Integration Tests | ✅ Passing |
+| Live Ollama Tests | ✅ Passing (optional) |
 | Contract Compliance | ✅ Passing |
 | Validation Tests | ✅ Passing |
 | Knowledge Engine Tests | ✅ Passing |
@@ -204,12 +209,13 @@ User
 
 | Metric | Value |
 |---------|-------|
-| **Current Release** | v0.5.0-alpha |
-| **Passing Tests** | **144** |
+| **Current Release** | **v0.6.0-alpha** |
+| **Passing Tests** | **172** |
 | **Core Platform** | ✅ Complete |
 | **Knowledge Engine** | ✅ Complete |
 | **Reasoning Pipeline** | ✅ Complete |
-| **Pipeline Integration** | ✅ Complete |
+| **Provider Layer** | ✅ Complete |
+| **Live End-to-End Pipeline** | ✅ Complete |
 
 ---
 
@@ -219,13 +225,11 @@ User
 
 ### Foundation
 
-- Vision & Design Philosophy
-- System Architecture
+- Core Platform
+- Validation Engine
 - Capability Engine
 - Service Layer
-- Platform Request
-- Platform Response
-- Validation Engine
+- Platform Request / Response
 
 ### Knowledge Engine
 
@@ -242,50 +246,48 @@ User
 - Search Engine
 - Ranking Engine
 - Citation Engine
-- Context Builder 2.0
-- Reasoning Pipeline Integration
+- Context Assembler
+- Pipeline Integration
+
+### AI Layer
+
+- Provider Manager
+- Null Provider
+- Ollama Provider
+- Provider Formatter
+- Live End-to-End Demonstration
 
 ---
 
 ## Current
 
-### AI Provider Integration
+### Interfaces
 
-- Ollama Provider
-- Provider Manager Integration
-- Provider Formatting Layer
+- CLI
+- REST API
+- Discord
+- Website
 
 ---
 
 ## Next
 
-### AI Providers
+### Additional Providers
 
-- Ollama
 - OpenAI
 - Anthropic
 - LM Studio
-
-### Interfaces
-
-- CLI
-- Discord
-- REST API
-- Website
 
 ---
 
 ## Future
 
-### Platform Expansion
-
 - Conversation Memory
+- Streaming Responses
 - Multi-Repository Support
 - Plugin System
 - Distributed Capability Network
 - Distributed Knowledge
-- Semantic Search
-- Hybrid Search
 - Repository Federation
 
 ---
@@ -294,89 +296,38 @@ User
 
 ## v0.1.0-alpha
 
-**Released:** July 2026
-
-### Highlights
-
-- Initial Core Platform
-- Capability Engine
-- Context Builder
-- AI Provider abstraction
-
----
+Initial Core Platform
 
 ## v0.2.0-alpha
 
-**Released:** July 2026
-
-### Highlights
-
-- Platform Request
-- Platform Response
-- Validation Specification
-- Validation Engine
-- Contract Compliance
-
----
+Platform Contracts & Validation
 
 ## v0.3.0-alpha
 
-**Released:** July 2026
-
-### Highlights
-
-- Repository Discovery
-- Markdown Parser
-- Metadata Extraction
-- Knowledge Object Builder
-- Relationship Builder
-- Knowledge Graph
-
----
+Knowledge Foundation
 
 ## v0.4.0-alpha
 
-**Released:** July 2026
-
-### Highlights
-
-- Knowledge Index
-- Search Engine
-- Ranking Engine
-- Citation Engine
-- Context Builder 2.0
-- Architecture Decision Records
-- Knowledge Foundation Complete
-
-### Tests
-
-- 124 passing
-
----
+Knowledge Graph & Knowledge Index
 
 ## v0.5.0-alpha
 
-**Released:** July 2026
+Deterministic Reasoning Pipeline
+
+## v0.6.0-alpha
 
 ### Highlights
 
-- Reasoning Pipeline Integration
-- End-to-end deterministic reasoning pipeline
-- Documentation Search migrated to Search → Rank → Cite → Assemble
-- Shared immutable ReasoningPipeline at platform bootstrap
-- SearchService compatibility layer
-- Pipeline-aware trace propagation
-- ContextPackage becomes the canonical AI input
-
-### Tests
-
-- **144 passing**
+- Provider Formatter
+- Ollama Provider
+- Live Ollama Integration
+- End-to-End Demonstration
+- Operational Platform
+- 172 Passing Tests
 
 ---
 
 # Engineering Principles
-
-E.V.E. follows these engineering principles:
 
 - Documentation First
 - Specification Before Implementation
@@ -394,20 +345,19 @@ E.V.E. follows these engineering principles:
 
 # Current Focus
 
-The deterministic core of E.V.E. is now complete.
+The Core Platform is operational.
 
-Current engineering effort shifts toward AI Provider
-integration.
+Current engineering effort is focused on exposing the
+platform through production interfaces.
 
-Remaining work includes:
+Upcoming work includes:
 
-- Ollama Provider
-- Provider Formatting Layer
-- OpenAI Provider
-- Anthropic Provider
-- LM Studio Provider
+- CLI
+- REST API
+- Discord
+- Website
+- Additional AI Providers
 - Conversation Memory
-- Interface implementations
 
 ---
 
@@ -435,22 +385,19 @@ E.V.E.
 Core Platform
 ████████████████████████████████ 100%
 
-Validation Engine
-████████████████████████████████ 100%
-
 Knowledge Engine
 ████████████████████████████████ 100%
 
 Reasoning Pipeline
 ████████████████████████████████ 100%
 
-Pipeline Integration
+Provider Layer
 ████████████████████████████████ 100%
 
-AI Providers
+Interfaces
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%
 
-Interfaces
+Additional Providers
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%
 ```
 
@@ -471,11 +418,9 @@ eve/
 ├── include/
 ├── src/
 ├── tests/
-├── examples/
-├── scripts/
-├── assets/
 ├── config/
 │
+├── ARCHITECTURE.md
 ├── PROJECT_STATUS.md
 ├── README.md
 ├── ROADMAP.md
@@ -486,7 +431,7 @@ eve/
 
 ---
 
-# Current Architecture Summary
+# Architecture Summary
 
 ```text
 Platform Request
@@ -498,10 +443,6 @@ Validation
 ↓
 
 Capability
-
-↓
-
-Knowledge Engine
 
 ↓
 
@@ -521,7 +462,7 @@ Context Assembly
 
 ↓
 
-Context Package
+Provider Formatting
 
 ↓
 
@@ -532,17 +473,14 @@ AI Provider
 Platform Response
 ```
 
-The deterministic Reasoning Pipeline is now fully operational.
+The deterministic reasoning pipeline is complete.
 
-AI Providers are no longer responsible for retrieving,
-ranking, or assembling knowledge.
+AI providers receive fully assembled engineering context and
+perform only language generation.
 
-They consume ContextPackages and generate natural-language
-responses.
-
-This separation preserves provider independence and ensures
-consistent engineering reasoning regardless of which AI model
-is used.
+This architecture ensures that reasoning remains
+deterministic while allowing multiple interchangeable AI
+providers.
 
 ---
 
@@ -550,9 +488,9 @@ is used.
 
 **Repository:** VectorMorphOrg/eve
 
-**Version:** **v0.5.0-alpha**
+**Version:** **v0.6.0-alpha**
 
-**Status:** Active Development
+**Status:** **Operational Alpha**
 
 **Last Updated:** July 2026
 

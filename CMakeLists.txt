@@ -46,6 +46,9 @@ add_library(eve_core
     src/eve/context/context_assembler.cpp
     src/eve/ai/provider_manager.cpp
     src/eve/ai/null_provider.cpp
+    src/eve/ai/provider_formatter.cpp
+    src/eve/ai/http_transport.cpp
+    src/eve/ai/ollama_provider.cpp
     src/eve/core/core_platform.cpp
     src/eve/core/platform_bootstrap.cpp
 )
@@ -62,6 +65,10 @@ if(MSVC)
     target_compile_options(eve_core PRIVATE /W4 /utf-8)
 else()
     target_compile_options(eve_core PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+if(WIN32)
+    target_link_libraries(eve_core PRIVATE ws2_32)
 endif()
 
 enable_testing()

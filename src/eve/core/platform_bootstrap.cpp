@@ -1,6 +1,7 @@
 #include "eve/core/core_platform.hpp"
 
 #include "eve/ai/provider_manager.hpp"
+#include "eve/ai/ollama_provider.hpp"
 #include "eve/capability/handlers/capability_handlers.hpp"
 #include "eve/knowledge/knowledge_object.hpp"
 #include "eve/knowledge/reasoning_pipeline.hpp"
@@ -42,6 +43,8 @@ CorePlatform PlatformBootstrap::create(
 
     auto provider_manager = std::make_shared<ai::ProviderManager>();
     provider_manager->register_provider(std::make_shared<ai::NullProvider>());
+    provider_manager->register_provider(std::make_shared<ai::OllamaProvider>(
+        ai::OllamaProviderConfig::from_configuration(*configuration)));
     provider_manager->set_active_provider(ProviderId{configuration->active_ai_provider()});
 
     auto status = std::make_shared<services::StatusService>(

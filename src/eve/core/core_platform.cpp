@@ -19,12 +19,20 @@ std::expected<PlatformResponse, PlatformError> CorePlatform::process(
 
     std::vector<std::string> services = trace.services_executed;
     services.push_back("CommandDispatcher");
-    services.push_back("CapabilityEngine");
     trace.services_executed = std::move(services);
 
     if (!trace.provider_selected && dependencies_.provider_manager->active_provider()) {
         trace.provider_selected = dependencies_.provider_manager->active_provider()->id().value;
     }
+
+    trace.entries.push_back(TraceEntry{
+        .component = "ValidationEngine",
+        .detail = "Platform response validated.",
+    });
+    trace.entries.push_back(TraceEntry{
+        .component = "CorePlatform",
+        .detail = std::format("Platform processing completed in {} ms.", duration),
+    });
 
     response = response.with_trace(std::move(trace));
 

@@ -45,6 +45,27 @@ PlatformResponse CommandDispatcher::dispatch(PlatformRequest request) const {
 
     auto trace = result->trace();
     trace.capability_executed = resolved_capability.value;
+
+    std::vector<TraceEntry> ordered_entries{
+        TraceEntry{
+            .component = "ValidationEngine",
+            .detail = "Platform request validated.",
+        },
+        TraceEntry{
+            .component = "CapabilityEngine",
+            .detail = std::format("Capability {} executed.", resolved_capability.value),
+        },
+    };
+    ordered_entries.insert(
+        ordered_entries.end(),
+        std::make_move_iterator(trace.entries.begin()),
+        std::make_move_iterator(trace.entries.end()));
+    trace.entries = std::move(ordered_entries);
+
+    trace.services_executed.insert(
+        trace.services_executed.begin(),
+        {"ValidationEngine", "CapabilityEngine"});
+
     return finalize_response(result->with_trace(std::move(trace)), platform_request);
 }
 

@@ -11,6 +11,7 @@ namespace {
 
 ResponseTraceInformation make_pipeline_trace(
     const std::string& provider_id,
+    const std::string& provider_name,
     std::size_t search_count,
     std::size_t ranked_count,
     std::size_t citation_count,
@@ -22,7 +23,8 @@ ResponseTraceInformation make_pipeline_trace(
                 "RankingEngine",
                 "CitationEngine",
                 "ContextAssembler",
-                "NullProvider",
+                "ProviderFormatter",
+                provider_name,
             },
         .provider_selected = provider_id,
         .entries =
@@ -46,7 +48,14 @@ ResponseTraceInformation make_pipeline_trace(
                         knowledge_object_count),
                 },
                 TraceEntry{
-                    .component = "NullProvider",
+                    .component = "ProviderFormatter",
+                    .detail = std::format(
+                        "Provider request formatted for {} with {} knowledge object(s).",
+                        provider_name,
+                        knowledge_object_count),
+                },
+                TraceEntry{
+                    .component = provider_name,
                     .detail = "Provider invoked.",
                 },
             },
@@ -170,12 +179,13 @@ public:
         content.structured["citation_bundle_count"] =
             std::to_string(citation_results.bundle_count);
 
-        const auto provider_id = provider_manager_->active_provider()
-            ? provider_manager_->active_provider()->id().value
-            : "AI-0000";
+        const auto active_provider = provider_manager_->active_provider();
+        const auto provider_id = active_provider ? active_provider->id().value : "AI-0000";
+        const auto provider_name = active_provider ? active_provider->name() : "NullProvider";
 
         auto trace = make_pipeline_trace(
             provider_id,
+            provider_name,
             search_results.result_count,
             ranked_results.result_count,
             citation_results.bundle_count,
