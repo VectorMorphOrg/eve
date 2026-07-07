@@ -16,10 +16,16 @@ std::expected<PlatformResponse, PlatformError> CorePlatform::process(
 
     auto trace = response.trace();
     trace.duration_ms = duration;
-    trace.services_executed = {
-        "CommandDispatcher",
-        "CapabilityEngine",
-    };
+
+    std::vector<std::string> services = trace.services_executed;
+    services.push_back("CommandDispatcher");
+    services.push_back("CapabilityEngine");
+    trace.services_executed = std::move(services);
+
+    if (!trace.provider_selected && dependencies_.provider_manager->active_provider()) {
+        trace.provider_selected = dependencies_.provider_manager->active_provider()->id().value;
+    }
+
     response = response.with_trace(std::move(trace));
 
     const auto validated = dependencies_.validation_engine->adopt_response(std::move(response));
@@ -37,7 +43,10 @@ std::expected<PlatformResponse, PlatformError> CorePlatform::process(
 std::vector<KnowledgeObject> CorePlatform::gather_knowledge(
     const PlatformRequest& request) const {
     (void)request;
-    return {};
+    if (!dependencies_.reasoning_pipeline) {
+        return {};
+    }
+    return dependencies_.reasoning_pipeline->objects();
 }
 
 }  // namespace eve

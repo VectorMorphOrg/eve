@@ -10,7 +10,7 @@
 |----------|-------|
 | **Project** | Evolutionary Virtual Engineer (E.V.E.) |
 | **Repository** | VectorMorphOrg/eve |
-| **Current Version** | v0.3.0-alpha |
+| **Current Version** | v0.5.0-alpha |
 | **Status** | Active Development |
 | **Architecture** | C++23 |
 | **Specification** | EVE-SPEC |
@@ -25,20 +25,27 @@ provide deterministic, evidence-backed answers by combining
 structured engineering knowledge with AI providers.
 
 Rather than relying on language models to remember
-information, E.V.E. retrieves, relates, and organizes
-engineering knowledge before generating responses.
+information, E.V.E. retrieves, validates, relates, ranks,
+cites, and assembles engineering knowledge before invoking an
+AI provider.
+
+The AI is responsible for generating language.
+
+The platform is responsible for generating knowledge.
 
 ---
 
 # Current Milestone
 
-## Phase 3.2 — Knowledge Index
+## Phase 4.1 — Reasoning Pipeline Integration
 
 Current objective:
 
-- Build deterministic indexes over the Knowledge Graph
-- Prepare for Search Engine implementation
-- Provide fast, deterministic retrieval of engineering knowledge
+- Integrate the deterministic Reasoning Pipeline into the Core Platform
+- Replace legacy documentation retrieval
+- Prepare the platform for AI Provider integration
+
+**Status: ✅ Complete**
 
 ---
 
@@ -69,15 +76,23 @@ Capability Engine
 
 ↓
 
-Service Layer
+Search Engine
 
 ↓
 
-Knowledge Engine
+Ranking Engine
 
 ↓
 
-Context Builder
+Citation Engine
+
+↓
+
+Context Builder 2.0
+
+↓
+
+Context Package
 
 ↓
 
@@ -111,7 +126,7 @@ User
 | Capability Engine | ✅ Complete |
 | Service Layer | ✅ Complete |
 | Knowledge Layer | ✅ Complete |
-| Context Builder | ✅ Complete |
+| Context Builder (Phase 1) | ✅ Complete |
 | Context Package | ✅ Complete |
 | AI Provider Architecture | ✅ Complete |
 | Documentation Integration | ✅ Complete |
@@ -119,6 +134,7 @@ User
 | Platform Response | ✅ Complete |
 | Validation Specification | ✅ Complete |
 | Validation Engine | ✅ Complete |
+| Reasoning Pipeline Integration | ✅ Complete |
 
 ---
 
@@ -132,22 +148,19 @@ User
 | Knowledge Object Builder | ✅ Complete |
 | Relationship Builder | ✅ Complete |
 | Knowledge Graph | ✅ Complete |
-| Knowledge Index | ⏳ In Progress |
-| Search Engine | ⏳ Planned |
-| Ranking Engine | ⏳ Planned |
-| Citation Engine | ⏳ Planned |
-| Context Builder Integration | ⏳ Planned |
+| Knowledge Index | ✅ Complete |
 
 ---
 
-# Interfaces
+# Reasoning Pipeline
 
-| Interface | Status |
+| Component | Status |
 |----------|--------|
-| Discord Bot | ⏳ Planned |
-| Website | ⏳ Planned |
-| CLI | ⏳ Planned |
-| REST API | ⏳ Planned |
+| Search Engine | ✅ Complete |
+| Ranking Engine | ✅ Complete |
+| Citation Engine | ✅ Complete |
+| Context Builder 2.0 | ✅ Complete |
+| Pipeline Integration | ✅ Complete |
 
 ---
 
@@ -163,6 +176,17 @@ User
 
 ---
 
+# Interfaces
+
+| Interface | Status |
+|----------|--------|
+| CLI | ⏳ Planned |
+| Discord | ⏳ Planned |
+| REST API | ⏳ Planned |
+| Website | ⏳ Planned |
+
+---
+
 # Testing
 
 | Area | Status |
@@ -172,6 +196,7 @@ User
 | Contract Compliance | ✅ Passing |
 | Validation Tests | ✅ Passing |
 | Knowledge Engine Tests | ✅ Passing |
+| Reasoning Pipeline Tests | ✅ Passing |
 
 ---
 
@@ -179,12 +204,12 @@ User
 
 | Metric | Value |
 |---------|-------|
-| **Current Release** | v0.3.0-alpha |
-| **Passing Tests** | 82 |
+| **Current Release** | v0.5.0-alpha |
+| **Passing Tests** | **144** |
 | **Core Platform** | ✅ Complete |
-| **Validation Engine** | ✅ Complete |
-| **Knowledge Foundation** | ✅ Complete |
-| **Knowledge Graph** | ✅ Complete |
+| **Knowledge Engine** | ✅ Complete |
+| **Reasoning Pipeline** | ✅ Complete |
+| **Pipeline Integration** | ✅ Complete |
 
 ---
 
@@ -192,21 +217,17 @@ User
 
 ## Completed
 
-### Core Platform
+### Foundation
 
 - Vision & Design Philosophy
 - System Architecture
 - Capability Engine
 - Service Layer
-- Knowledge Layer
-- Context Builder
-- Context Package
-- AI Provider Architecture
 - Platform Request
 - Platform Response
 - Validation Engine
 
-### Knowledge Foundation
+### Knowledge Engine
 
 - Repository Discovery
 - Markdown Parser
@@ -214,36 +235,36 @@ User
 - Knowledge Object Builder
 - Relationship Builder
 - Knowledge Graph
+- Knowledge Index
+
+### Reasoning Pipeline
+
+- Search Engine
+- Ranking Engine
+- Citation Engine
+- Context Builder 2.0
+- Reasoning Pipeline Integration
 
 ---
 
 ## Current
 
-### Knowledge Engine
+### AI Provider Integration
 
-- Knowledge Index
+- Ollama Provider
+- Provider Manager Integration
+- Provider Formatting Layer
 
 ---
 
 ## Next
 
-### Knowledge Engine
+### AI Providers
 
-- Search Engine
-- Ranking Engine
-- Citation Engine
-- Context Builder Integration
-
----
-
-## Future
-
-### AI Integration
-
-- Ollama Provider
-- OpenAI Provider
-- Anthropic Provider
-- LM Studio Provider
+- Ollama
+- OpenAI
+- Anthropic
+- LM Studio
 
 ### Interfaces
 
@@ -252,10 +273,16 @@ User
 - REST API
 - Website
 
+---
+
+## Future
+
 ### Platform Expansion
 
+- Conversation Memory
 - Multi-Repository Support
 - Plugin System
+- Distributed Capability Network
 - Distributed Knowledge
 - Semantic Search
 - Hybrid Search
@@ -276,10 +303,6 @@ User
 - Context Builder
 - AI Provider abstraction
 
-### Tests
-
-- Initial test suite established
-
 ---
 
 ## v0.2.0-alpha
@@ -288,15 +311,11 @@ User
 
 ### Highlights
 
-- Platform Request Contract
-- Platform Response Contract
+- Platform Request
+- Platform Response
 - Validation Specification
 - Validation Engine
 - Contract Compliance
-
-### Tests
-
-- Validation and contract compliance suite
 
 ---
 
@@ -313,17 +332,45 @@ User
 - Relationship Builder
 - Knowledge Graph
 
+---
+
+## v0.4.0-alpha
+
+**Released:** July 2026
+
+### Highlights
+
+- Knowledge Index
+- Search Engine
+- Ranking Engine
+- Citation Engine
+- Context Builder 2.0
+- Architecture Decision Records
+- Knowledge Foundation Complete
+
 ### Tests
 
-- 82 passing tests
+- 124 passing
 
-### Known Limitations
+---
 
-- Knowledge Index not yet implemented
-- Search Engine pending
-- Ranking Engine pending
-- Citation Engine pending
-- Context Builder 2.0 pending
+## v0.5.0-alpha
+
+**Released:** July 2026
+
+### Highlights
+
+- Reasoning Pipeline Integration
+- End-to-end deterministic reasoning pipeline
+- Documentation Search migrated to Search → Rank → Cite → Assemble
+- Shared immutable ReasoningPipeline at platform bootstrap
+- SearchService compatibility layer
+- Pipeline-aware trace propagation
+- ContextPackage becomes the canonical AI input
+
+### Tests
+
+- **144 passing**
 
 ---
 
@@ -337,6 +384,8 @@ E.V.E. follows these engineering principles:
 - Deterministic Behavior
 - Explainable Results
 - AI Provider Independence
+- Capability-Oriented Architecture
+- Separation of Responsibilities
 - Maintainability
 - Transparency
 - Test-Driven Development
@@ -345,20 +394,20 @@ E.V.E. follows these engineering principles:
 
 # Current Focus
 
-The current engineering objective is completing the
-Knowledge Engine.
+The deterministic core of E.V.E. is now complete.
 
-The remaining work includes:
+Current engineering effort shifts toward AI Provider
+integration.
 
-- Knowledge Index
-- Search Engine
-- Ranking Engine
-- Citation Engine
-- Context Builder Integration
+Remaining work includes:
 
-These components will allow E.V.E. to retrieve, organize,
-rank, and assemble grounded engineering knowledge before
-invoking an AI provider.
+- Ollama Provider
+- Provider Formatting Layer
+- OpenAI Provider
+- Anthropic Provider
+- LM Studio Provider
+- Conversation Memory
+- Interface implementations
 
 ---
 
@@ -367,12 +416,13 @@ invoking an AI provider.
 The completed E.V.E. platform will provide:
 
 - Deterministic engineering search
-- Evidence-backed AI responses
-- Explainable citations
-- Multi-repository knowledge graphs
+- Explainable ranking
+- Evidence-backed citations
+- Structured context assembly
 - Provider-independent AI orchestration
+- Multi-repository knowledge graphs
+- Distributed capability execution
 - Cross-platform interfaces
-- Long-term maintainability
 - Fully traceable engineering intelligence
 
 ---
@@ -388,25 +438,16 @@ Core Platform
 Validation Engine
 ████████████████████████████████ 100%
 
-Knowledge Foundation
+Knowledge Engine
 ████████████████████████████████ 100%
 
-Knowledge Graph
+Reasoning Pipeline
 ████████████████████████████████ 100%
 
-Knowledge Index
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%
+Pipeline Integration
+████████████████████████████████ 100%
 
-Search Engine
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%
-
-Ranking Engine
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%
-
-Citation Engine
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%
-
-Context Builder 2.0
+AI Providers
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%
 
 Interfaces
@@ -421,6 +462,12 @@ Interfaces
 eve/
 
 ├── docs/
+│   ├── adr/
+│   ├── 0000-core-platform-specifications/
+│   ├── 1000-implementation-guides/
+│   └── ...
+│
+├── ideas/
 ├── include/
 ├── src/
 ├── tests/
@@ -439,11 +486,71 @@ eve/
 
 ---
 
+# Current Architecture Summary
+
+```text
+Platform Request
+
+↓
+
+Validation
+
+↓
+
+Capability
+
+↓
+
+Knowledge Engine
+
+↓
+
+Search
+
+↓
+
+Ranking
+
+↓
+
+Citation
+
+↓
+
+Context Assembly
+
+↓
+
+Context Package
+
+↓
+
+AI Provider
+
+↓
+
+Platform Response
+```
+
+The deterministic Reasoning Pipeline is now fully operational.
+
+AI Providers are no longer responsible for retrieving,
+ranking, or assembling knowledge.
+
+They consume ContextPackages and generate natural-language
+responses.
+
+This separation preserves provider independence and ensures
+consistent engineering reasoning regardless of which AI model
+is used.
+
+---
+
 **Project:** Evolutionary Virtual Engineer (E.V.E.)
 
 **Repository:** VectorMorphOrg/eve
 
-**Version:** v0.3.0-alpha
+**Version:** **v0.5.0-alpha**
 
 **Status:** Active Development
 

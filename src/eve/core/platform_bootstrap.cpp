@@ -3,6 +3,7 @@
 #include "eve/ai/provider_manager.hpp"
 #include "eve/capability/handlers/capability_handlers.hpp"
 #include "eve/knowledge/knowledge_object.hpp"
+#include "eve/knowledge/reasoning_pipeline.hpp"
 #include "eve/services/service_implementations.hpp"
 #include "eve/validation/validation_engine.hpp"
 
@@ -31,11 +32,12 @@ CorePlatform PlatformBootstrap::create(
             std::make_move_iterator(objects.begin()),
             std::make_move_iterator(objects.end()));
     }
-    knowledge_store->load(std::move(indexed_objects));
+    auto reasoning_pipeline = ReasoningPipeline::build_shared(std::move(indexed_objects));
+    knowledge_store->load(reasoning_pipeline->objects());
     logging->info(std::format("Indexed {} knowledge objects.", knowledge_store->document_count()));
 
     auto documentation = std::make_shared<services::DocumentationService>(knowledge_store);
-    auto search = std::make_shared<services::SearchService>(knowledge_store);
+    auto search = std::make_shared<services::SearchService>(knowledge_store, reasoning_pipeline);
     auto diagnostics = std::make_shared<services::DiagnosticsService>(*knowledge_store);
 
     auto provider_manager = std::make_shared<ai::ProviderManager>();
@@ -59,10 +61,10 @@ CorePlatform PlatformBootstrap::create(
     capability::handlers::register_documentation_handlers(
         *registry,
         *documentation,
-        *search,
         *status,
-        context_builder,
-        provider_manager);
+        *reasoning_pipeline,
+        provider_manager,
+        configuration->context_limit_chars());
 
     registry->register_alias("search", CapabilityId{"CAP-0102"});
     registry->register_alias("status", CapabilityId{"CAP-0002-STATUS"});
@@ -83,6 +85,7 @@ CorePlatform PlatformBootstrap::create(
         .status = status,
         .diagnostics = diagnostics,
         .knowledge_store = knowledge_store,
+        .reasoning_pipeline = reasoning_pipeline,
         .context_builder = context_builder,
         .provider_manager = provider_manager,
         .validation_engine = validation_engine,

@@ -37,8 +37,13 @@ add_library(eve_core
     src/eve/knowledge/relationship_builder.cpp
     src/eve/knowledge/knowledge_graph.cpp
     src/eve/knowledge/knowledge_index.cpp
+    src/eve/knowledge/search_engine.cpp
+    src/eve/knowledge/ranking_engine.cpp
+    src/eve/knowledge/citation_engine.cpp
+    src/eve/knowledge/reasoning_pipeline.cpp
     src/eve/context/context_package.cpp
     src/eve/context/context_builder.cpp
+    src/eve/context/context_assembler.cpp
     src/eve/ai/provider_manager.cpp
     src/eve/ai/null_provider.cpp
     src/eve/core/core_platform.cpp

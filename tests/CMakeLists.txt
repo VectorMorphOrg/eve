@@ -29,6 +29,10 @@ add_executable(eve_tests
     relationship_builder_test.cpp
     knowledge_graph_test.cpp
     knowledge_index_test.cpp
+    search_engine_test.cpp
+    ranking_engine_test.cpp
+    citation_engine_test.cpp
+    context_assembler_test.cpp
 )
 
 target_link_libraries(eve_tests

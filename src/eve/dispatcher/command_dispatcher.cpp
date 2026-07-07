@@ -43,9 +43,8 @@ PlatformResponse CommandDispatcher::dispatch(PlatformRequest request) const {
             platform_request);
     }
 
-    ResponseTraceInformation trace{
-        .capability_executed = resolved_capability.value,
-    };
+    auto trace = result->trace();
+    trace.capability_executed = resolved_capability.value;
     return finalize_response(result->with_trace(std::move(trace)), platform_request);
 }
 

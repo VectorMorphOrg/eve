@@ -1,6 +1,7 @@
 #pragma once
 
 #include "eve/ai/provider_manager.hpp"
+#include "eve/knowledge/reasoning_pipeline.hpp"
 #include "eve/services/service_interfaces.hpp"
 
 #include <filesystem>
@@ -47,7 +48,9 @@ private:
 
 class SearchService final : public ISearchService {
 public:
-    explicit SearchService(std::shared_ptr<IKnowledgeStore> store);
+    SearchService(
+        std::shared_ptr<IKnowledgeStore> store,
+        std::shared_ptr<const ReasoningPipeline> reasoning_pipeline);
 
     [[nodiscard]] std::expected<std::vector<SearchResult>, PlatformError> search(
         std::string_view query,
@@ -55,6 +58,7 @@ public:
 
 private:
     std::shared_ptr<IKnowledgeStore> store_;
+    std::shared_ptr<const ReasoningPipeline> reasoning_pipeline_;
 };
 
 class StatusService final : public IStatusService {

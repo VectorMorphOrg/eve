@@ -7,6 +7,7 @@
 #include "eve/core/platform_response.hpp"
 #include "eve/dispatcher/command_dispatcher.hpp"
 #include "eve/knowledge/in_memory_knowledge_store.hpp"
+#include "eve/knowledge/reasoning_pipeline.hpp"
 #include "eve/services/service_interfaces.hpp"
 
 #include "eve/validation/validation_engine.hpp"
@@ -26,6 +27,7 @@ struct CorePlatformDependencies {
     std::shared_ptr<services::IStatusService> status;
     std::shared_ptr<services::IDiagnosticsService> diagnostics;
     std::shared_ptr<IKnowledgeStore> knowledge_store;
+    std::shared_ptr<const ReasoningPipeline> reasoning_pipeline;
     context::ContextBuilder context_builder;
     std::shared_ptr<ai::ProviderManager> provider_manager;
     std::shared_ptr<validation::ValidationEngine> validation_engine;

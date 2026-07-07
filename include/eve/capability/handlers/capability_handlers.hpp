@@ -5,6 +5,7 @@
 #include "eve/context/context_package.hpp"
 #include "eve/core/platform_request.hpp"
 #include "eve/core/platform_response.hpp"
+#include "eve/knowledge/reasoning_pipeline.hpp"
 #include "eve/services/service_interfaces.hpp"
 
 #include <memory>
@@ -21,9 +22,9 @@ void register_core_handlers(
 void register_documentation_handlers(
     CapabilityRegistry& registry,
     const services::IDocumentationService& documentation,
-    const services::ISearchService& search,
     const services::IStatusService& status,
-    const context::ContextBuilder& context_builder,
-    std::shared_ptr<const ai::ProviderManager> provider_manager);
+    const ReasoningPipeline& reasoning_pipeline,
+    std::shared_ptr<const ai::ProviderManager> provider_manager,
+    std::size_t context_limit_chars);
 
 }  // namespace eve::capability::handlers
