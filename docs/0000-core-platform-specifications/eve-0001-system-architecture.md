@@ -70,28 +70,40 @@ responsibility.
                      Interface Layer
                              │
                              ▼
+                     Platform Request
+                             │
+                             ▼
+                    Validation Engine
+                             │
+                             ▼
                    Command Dispatcher
                              │
                              ▼
-                    Request Validator
+                    Capability Engine
                              │
                              ▼
-                    Capability Layer
+                       Search Engine
                              │
                              ▼
-                      Service Layer
+                      Ranking Engine
                              │
                              ▼
-                     Knowledge Layer
+                     Citation Engine
                              │
                              ▼
-                     Context Builder
+                    Context Assembler
+                             │
+                             ▼
+                   Provider Formatter
+                             │
+                             ▼
+                    Provider Manager
                              │
                              ▼
                        AI Provider
                              │
                              ▼
-                   Response Formatter
+                    Platform Response
                              │
                              ▼
                      Interface Layer
@@ -215,38 +227,65 @@ The Knowledge Layer never generates information.
 
 ---
 
-## Context Builder
+## Reasoning Pipeline
 
-The Context Builder prepares retrieved knowledge for downstream
-processing.
+After capability execution, deterministic reasoning prepares
+knowledge for language generation.
+
+Stages
+
+- Search Engine — retrieve candidate knowledge
+- Ranking Engine — order results by relevance
+- Citation Engine — attach evidence references
+- Context Assembler — produce a Context Package
+
+These stages remain independent of any AI provider.
+
+---
+
+## Provider Formatter
+
+The Provider Formatter transforms a Context Package into a
+provider-independent Provider Request.
 
 Responsibilities
 
-- Select relevant documents
-- Rank search results
-- Remove duplicate information
-- Build citations
-- Assemble prompts
-- Preserve document hierarchy
+- Apply system instructions
 - Enforce context limits
+- Format provider-facing messages
+- Preserve citations and diagnostics metadata
 
-The Context Builder remains independent of any AI provider.
+Prompt assembly for AI backends occurs here — not inside
+the reasoning engines.
+
+---
+
+## Provider Manager
+
+The Provider Manager selects and invokes the configured AI
+Provider.
+
+Responsibilities
+
+- Resolve the active provider
+- Dispatch Provider Requests
+- Normalize AI Responses
+- Isolate provider transport details
 
 ---
 
 ## AI Provider
 
-The AI Provider converts structured context into natural
-language.
+The AI Provider converts structured Provider Requests into
+natural language.
 
-Supported providers may include:
+Implemented providers (v0.6.0-alpha):
 
-- OpenAI
-- Anthropic
+- Null Provider
 - Ollama
-- LM Studio
-- llama.cpp
-- Future providers
+
+Additional providers may include OpenAI, Anthropic,
+LM Studio, llama.cpp, and future backends.
 
 The AI Provider never retrieves documentation directly.
 
@@ -254,19 +293,15 @@ Its only responsibility is natural language generation.
 
 ---
 
-## Response Formatter
+## Platform Response
 
-Responsible for formatting responses.
+The Core Platform returns a Platform Response to the
+Interface Layer.
 
-Examples
-
-- Discord Embeds
-- Markdown
-- Plain Text
-- HTML
-- JSON
-
-Formatting remains independent of AI generation.
+Interface-specific presentation (Discord embeds, CLI text,
+HTML, JSON) occurs in the Interface Layer after the Platform
+Response is produced. Interface formatters are not Core
+Platform pipeline stages.
 
 ---
 
@@ -283,27 +318,43 @@ Interface
 
 ↓
 
-Dispatcher
+Platform Request
 
 ↓
 
-Validator
+Validation Engine
 
 ↓
 
-Capability
+Command Dispatcher
 
 ↓
 
-Service
+Capability Engine
 
 ↓
 
-Knowledge
+Search Engine
 
 ↓
 
-Context Builder
+Ranking Engine
+
+↓
+
+Citation Engine
+
+↓
+
+Context Assembler
+
+↓
+
+Provider Formatter
+
+↓
+
+Provider Manager
 
 ↓
 
@@ -311,7 +362,7 @@ AI Provider
 
 ↓
 
-Formatter
+Platform Response
 
 ↓
 

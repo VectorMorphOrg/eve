@@ -147,11 +147,7 @@ Platform Request
 
 ↓
 
-Validation
-
-↓
-
-Validated Platform Request
+Validation Engine
 
 ↓
 
@@ -159,23 +155,31 @@ Command Dispatcher
 
 ↓
 
-Capability
+Capability Engine
 
 ↓
 
-Service
+Search Engine
 
 ↓
 
-Knowledge Layer
+Ranking Engine
 
 ↓
 
-Context Builder
+Citation Engine
 
 ↓
 
-Context Package
+Context Assembler
+
+↓
+
+Provider Formatter
+
+↓
+
+Provider Manager
 
 ↓
 
@@ -187,24 +191,15 @@ Platform Response
 
 ↓
 
-Validation
-
-↓
-
-Validated Platform Response
-
-↓
-
-Response Formatter
-
-↓
-
 Interface
 
 ↓
 
 User
 ```
+
+Interface-specific presentation occurs after the Platform
+Response. It is not a Core Platform pipeline stage.
 
 ---
 

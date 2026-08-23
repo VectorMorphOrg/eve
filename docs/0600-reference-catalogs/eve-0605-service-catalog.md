@@ -2,54 +2,39 @@
 
 # Service Catalog
 
-**Project:** Evolutionary Virtual Engineer (E.V.E.)
+> Authoritative Registry of E.V.E. Platform Services
 
-**Specification:** EVE-SPEC
+---
 
-**Part:** VII — Reference Catalogs
+## Document Information
 
-**Document Version:** 1.0.0
-
-**Published:** July 2026
-
-**Authors:** VectorMorph Research Initiative (VMRI)
-
-**Status:** Draft
+| Property | Value |
+|----------|-------|
+| **Document ID** | EVE-0605 |
+| **Series** | 0600 — Reference Catalogs |
+| **Title** | Service Catalog |
+| **Project** | Evolutionary Virtual Engineer (E.V.E.) |
+| **Version** | 2.0.0 |
+| **Status** | Active |
+| **Published** | July 2026 |
 
 ---
 
 # Purpose
 
-This document provides the authoritative catalog of platform
-services supported by the Evolutionary Virtual Engineer
+This document is the authoritative registry of long-lived
+platform services used by the Evolutionary Virtual Engineer
 (E.V.E.).
 
-Unlike engineering specifications, this catalog does not
-define service behavior.
+Services are reusable platform components that expose
+well-defined functionality to Capabilities and other
+subsystems.
 
-Instead, it serves as a centralized inventory of the
-long-lived services that collectively implement the E.V.E.
-platform.
+Unlike Engineering Specifications, this catalog does not
+define behavior.
 
-Behavioral requirements are defined within the corresponding
-engineering specifications.
-
----
-
-# Scope
-
-This catalog includes:
-
-- Core Platform Services
-- Knowledge Services
-- AI Services
-- Repository Services
-- Development Services
-- Platform Services
-- Administrative Services
-
-Additional services may be introduced as the platform
-evolves.
+It exists solely to document the platform's reusable service
+inventory.
 
 ---
 
@@ -69,101 +54,101 @@ evolves.
 
 | Category | Description |
 |----------|-------------|
-| Core | Platform orchestration services |
-| Knowledge | Documentation and knowledge services |
-| AI | Artificial intelligence services |
-| Repository | Repository integration services |
-| Development | Development support services |
-| Platform | Shared infrastructure services |
-| Administration | Administrative platform services |
+| Core | Core platform orchestration |
+| Knowledge | Repository and documentation services |
+| AI | AI Provider infrastructure |
+| Repository | Repository management |
+| Development | Engineering support |
+| Platform | Shared infrastructure |
+| Administration | Administrative services |
 
 ---
 
-# Core Platform Services
+# Core Services
 
-| ID | Service | Description | Status |
-|----|----------|-------------|--------|
-| SVC-0001 | Command Dispatcher | Routes platform requests | 🚧 |
-| SVC-0002 | Capability Engine | Executes platform capabilities | 🚧 |
-| SVC-0003 | Request Processor | Processes Platform Requests | 🚧 |
-| SVC-0004 | Response Processor | Produces Response Objects | 🚧 |
-| SVC-0005 | Permission Service | Authorization and access control | 🚧 |
+| ID | Service | Primary Responsibility | Status |
+|----|----------|-----------------------|--------|
+| SVC-0001 | Command Dispatcher | Dispatch Platform Requests | ✅ |
+| SVC-0002 | Capability Engine | Execute Capabilities | ✅ |
+| SVC-0003 | Validation Engine | Validate Requests and Responses | ✅ |
+| SVC-0004 | Core Platform | Coordinate platform execution | ✅ |
+| SVC-0005 | Platform Bootstrap | Construct platform dependencies | ✅ |
 
 ---
 
 # Knowledge Services
 
-| ID | Service | Description | Status |
-|----|----------|-------------|--------|
-| SVC-0100 | Knowledge Service | Access documented knowledge | 🚧 |
-| SVC-0101 | Documentation Service | Retrieve documentation | 🚧 |
-| SVC-0102 | Search Service | Search platform knowledge | 🚧 |
-| SVC-0103 | Citation Service | Generate documentation references | 🚧 |
-| SVC-0104 | Index Service | Maintain searchable indexes | 🚧 |
+| ID | Service | Primary Responsibility | Status |
+|----|----------|-----------------------|--------|
+| SVC-0100 | Knowledge Engine | Repository knowledge management | ✅ |
+| SVC-0101 | Search Engine | Retrieve candidate Knowledge Objects | ✅ |
+| SVC-0102 | Ranking Engine | Rank search results | ✅ |
+| SVC-0103 | Citation Engine | Produce engineering citations | ✅ |
+| SVC-0104 | Context Assembler | Build Context Packages | ✅ |
 
 ---
 
 # AI Services
 
-| ID | Service | Description | Status |
-|----|----------|-------------|--------|
-| SVC-0200 | AI Engine | Generate AI responses | 🚧 |
-| SVC-0201 | Context Builder | Assemble AI context | 🚧 |
-| SVC-0202 | Provider Manager | Select AI providers | 🚧 |
-| SVC-0203 | Prompt Builder | Generate provider prompts | 🚧 |
-| SVC-0204 | Conversation Service | Manage conversational context | 🚧 |
+| ID | Service | Primary Responsibility | Status |
+|----|----------|-----------------------|--------|
+| SVC-0200 | Provider Manager | Manage AI Providers | ✅ |
+| SVC-0201 | Provider Formatter | Build Provider Requests | ✅ |
+| SVC-0202 | Null Provider | Stub AI Provider | ✅ |
+| SVC-0203 | Ollama Provider | Local AI Provider | ✅ |
+| SVC-0204 | HTTP Transport | Provider networking | ✅ |
 
 ---
 
 # Repository Services
 
-| ID | Service | Description | Status |
-|----|----------|-------------|--------|
-| SVC-0300 | Repository Service | Repository abstraction layer | 🚧 |
-| SVC-0301 | GitHub Service | GitHub integration | 🚧 |
-| SVC-0302 | Issue Service | Issue tracking integration | 🚧 |
-| SVC-0303 | Release Service | Release information | 🚧 |
-| SVC-0304 | Repository Index Service | Repository discovery | 🚧 |
+| ID | Service | Primary Responsibility | Status |
+|----|----------|-----------------------|--------|
+| SVC-0300 | Repository Discovery | Discover repositories | ✅ |
+| SVC-0301 | Markdown Parser | Parse Markdown documents | ✅ |
+| SVC-0302 | Metadata Extractor | Extract document metadata | ✅ |
+| SVC-0303 | Knowledge Object Builder | Construct Knowledge Objects | ✅ |
+| SVC-0304 | Relationship Builder | Build Knowledge Graph | ✅ |
 
 ---
 
 # Development Services
 
-| ID | Service | Description | Status |
-|----|----------|-------------|--------|
-| SVC-0400 | Roadmap Service | Development roadmap | 🚧 |
-| SVC-0401 | ADR Service | Architecture Decision Records | 🚧 |
-| SVC-0402 | Build Service | Build metadata | 🚧 |
-| SVC-0403 | Testing Service | Testing information | 🚧 |
-| SVC-0404 | Project Service | Project metadata | 🚧 |
+| ID | Service | Primary Responsibility | Status |
+|----|----------|-----------------------|--------|
+| SVC-0400 | Documentation Service | Documentation access | 🚧 |
+| SVC-0401 | Build Information Service | Build metadata | 🚧 |
+| SVC-0402 | Test Information Service | Test metadata | 🚧 |
+| SVC-0403 | Roadmap Service | Project roadmap | 🚧 |
+| SVC-0404 | ADR Service | Architecture decision lookup | 🚧 |
 
 ---
 
 # Platform Services
 
-| ID | Service | Description | Status |
-|----|----------|-------------|--------|
-| SVC-0500 | Configuration Service | Platform configuration | 🚧 |
-| SVC-0501 | Logging Service | Centralized logging | 🚧 |
+| ID | Service | Primary Responsibility | Status |
+|----|----------|-----------------------|--------|
+| SVC-0500 | Configuration Service | Runtime configuration | ✅ |
+| SVC-0501 | Logging Service | Structured logging | 🚧 |
 | SVC-0502 | Metrics Service | Runtime metrics | 🚧 |
 | SVC-0503 | Cache Service | Shared caching | 🚧 |
-| SVC-0504 | Scheduling Service | Scheduled operations | 🚧 |
+| SVC-0504 | Scheduling Service | Scheduled execution | 🚧 |
 
 ---
 
 # Administrative Services
 
-| ID | Service | Description | Status |
-|----|----------|-------------|--------|
+| ID | Service | Primary Responsibility | Status |
+|----|----------|-----------------------|--------|
 | SVC-0600 | Authentication Service | Identity management | 🚧 |
 | SVC-0601 | Authorization Service | Permission enforcement | 🚧 |
-| SVC-0602 | Health Service | Platform health monitoring | 🚧 |
+| SVC-0602 | Health Service | Platform health monitoring | ✅ |
 | SVC-0603 | Update Service | Platform updates | 🚧 |
 | SVC-0604 | Audit Service | Audit logging | 🚧 |
 
 ---
 
-# Reserved Service Identifiers
+# Reserved Service Ranges
 
 | Range | Purpose |
 |--------|---------|
@@ -171,63 +156,64 @@ evolves.
 | SVC-0800–0899 | Future AI Services |
 | SVC-0900–0999 | Experimental Services |
 
-Reserved identifiers maintain a stable service numbering
-scheme as E.V.E. evolves.
+Reserved ranges preserve long-term identifier stability.
 
 ---
 
-# Service Naming Guidelines
+# Service Definition
 
-Services should:
+A Service is a long-lived reusable platform component.
 
-- Represent a long-lived platform component.
-- Expose one primary responsibility.
-- Support one or more capabilities.
-- Be reusable across interfaces.
-- Remain implementation independent whenever possible.
+Services:
 
-Services describe **who performs the work**.
+- encapsulate infrastructure
+- expose reusable functionality
+- may support multiple Capabilities
+- are independent of user interfaces
+- are constructed during platform bootstrap
 
-Capabilities describe **what work is performed**.
+Capabilities invoke Services.
+
+Interfaces invoke Capabilities.
 
 ---
 
 # Relationship to EVE-SPEC
 
-This catalog complements the Platform Specifications and
-Core Platform Specifications.
+Behavior is defined by:
 
-Individual specifications define service behavior.
+- Part I — Engineering Specifications
 
-This document serves only as the authoritative inventory of
+Implementation guidance is provided by:
+
+- Part XI — Implementation Guides
+
+This catalog serves only as the authoritative registry of
 platform services.
 
 ---
 
-# Future Expansion
+# Current Implementation Status
 
-Future revisions of this catalog may include:
+As of **v0.6.0-alpha**, the implemented service layer
+includes:
 
-- Service dependencies
-- Lifecycle management
-- Startup order
-- Configuration requirements
-- Health status
-- Interface contracts
-- Capability mappings
+- Core Platform
+- Validation Engine
+- Capability Engine
+- Knowledge Engine
+- Search Engine
+- Ranking Engine
+- Citation Engine
+- Context Assembler
+- Provider Formatter
+- Provider Manager
+- Ollama Provider
+- HTTP Transport
+- Configuration Service
 
----
-
-# Summary
-
-The Service Catalog provides a centralized inventory of the
-services that comprise the Evolutionary Virtual Engineer
-platform.
-
-It exists to improve architectural consistency, establish a
-shared engineering vocabulary, and provide a stable
-reference for developers, contributors, and future
-implementations.
+Additional services will be added while preserving existing
+service identifiers.
 
 ---
 
@@ -237,9 +223,9 @@ implementations.
 
 EVE-0604 — Capability Catalog
 
-**Part**
+**Current**
 
-VII — Reference Catalogs
+EVE-0605 — Service Catalog
 
 **Next**
 
@@ -252,7 +238,5 @@ EVE-0606 — Knowledge Object Catalog
 ← EVE-SPEC
 
 ---
-
-## Motto
 
 *"Knowledge should evolve."*

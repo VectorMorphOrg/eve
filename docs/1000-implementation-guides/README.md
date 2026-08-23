@@ -2,176 +2,279 @@
 
 # 1000 Implementation Guides
 
-> Implementation Guidance for EVE-SPEC
+> Implementation Guide Series
 
 ---
 
-## Part Information
+## Series Information
 
 | Property | Value |
 |----------|-------|
 | **Part** | XI |
 | **Series** | 1000 |
 | **Title** | Implementation Guides |
-| **Status** | Active |
-| **Documents** | 1 |
-| **Depends On** | Parts I–X |
-| **Referenced By** | Contributors and Developers |
+| **Status** | Complete |
+| **Depends On** | Part I — Engineering Specifications |
+| **Supported By** | Part XIII — Architecture Decision Records |
+| **Followed By** | Part XII — Developer Guides |
 
 ---
 
 # Overview
 
-The Implementation Guides provide practical guidance for
-building the Evolutionary Virtual Engineer (E.V.E.)
-platform.
+Part XI describes **how the Evolutionary Virtual Engineer
+(E.V.E.) is implemented**.
 
-Unlike engineering specifications, Implementation Guides do
-not define platform behavior.
+Where the Engineering Specifications define **what** the
+platform must do, and the Architecture Decision Records
+explain **why** it was designed that way, the Implementation
+Guides document **how the platform is engineered**.
 
-Instead, they describe recommended approaches for realizing
-the requirements established throughout EVE-SPEC.
-
-Implementation Guides help maintain consistency across
-different implementations while allowing engineering
-flexibility.
+These guides describe the internal architecture,
+implementation patterns, subsystem interactions, and
+recommended engineering practices used throughout E.V.E.
 
 ---
 
 # Purpose
 
-Part XI documents recommended implementation practices.
+This series documents the implementation of:
 
-Topics include:
+- Core Platform
+- Validation Engine
+- Capability Engine
+- Service Layer
+- Knowledge Engine
+- Reasoning Pipeline
+- Context Assembly
+- AI Provider Architecture
 
-- Implementation Roadmaps
-- Project Structure
-- Build System
-- Dependency Injection
-- Configuration Management
-- Logging
-- Error Handling
-- Database Design
-- Plugin Development
-- Performance Optimization
-- Deployment Preparation
+The Implementation Guides are intended for engineers
+working on the E.V.E. platform itself.
 
-Implementation Guides explain **how** the platform may be
-built.
-
-Engineering Specifications define **what** the platform
-shall do.
+They complement—but never replace—the Engineering
+Specifications.
 
 ---
 
-# Guide Catalog
+# Documentation Hierarchy
+
+The complete E.V.E. documentation hierarchy is:
+
+```text
+Architecture Decision Records (3000)
+
+↓
+
+Engineering Specifications (0000)
+
+↓
+
+Implementation Guides (1000)
+
+↓
+
+Developer Guides (2000)
+
+↓
+
+Source Code
+
+↓
+
+Tests
+```
+
+Each layer serves a distinct purpose.
+
+| Layer | Purpose |
+|--------|----------|
+| Architecture Decision Records | Explain **why** engineering decisions were made |
+| Engineering Specifications | Define **what** the platform must do |
+| Implementation Guides | Describe **how** the platform is implemented |
+| Developer Guides | Explain how contributors use and extend the platform |
+
+---
+
+# Reading Order
+
+Implementation Guides should be read in the following order.
 
 | ID | Title | Status |
 |----|-------|--------|
-| EVE-1000 | Implementation Roadmap | ✅ Complete |
-| EVE-1001 | Project Structure Guide | ⏳ Planned |
-| EVE-1002 | Build System Guide | ⏳ Planned |
-| EVE-1003 | Dependency Injection Guide | ⏳ Planned |
-| EVE-1004 | Configuration Guide | ⏳ Planned |
-| EVE-1005 | Logging Guide | ⏳ Planned |
-| EVE-1006 | Database Design Guide | ⏳ Planned |
-| EVE-1007 | Plugin Development Guide | ⏳ Planned |
-| EVE-1008 | Performance Optimization Guide | ⏳ Planned |
-| EVE-1009 | Deployment Preparation Guide | ⏳ Planned |
-
-Additional implementation guides may be introduced as the
-platform evolves.
+| EVE-1000 | Implementation Roadmap | ✅ Active |
+| EVE-1001 | Core Platform Implementation Guide | ✅ Active |
+| EVE-1002 | Validation Engine Implementation Guide | ✅ Active |
+| EVE-1003 | Capability Engine Implementation Guide | ✅ Active |
+| EVE-1004 | Service Layer Implementation Guide | ✅ Active |
+| EVE-1005 | Knowledge Objects Implementation Guide | ✅ Active |
+| EVE-1006 | Knowledge Graph Implementation Guide | ✅ Active |
+| EVE-1007 | Knowledge Index Implementation Guide | ✅ Active |
+| EVE-1008 | Reasoning Pipeline Implementation Guide | ✅ Active |
+| EVE-1009 | Context Assembly Implementation Guide | ✅ Active |
+| EVE-1010 | AI Provider Implementation Guide | ✅ Active |
+| EVE-1011 | Knowledge Engine Implementation Guide | ✅ Active |
 
 ---
 
-# Implementation Workflow
+# Implementation Architecture
+
+The implementation follows the same layered architecture
+defined throughout EVE-SPEC.
 
 ```text
-Engineering Specification
+Interfaces
 
 ↓
 
-Implementation Guide
+Core Platform
 
 ↓
 
-Software Design
+Validation Engine
 
 ↓
 
-Development
+Capability Engine
 
 ↓
 
-Testing
+Reasoning Pipeline
 
 ↓
 
-Deployment
+Context Assembly
+
+↓
+
+AI Provider Layer
+
+↓
+
+Platform Response
 ```
 
-Implementation Guides translate engineering requirements
-into practical development practices.
+Supporting every stage is the Knowledge Engine:
+
+```text
+Repository
+
+↓
+
+Knowledge Objects
+
+↓
+
+Knowledge Graph
+
+↓
+
+Knowledge Index
+
+↓
+
+Reasoning Pipeline
+```
+
+This separation ensures that engineering reasoning remains
+deterministic while AI providers remain interchangeable.
 
 ---
 
 # Engineering Principles
 
-The Implementation Guides follow these principles.
+The Implementation Guides follow the engineering principles
+established throughout E.V.E.
 
-- Specification First
-- Maintainability
-- Readability
-- Modularity
-- Reusability
-- Testability
-- Simplicity
-- Consistency
 - Documentation First
+- Specification Before Implementation
+- Architecture Before Code
+- Knowledge First
+- Deterministic Behavior
+- Provider Independence
+- Capability-Oriented Architecture
+- Separation of Responsibilities
+- Test-Driven Development
+- Long-Term Maintainability
 
-Implementation should always remain faithful to the
-engineering specifications.
+These principles apply to every implementation described
+within this series.
 
 ---
 
 # Relationship to EVE-SPEC
 
-Part XI supports implementation of every engineering
-specification contained within EVE-SPEC.
+Implementation Guides realize the requirements defined by
+the Engineering Specifications.
 
-Implementation Guides shall never override engineering
-requirements.
+They do not introduce new platform behavior.
 
-When conflicts occur, the Engineering Specifications remain
-authoritative.
+Whenever conflicts occur:
+
+```text
+Architecture Decision Records
+
+↓
+
+Engineering Specifications
+
+↓
+
+Implementation Guides
+
+↓
+
+Source Code
+```
+
+Higher layers always take precedence.
 
 ---
 
-# Current Progress
+# Current Status
 
-| Area | Status |
-|------|--------|
-| Implementation Roadmap | ✅ Complete |
-| Project Structure | ⏳ Planned |
-| Build System | ⏳ Planned |
-| Dependency Injection | ⏳ Planned |
-| Configuration | ⏳ Planned |
-| Logging | ⏳ Planned |
-| Database Design | ⏳ Planned |
-| Plugin Development | ⏳ Planned |
-| Performance Optimization | ⏳ Planned |
-| Deployment Preparation | ⏳ Planned |
+As of **v0.6.0-alpha**, the implementation described by this
+series is substantially complete.
+
+Completed subsystems include:
+
+- Core Platform
+- Validation Engine
+- Capability Engine
+- Service Layer
+- Knowledge Engine
+- Search Engine
+- Ranking Engine
+- Citation Engine
+- Context Assembler
+- Provider Formatter
+- Provider Manager
+- Ollama Provider
+- HTTP Transport
+- End-to-End Deterministic Reasoning Pipeline
+
+Current automated test status:
+
+**172 / 172 Tests Passing**
 
 ---
 
-# Related Parts
+# Future Expansion
 
-- Part I — Core Platform Specifications
-- Part VI — Platform Specifications
-- Part VIII — Testing Specifications
-- Part IX — Deployment Specifications
-- Part X — Security Specifications
-- Part XII — Developer Guides
+Future implementation guides may describe:
+
+- Conversation Memory
+- Distributed Capability Network
+- Multi-Repository Support
+- Semantic Search
+- Hybrid Search
+- Vector Indexes
+- Streaming AI Providers
+- Distributed Knowledge Engine
+- Production Services
+
+These additions will preserve the deterministic engineering
+architecture established by EVE-SPEC.
 
 ---
 
@@ -179,19 +282,15 @@ authoritative.
 
 **Previous**
 
-Part X — 0900 Security Specifications
+Part I — Engineering Specifications
 
 **Current**
 
-Part XI — 1000 Implementation Guides
+Part XI — Implementation Guides
 
 **Next**
 
-Part XII — 2000 Developer Guides
-
-**Return**
-
-← EVE-SPEC (`/docs`)
+Part XII — Developer Guides
 
 ---
 
@@ -199,6 +298,8 @@ Part XII — 2000 Developer Guides
 
 **Part:** XI — Implementation Guides
 
-**Status:** Active
+**Series:** 1000
+
+**Status:** Complete
 
 *"Knowledge should evolve."*

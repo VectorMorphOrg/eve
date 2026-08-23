@@ -1,17 +1,171 @@
 # Changelog
 
-All notable changes to E.V.E. will be documented in this file.
+All notable changes to the Evolutionary Virtual Engineer
+(E.V.E.) project will be documented in this file.
 
-This project follows Semantic Versioning.
+This project follows
+[Semantic Versioning](https://semver.org/).
+
+---
 
 ## [Unreleased]
+
+### Planned — v0.7.x Developer Platform
+
+- Conversation memory
+- Streaming responses
+- Additional AI Providers (OpenAI, Anthropic, LM Studio)
+- 2000 Developer Guide series
+
+### Planned — v0.8.x Interfaces
+
+- CLI interface implementation (specifications already exist)
+- Discord interface
+- REST API
+- Website interface
+
+### Planned — v0.9.x+
+
+- Plugin architecture
+- Multi-repository support
+- Semantic / hybrid search
+
+---
+
+## [0.6.0-alpha] - July 2026
+
+### Added
+
+- Complete deterministic Reasoning Pipeline
+- Provider Formatter architecture
+- Provider Request model
+- Provider Manager
+- AI Response model
+- HTTP Transport abstraction
+- Ollama Provider implementation
+- Null Provider implementation
+- End-to-end AI generation pipeline
+- Knowledge Engine implementation architecture
+- Complete 1000 Implementation Guide series
+- Complete 3000 Architecture Decision Record series
+
+### Changed
+
+- Refactored AI Provider architecture around Provider
+  Requests.
+- Standardized Context Package flow.
+- Updated Engineering Specifications to match implemented
+  architecture.
+- Expanded Reference Catalogs.
+- Improved repository organization and documentation
+  hierarchy.
+
+### Documentation
+
+- Added comprehensive Implementation Guides.
+- Added Architecture Decision Records.
+- Updated README files across documentation series.
+- Standardized navigation throughout documentation.
+
+---
+
+## [0.5.0-alpha] - July 2026
+
+### Added
+
+- Provider-independent AI architecture
+- Provider abstraction layer
+- Initial Reasoning Pipeline
+- Context Builder architecture
+- Context Package architecture
+- AI Provider specifications
+
+### Changed
+
+- Separated engineering reasoning from language generation.
+- Introduced Provider Formatter concept.
+
+---
+
+## [0.4.0-alpha] - July 2026
+
+### Added
+
+- Knowledge Layer architecture
+- Knowledge Objects
+- Knowledge Graph
+- Knowledge Index
+- Search architecture
+- Citation architecture
+- Repository integration specifications
+
+### Changed
+
+- Established Repository as Source of Truth.
+- Expanded deterministic engineering pipeline.
+
+---
+
+## [0.3.0-alpha] - July 2026
+
+### Added
+
+- Validation Engine
+- Capability Engine
+- Platform Request specification
+- Platform Response specification
+- Core Platform contracts
+- Initial Reference Catalogs
+
+### Changed
+
+- Adopted Capability-Oriented Architecture.
+
+---
+
+## [0.2.0-alpha] - July 2026
+
+### Added
+
+- Engineering documentation framework
+- Documentation hierarchy
+- Initial project structure
+- Architecture planning
+- EVE-SPEC organization
+
+### Changed
+
+- Adopted Documentation First Development.
+
+---
+
+## [0.1.0-alpha] - July 2026
 
 ### Added
 
 - Initial repository
-- Project documentation
-- Architecture planning
+- Repository structure
+- Project vision
+- Engineering philosophy
+- Initial specifications
+- README files
+- MIT License
+- Semantic Versioning
 
-## [0.1.0]
+---
 
-Initial project creation.
+## Version History
+
+| Version | Status | Summary |
+|----------|--------|---------|
+| **Unreleased** | 🚧 | Developer Guides, Interfaces, Additional Providers |
+| **0.6.0-alpha** | ✅ | Complete AI Pipeline & Architecture Stabilization |
+| **0.5.0-alpha** | ✅ | Provider Abstraction & Reasoning Pipeline |
+| **0.4.0-alpha** | ✅ | Knowledge Engine Architecture |
+| **0.3.0-alpha** | ✅ | Core Platform Architecture |
+| **0.2.0-alpha** | ✅ | Documentation Framework |
+| **0.1.0-alpha** | ✅ | Project Foundation |
+
+---
+
+*"Knowledge should evolve."*

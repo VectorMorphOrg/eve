@@ -2,178 +2,110 @@
 
 # 2000 Developer Guides
 
-> Contributor Documentation for EVE-SPEC
+> Developer Documentation Series
 
 ---
 
-## Part Information
+## Series Information
 
 | Property | Value |
 |----------|-------|
 | **Part** | XII |
 | **Series** | 2000 |
 | **Title** | Developer Guides |
-| **Status** | Planned |
-| **Documents** | 0 |
-| **Depends On** | Parts I–XI |
-| **Referenced By** | Contributors and Maintainers |
+| **Status** | Active |
+| **Depends On** | All Specifications |
+| **Audience** | Contributors and Developers |
 
 ---
 
 # Overview
 
-The Developer Guides provide practical documentation for
-contributors developing, maintaining, and extending the
-Evolutionary Virtual Engineer (E.V.E.) platform.
+Developer Guides explain how to extend, contribute to, and
+maintain E.V.E.
 
-Unlike Engineering Specifications, Developer Guides focus on
-project workflows, contribution standards, repository
-organization, and engineering practices rather than defining
-platform behavior.
-
-These guides help ensure that all contributors follow
-consistent development practices throughout the project.
+Unlike specifications, these documents describe engineering
+practices, workflows, and implementation guidance.
 
 ---
 
 # Purpose
 
-Part XII documents contributor workflows and project
-standards.
+This series provides practical guidance for developers
+working on E.V.E.
 
 Topics include:
 
-- Building E.V.E.
-- Contributing
-- Repository Standards
-- Coding Standards
-- Documentation Standards
-- Creating Specifications
-- Creating Capabilities
-- Creating Services
-- Creating AI Providers
-- Pull Request Workflow
-
-Developer Guides explain **how contributors work within the
-project**.
-
-Engineering Specifications define **how the platform shall
-behave**.
+- interface development
+- provider integration
+- capability development
+- service implementation
+- testing
+- repository organization
+- release process
 
 ---
 
-# Planned Documents
+# Documents
 
 | ID | Title | Status |
 |----|-------|--------|
-| EVE-2000 | Building E.V.E. Guide | ⏳ Planned |
-| EVE-2001 | Contributing Guide | ⏳ Planned |
-| EVE-2002 | Repository Standards Guide | ⏳ Planned |
-| EVE-2003 | Coding Standards Guide | ⏳ Planned |
-| EVE-2004 | Documentation Standards Guide | ⏳ Planned |
-| EVE-2005 | Writing Specifications Guide | ⏳ Planned |
-| EVE-2006 | Creating Capabilities Guide | ⏳ Planned |
-| EVE-2007 | Creating Services Guide | ⏳ Planned |
-| EVE-2008 | Creating AI Provider Guide | ⏳ Planned |
-| EVE-2009 | Contribution Workflow Guide | ⏳ Planned |
-
-Additional guides may be added as the project grows.
-
----
-
-# Contributor Workflow
-
-```text
-Idea
-
-↓
-
-Discussion
-
-↓
-
-Specification
-
-↓
-
-Implementation
-
-↓
-
-Testing
-
-↓
-
-Review
-
-↓
-
-Merge
-
-↓
-
-Release
-```
-
-Every contribution should begin with documented
-requirements whenever practical.
-
----
-
-# Engineering Principles
-
-The Developer Guides follow these principles.
-
-- Documentation First
-- Specifications Before Code
-- Maintainability
-- Simplicity
-- Transparency
-- Collaboration
-- Consistency
-- Continuous Improvement
-
-Every contributor shares responsibility for maintaining the
-quality of EVE-SPEC and its implementations.
+| EVE-2000 | Command Line Interface Guide | Planned |
+| EVE-2001 | REST API Developer Guide | Planned |
+| EVE-2002 | Discord Integration Guide | Planned |
+| EVE-2003 | Website Integration Guide | Planned |
+| EVE-2004 | Provider Development Guide | Planned |
+| EVE-2005 | Capability Development Guide | Planned |
+| EVE-2006 | Service Development Guide | Planned |
+| EVE-2007 | Knowledge Repository Guide | Planned |
+| EVE-2008 | Testing Guide | Planned |
+| EVE-2009 | Release Process Guide | Planned |
 
 ---
 
 # Relationship to EVE-SPEC
 
-Part XII supports contributors working with the E.V.E.
-platform.
+Developer Guides build upon the specifications.
 
-Developer Guides provide recommended workflows and project
-standards but shall never override Engineering
-Specifications.
+```text
+Specifications
 
-When conflicts occur, the Engineering Specifications remain
-authoritative.
+↓
+
+Implementation Guides
+
+↓
+
+Developer Guides
+
+↓
+
+Contributors
+```
+
+Specifications define **what** the platform must do.
+
+Implementation Guides describe **how** it is implemented.
+
+Developer Guides explain **how contributors work with the
+platform.**
 
 ---
 
-# Current Progress
+## Current Progress
 
 | Area | Status |
 |------|--------|
-| Build Guide | ⏳ Planned |
-| Contributing | ⏳ Planned |
-| Repository Standards | ⏳ Planned |
-| Coding Standards | ⏳ Planned |
-| Documentation Standards | ⏳ Planned |
-| Specification Writing | ⏳ Planned |
-| Capability Development | ⏳ Planned |
-| Service Development | ⏳ Planned |
-| AI Provider Development | ⏳ Planned |
-| Contribution Workflow | ⏳ Planned |
-
----
-
-# Related Parts
-
-- Part I — Core Platform Specifications
-- Part XI — Implementation Guides
-- Part XIII — Architecture Decision Records
+| CLI Guide | ⏳ |
+| REST Guide | ⏳ |
+| Discord Guide | ⏳ |
+| Website Guide | ⏳ |
+| Provider Guide | ⏳ |
+| Capability Guide | ⏳ |
+| Service Guide | ⏳ |
+| Repository Guide | ⏳ |
+| Testing Guide | ⏳ |
+| Release Guide | ⏳ |
 
 ---
 
@@ -181,19 +113,15 @@ authoritative.
 
 **Previous**
 
-Part XI — 1000 Implementation Guides
+Part XI — Implementation Guides
 
 **Current**
 
-Part XII — 2000 Developer Guides
+Part XII — Developer Guides
 
 **Next**
 
-Part XIII — 3000 Architecture Decision Records
-
-**Return**
-
-← EVE-SPEC (`/docs`)
+Part XIII — Architecture Decision Records
 
 ---
 
@@ -201,6 +129,6 @@ Part XIII — 3000 Architecture Decision Records
 
 **Part:** XII — Developer Guides
 
-**Status:** Planned
+**Status:** Active
 
 *"Knowledge should evolve."*

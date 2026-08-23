@@ -54,20 +54,30 @@ specification.
 
 | Part | Series | Description | Status |
 |------|--------|-------------|--------|
-| **I** | 0000 | Core Platform Specifications | ✅ Active |
-| **II** | 0100 | Discord Specifications | ✅ Active |
-| **III** | 0200 | Website Specifications | ⏳ Planned |
-| **IV** | 0300 | CLI Specifications | ⏳ Planned |
-| **V** | 0400 | REST API Specifications | ⏳ Planned |
-| **VI** | 0500 | Platform Specifications | ⏳ Planned |
-| **VII** | 0600 | Reference Catalogs | ✅ Active |
-| **VIII** | 0700 | Testing Specifications | ⏳ Planned |
-| **IX** | 0800 | Deployment Specifications | ⏳ Planned |
-| **X** | 0900 | Security Specifications | ⏳ Planned |
-| **XI** | 1000 | Implementation Guides | ⏳ Planned |
-| **XII** | 2000 | Developer Guides | ⏳ Planned |
-| **XIII** | 3000 | Architecture Decision Records | ⏳ Planned |
-| **XIV** | 9000 | Archive | Reserved |
+| **I** | 0000 | Core Platform Specifications | ✅ Complete |
+| **II** | 0100 | Discord Specifications | ✅ Complete |
+| **III** | 0200 | Website Specifications | 🚧 Planned |
+| **IV** | 0300 | CLI Specifications | ✅ Complete |
+| **V** | 0400 | REST API Specifications | 🚧 Planned |
+| **VI** | 0500 | Platform Specifications | 🚧 Planned |
+| **VII** | 0600 | Reference Catalogs | ✅ Complete |
+| **VIII** | 0700 | Testing Specifications | 🚧 Planned |
+| **IX** | 0800 | Deployment Specifications | 🚧 Planned |
+| **X** | 0900 | Security Specifications | 🚧 Planned |
+| **XI** | 1000 | Implementation Guides | ✅ Complete |
+| **XII** | 2000 | Developer Guides | 🚧 Planned |
+| **XIII** | 3000 | Architecture Decision Records | ✅ Complete |
+| **XIV** | 9000 | Archive | ⚠ Reserved |
+
+**Status notes:**
+
+- ✅ Complete — document series content exists and is usable
+- 🚧 Planned — series not written yet, or only empty stubs
+- ⚠ Reserved — reserved archive series
+
+Part IV (CLI) and Part II (Discord) are **specification-complete**.
+Corresponding interface **implementations** are planned for
+**v0.8.x** and are not part of v0.6.0-alpha.
 
 ---
 

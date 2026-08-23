@@ -65,19 +65,31 @@ Services should never communicate directly with users.
 Every request should follow this sequence.
 
 ```
-Capability
+Capability Engine
 
 ↓
 
-Service
+Search Engine
 
 ↓
 
-Knowledge Layer
+Ranking Engine
 
 ↓
 
-Context Builder
+Citation Engine
+
+↓
+
+Context Assembler
+
+↓
+
+Provider Formatter
+
+↓
+
+Provider Manager
 
 ↓
 
@@ -85,10 +97,12 @@ AI Provider
 
 ↓
 
-Response Formatter
+Platform Response
 ```
 
-Services never bypass the Knowledge Layer.
+Services support capability execution and knowledge access.
+They never replace the deterministic reasoning pipeline or
+provider formatting stages.
 
 ---
 

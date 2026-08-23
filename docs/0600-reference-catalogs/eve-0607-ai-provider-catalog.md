@@ -2,51 +2,38 @@
 
 # AI Provider Catalog
 
-**Project:** Evolutionary Virtual Engineer (E.V.E.)
+> Authoritative Registry of E.V.E. AI Providers
 
-**Specification:** EVE-SPEC
+---
 
-**Part:** VII — Reference Catalogs
+## Document Information
 
-**Document Version:** 1.0.0
-
-**Published:** July 2026
-
-**Authors:** VectorMorph Research Initiative (VMRI)
-
-**Status:** Draft
+| Property | Value |
+|----------|-------|
+| **Document ID** | EVE-0607 |
+| **Series** | 0600 — Reference Catalogs |
+| **Title** | AI Provider Catalog |
+| **Project** | Evolutionary Virtual Engineer (E.V.E.) |
+| **Version** | 2.0.0 |
+| **Status** | Active |
+| **Published** | July 2026 |
 
 ---
 
 # Purpose
 
-This document provides the authoritative catalog of
-Artificial Intelligence (AI) providers supported by the
-Evolutionary Virtual Engineer (E.V.E.).
+This document is the authoritative registry of Artificial
+Intelligence (AI) Providers supported by the Evolutionary
+Virtual Engineer (E.V.E.).
 
-Unlike engineering specifications, this catalog does not
-define provider behavior or implementation.
+AI Providers generate natural-language responses from
+provider-independent Provider Requests.
 
-Instead, it serves as the centralized inventory of AI
-providers that may be integrated into the E.V.E. platform.
+Unlike Engineering Specifications, this catalog does not
+define provider behavior.
 
-Behavioral requirements are defined within the AI Provider
-Specification and related engineering specifications.
-
----
-
-# Scope
-
-This catalog includes:
-
-- Cloud AI Providers
-- Local AI Providers
-- Self-Hosted AI Providers
-- Embedding Providers
-- Experimental Providers
-- Future Providers
-
-Additional providers may be added as E.V.E. evolves.
+It exists solely to identify supported providers and assign
+stable provider identifiers.
 
 ---
 
@@ -54,7 +41,7 @@ Additional providers may be added as E.V.E. evolves.
 
 | Status | Meaning |
 |---------|----------|
-| ✅ | Supported |
+| ✅ | Implemented |
 | 🚧 | Planned |
 | 🧪 | Experimental |
 | ⚠ | Deprecated |
@@ -66,11 +53,30 @@ Additional providers may be added as E.V.E. evolves.
 
 | Category | Description |
 |----------|-------------|
-| Cloud | Hosted commercial AI services |
 | Local | Models executed on local hardware |
+| Cloud | Hosted AI services |
 | Self-Hosted | User-managed inference servers |
-| Embedding | Embedding and vector generation |
-| Experimental | Research integrations |
+| Embedding | Embedding generation |
+| Experimental | Research providers |
+
+---
+
+# Internal / Testing Providers
+
+| ID | Provider | Description | Status |
+|----|----------|-------------|--------|
+| AI-0000 | Null Provider | Deterministic no-op provider for testing and default configuration | ✅ |
+
+---
+
+# Local Providers
+
+| ID | Provider | Description | Status |
+|----|----------|-------------|--------|
+| AI-0100 | Ollama | Local inference runtime | ✅ |
+| AI-0101 | llama.cpp | Local GGUF inference | 🚧 |
+| AI-0102 | LM Studio | Desktop inference platform | 🚧 |
+| AI-0103 | Future Local Runtime | Reserved | 🚧 |
 
 ---
 
@@ -79,21 +85,10 @@ Additional providers may be added as E.V.E. evolves.
 | ID | Provider | Description | Status |
 |----|----------|-------------|--------|
 | AI-0001 | OpenAI | Hosted language models | 🚧 |
-| AI-0002 | Anthropic | Claude family of models | 🚧 |
-| AI-0003 | Google | Gemini platform | 🚧 |
+| AI-0002 | Anthropic | Claude family | 🚧 |
+| AI-0003 | Google Gemini | Gemini platform | 🚧 |
 | AI-0004 | xAI | Grok platform | 🚧 |
-| AI-0005 | Future Cloud Providers | Reserved | 🚧 |
-
----
-
-# Local Providers
-
-| ID | Provider | Description | Status |
-|----|----------|-------------|--------|
-| AI-0100 | Ollama | Local model runtime | 🚧 |
-| AI-0101 | llama.cpp | Local GGUF inference | 🚧 |
-| AI-0102 | LM Studio | Desktop inference platform | 🚧 |
-| AI-0103 | Future Local Runtime | Reserved | 🚧 |
+| AI-0005 | Future Cloud Provider | Reserved | 🚧 |
 
 ---
 
@@ -101,10 +96,10 @@ Additional providers may be added as E.V.E. evolves.
 
 | ID | Provider | Description | Status |
 |----|----------|-------------|--------|
-| AI-0200 | OpenAI-Compatible API | Generic OpenAI API servers | 🚧 |
+| AI-0200 | OpenAI-Compatible API | Generic OpenAI-compatible servers | 🚧 |
 | AI-0201 | vLLM | High-performance inference server | 🚧 |
-| AI-0202 | Text Generation Inference | Hugging Face inference server | 🚧 |
-| AI-0203 | Custom Provider | User-defined provider | 🚧 |
+| AI-0202 | Hugging Face TGI | Text Generation Inference | 🚧 |
+| AI-0203 | Custom Provider | User-defined implementation | 🚧 |
 
 ---
 
@@ -113,7 +108,7 @@ Additional providers may be added as E.V.E. evolves.
 | ID | Provider | Description | Status |
 |----|----------|-------------|--------|
 | AI-0300 | Local Embeddings | Local embedding models | 🚧 |
-| AI-0301 | OpenAI Embeddings | Cloud embeddings | 🚧 |
+| AI-0301 | OpenAI Embeddings | Hosted embeddings | 🚧 |
 | AI-0302 | Sentence Transformers | Local semantic embeddings | 🚧 |
 | AI-0303 | Future Embedding Provider | Reserved | 🚧 |
 
@@ -123,13 +118,65 @@ Additional providers may be added as E.V.E. evolves.
 
 | ID | Provider | Description | Status |
 |----|----------|-------------|--------|
-| AI-0400 | Research Provider | Experimental integrations | 🚧 |
-| AI-0401 | Prototype Provider | Internal development | 🚧 |
-| AI-0402 | Community Provider | Community-developed integrations | 🚧 |
+| AI-0400 | Research Provider | Internal experimentation | 🚧 |
+| AI-0401 | Prototype Provider | Prototype implementations | 🚧 |
+| AI-0402 | Community Provider | Community-developed providers | 🚧 |
 
 ---
 
-# Reserved Provider Identifiers
+# Provider Capabilities
+
+All providers expose a common Provider Interface.
+
+Individual providers may advertise support for features
+including:
+
+- System Prompts
+- Multiple Messages
+- Streaming
+- Tool Calling
+- Function Calling
+- JSON Responses
+- Image Input
+- Reasoning Mode
+
+Capability differences are handled by the Provider
+Formatter.
+
+---
+
+# Provider Architecture
+
+Every provider consumes the same Provider Request.
+
+```text
+Context Package
+
+↓
+
+Provider Formatter
+
+↓
+
+Provider Request
+
+↓
+
+AI Provider
+
+↓
+
+AI Response
+```
+
+Providers perform language generation only.
+
+Engineering reasoning is completed before provider
+invocation.
+
+---
+
+# Reserved Provider Ranges
 
 | Range | Purpose |
 |--------|---------|
@@ -139,35 +186,58 @@ Additional providers may be added as E.V.E. evolves.
 | AI-0800–0899 | Future Embedding Providers |
 | AI-0900–0999 | Experimental Providers |
 
-Reserved identifiers maintain a stable provider numbering
-scheme as E.V.E. evolves.
+Reserved identifiers preserve long-term compatibility.
 
 ---
 
-# Provider Naming Guidelines
+# Provider Naming
 
-AI Providers should:
+Providers should:
 
-- Represent a single inference platform.
-- Be implementation independent.
-- Support standardized Provider Interfaces.
-- Be replaceable without affecting platform architecture.
-- Be documented before integration.
+- Represent one inference platform.
+- Implement the common Provider Interface.
+- Consume Provider Requests.
+- Return standardized AI Responses.
+- Remain interchangeable.
+- Be documented before implementation.
 
-Provider implementations should remain interchangeable
-whenever practical.
+Provider identifiers are stable public contracts.
 
 ---
 
 # Relationship to EVE-SPEC
 
-This catalog complements the AI Provider Specification.
+Behavior is defined by:
 
-Engineering specifications define provider behavior and
-integration requirements.
+- EVE-0007 — AI Provider Specification
 
-This document serves only as the authoritative inventory of
-supported AI providers.
+Implementation guidance is provided by:
+
+- EVE-1010 — AI Provider Implementation Guide
+
+This document serves only as the authoritative registry of
+AI Providers.
+
+---
+
+# Current Implementation Status
+
+As of **v0.6.0-alpha**, the following providers are
+implemented:
+
+- AI-0000 — Null Provider
+- AI-0100 — Ollama
+
+The provider architecture additionally includes:
+
+- Provider Manager
+- Provider Formatter
+- HTTP Transport
+- Provider Request model
+- AI Response normalization
+
+Additional providers may be implemented without changing the
+Provider Interface.
 
 ---
 
@@ -176,24 +246,25 @@ supported AI providers.
 Future revisions of this catalog may include:
 
 - Supported model families
-- Context window limits
-- Capability matrices
-- Token limits
-- Cost characteristics
-- Latency metrics
-- Supported modalities
+- Context window sizes
+- Provider capability matrix
+- Streaming support
+- Tool support
+- Vision support
 - Authentication methods
+- Performance benchmarks
 
 ---
 
 # Summary
 
-The AI Provider Catalog provides a centralized inventory of
-the Artificial Intelligence providers supported by the
-Evolutionary Virtual Engineer platform.
+The AI Provider Catalog provides the authoritative registry
+of AI Providers supported by E.V.E.
 
-It establishes a common reference for provider integrations
-while preserving the platform's AI provider independence.
+By standardizing provider identifiers while preserving a
+common Provider Interface, E.V.E. allows new AI platforms to
+be integrated as thin adapters without affecting the
+deterministic engineering architecture.
 
 ---
 
@@ -203,9 +274,9 @@ while preserving the platform's AI provider independence.
 
 EVE-0606 — Knowledge Object Catalog
 
-**Part**
+**Current**
 
-VII — Reference Catalogs
+EVE-0607 — AI Provider Catalog
 
 **Next**
 
@@ -218,7 +289,5 @@ EVE-0608 — Repository Catalog
 ← EVE-SPEC
 
 ---
-
-## Motto
 
 *"Knowledge should evolve."*

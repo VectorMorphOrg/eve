@@ -37,16 +37,21 @@ The platform is responsible for generating knowledge.
 
 # Current Milestone
 
-## Phase 6 — Platform Interfaces
+## v0.6.0-alpha — Documentation Reconciliation / Release Freeze
 
 Current objectives:
 
-- Build the CLI
-- Build the REST API
-- Build the Discord interface
-- Build the Website
+- Reconcile documentation to the canonical Hybrid roadmap
+- Preserve Core Platform architecture as implemented
+- Prepare for v0.7.x Developer Platform work
 
-**Status: 🚧 In Progress**
+**Status: 🚧 In Progress (documentation only)**
+
+**Next release target after freeze:**
+
+- **v0.7.x** — Conversation Memory, Streaming, Additional AI Providers
+- **v0.8.x** — CLI, Discord, REST API, Website
+- **v0.9.x** — Multi-Repository, Semantic/Hybrid Search, Plugins
 
 ---
 
@@ -184,10 +189,13 @@ User
 
 | Interface | Status |
 |----------|--------|
-| CLI | 🚧 Next |
-| REST API | ⏳ Planned |
-| Discord | ⏳ Planned |
-| Website | ⏳ Planned |
+| CLI | 🚧 Planned (v0.8.x) — specs exist |
+| REST API | 🚧 Planned (v0.8.x) |
+| Discord | 🚧 Planned (v0.8.x) — specs exist |
+| Website | 🚧 Planned (v0.8.x) |
+
+Interface **specifications** may exist before implementation.
+None of the interface binaries are implemented in v0.6.0-alpha.
 
 ---
 
@@ -261,30 +269,37 @@ User
 
 ## Current
 
-### Interfaces
+### Documentation Reconciliation / Release Freeze
 
-- CLI
-- REST API
+- Align ROADMAP, PROJECT_STATUS, and EVE-SPEC indexes
+- Preserve implemented Core Platform boundaries
+
+---
+
+## Next — v0.7.x Developer Platform
+
+- Conversation Memory
+- Streaming Responses
+- OpenAI Provider
+- Anthropic Provider
+- LM Studio Provider
+- Developer Guide series (EVE-2000)
+
+---
+
+## Then — v0.8.x Interfaces
+
+- CLI (specifications already exist)
 - Discord
+- REST API
 - Website
 
 ---
 
-## Next
+## Future — v0.9.x+
 
-### Additional Providers
-
-- OpenAI
-- Anthropic
-- LM Studio
-
----
-
-## Future
-
-- Conversation Memory
-- Streaming Responses
 - Multi-Repository Support
+- Semantic / Hybrid Search
 - Plugin System
 - Distributed Capability Network
 - Distributed Knowledge
@@ -347,17 +362,37 @@ Deterministic Reasoning Pipeline
 
 The Core Platform is operational.
 
-Current engineering effort is focused on exposing the
-platform through production interfaces.
+Current engineering effort is the **v0.6.0-alpha
+documentation / release freeze**.
 
-Upcoming work includes:
+After freeze, work follows the approved Hybrid roadmap:
 
-- CLI
-- REST API
-- Discord
-- Website
-- Additional AI Providers
+**Next — v0.7.x Developer Platform**
+
 - Conversation Memory
+- Streaming Responses
+- Additional AI Providers
+
+**Then — v0.8.x Interfaces**
+
+- CLI (specifications already exist)
+- Discord (specifications already exist)
+- REST API
+- Website
+
+**Then — v0.9.x Platform Expansion**
+
+- Multi-Repository Support
+- Semantic / Hybrid Search
+- Plugin System
+
+**Then — v1.0.0**
+
+- Production Release
+
+Interface **specifications** (CLI, Discord) may already be
+complete. Interface **implementations** remain planned for
+v0.8.x and are not the immediate post-freeze target.
 
 ---
 
@@ -409,9 +444,9 @@ Additional Providers
 eve/
 
 ├── docs/
-│   ├── adr/
 │   ├── 0000-core-platform-specifications/
 │   ├── 1000-implementation-guides/
+│   ├── 3000-architecture-decision-records/
 │   └── ...
 │
 ├── ideas/

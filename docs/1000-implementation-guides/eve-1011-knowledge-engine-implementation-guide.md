@@ -2,70 +2,102 @@
 
 # Knowledge Engine Implementation Guide
 
-**Project:** Evolutionary Virtual Engineer (E.V.E.)
+> Implementation Guide for the E.V.E. Knowledge Engine
 
-**Specification:** EVE-SPEC
+---
 
-**Part:** XI — Implementation Guides
+## Document Information
 
-**Document Version:** 1.0.0
-
-**Published:** July 2026
-
-**Authors:** VectorMorph Research Initiative (VMRI)
-
-**Status:** Draft
+| Property | Value |
+|----------|-------|
+| **Document ID** | EVE-1011 |
+| **Series** | 1000 — Implementation Guides |
+| **Title** | Knowledge Engine Implementation Guide |
+| **Project** | Evolutionary Virtual Engineer (E.V.E.) |
+| **Specification** | EVE-SPEC |
+| **Version** | 2.0.0 |
+| **Status** | Active |
+| **Published** | July 2026 |
 
 ---
 
 # Purpose
 
-This implementation guide describes the recommended
-architecture for the E.V.E. Knowledge Engine.
+This implementation guide describes the architecture and
+implementation of the E.V.E. Knowledge Engine.
 
-The Knowledge Engine transforms engineering artifacts into
-structured Knowledge Objects that may be searched, ranked,
-related, cited, and assembled into Context Packages for AI
-providers.
+The Knowledge Engine transforms engineering repositories
+into a deterministic engineering knowledge base composed of
+immutable Knowledge Objects.
 
-This guide implements the architecture defined by:
+It serves as the foundation for the entire Reasoning
+Pipeline by providing searchable, interconnected,
+evidence-backed engineering knowledge.
 
-- EVE-0004 — Knowledge Layer Specification
-- EVE-0005 — Context Builder Specification
-- EVE-0006 — Context Package Specification
-- EVE-0009 — Documentation Integration Specification
+Unlike AI providers, the Knowledge Engine performs no
+language generation.
 
----
-
-# Goals
-
-The Knowledge Engine should:
-
-- Understand platform documentation
-- Understand source code
-- Understand repositories
-- Build relationships between resources
-- Produce deterministic context packages
-- Operate independently of AI providers
-
-The Knowledge Engine is responsible for knowledge retrieval.
-
-The AI Provider is responsible only for language generation.
+Its sole responsibility is engineering knowledge.
 
 ---
 
-# High-Level Architecture
+# Scope
+
+This guide covers implementation of:
+
+- Repository Discovery
+- Document Parsing
+- Metadata Extraction
+- Knowledge Objects
+- Knowledge Graph
+- Knowledge Index
+- Search Engine integration
+- Repository indexing
+- Incremental updates
+- Thread safety
+
+Behavioral requirements are defined by the Knowledge Layer
+Specifications.
+
+---
+
+# Responsibilities
+
+The Knowledge Engine is responsible for:
+
+- Discovering engineering artifacts
+- Parsing repository contents
+- Constructing Knowledge Objects
+- Building engineering relationships
+- Creating searchable indexes
+- Supplying deterministic knowledge to the
+  Reasoning Pipeline
+
+The Knowledge Engine does **not**:
+
+- Rank search results
+- Assemble Context Packages
+- Generate AI prompts
+- Invoke language models
+- Generate natural-language responses
+
+---
+
+# Architecture
+
+The Knowledge Engine transforms repositories into immutable
+engineering knowledge.
 
 ```text
 Repository
 
 ↓
 
-Document Discovery
+Repository Discovery
 
 ↓
 
-Parser
+Document Parsing
 
 ↓
 
@@ -77,7 +109,11 @@ Knowledge Object Builder
 
 ↓
 
-Relationship Builder
+Knowledge Objects
+
+↓
+
+Knowledge Graph
 
 ↓
 
@@ -85,57 +121,42 @@ Knowledge Index
 
 ↓
 
-Search Engine
-
-↓
-
-Ranking Engine
-
-↓
-
-Citation Engine
-
-↓
-
-Context Builder
-
-↓
-
-Context Package
+Reasoning Pipeline
 ```
+
+The Reasoning Pipeline consumes the completed Knowledge
+Engine.
 
 ---
 
 # Repository Discovery
 
-The Knowledge Engine begins by discovering platform
-resources.
+Repository Discovery identifies engineering artifacts that
+should become Knowledge Objects.
 
-Supported sources include:
+Typical repositories include:
 
-- Markdown Documentation
+- Engineering Specifications
+- Implementation Guides
+- Developer Guides
+- Architecture Decision Records
 - Source Code
 - Header Files
 - Tests
 - Examples
-- Architecture Decision Records
-- Configuration Files
+- Configuration
+- Assets
 
-Future revisions may add:
-
-- Wikis
-- GitHub Issues
-- Pull Requests
-- Design Documents
+Future versions may support multiple repositories.
 
 ---
 
 # Document Parsing
 
-Each supported file type is parsed into an intermediate
+Each supported document type is parsed into an intermediate
 representation.
 
-Examples:
+Examples include:
 
 ```text
 Markdown
@@ -161,225 +182,170 @@ Source Parser
 Source Model
 ```
 
-Parsing remains independent of indexing.
+Parsing remains independent of indexing and reasoning.
 
 ---
 
 # Metadata Extraction
 
-Every parsed resource produces metadata.
+Metadata is extracted during parsing.
 
 Typical metadata includes:
 
-- Identifier
+- Document Identifier
 - Title
 - Version
-- Author
 - Status
-- Tags
-- File Path
-- Document Type
 - Repository
-- Last Modified
+- Document Type
+- Author
+- Keywords
+- Tags
+- Published Date
 
-Metadata should be deterministic.
+Metadata should be deterministic and immutable.
 
 ---
 
 # Knowledge Objects
 
-Every resource becomes a Knowledge Object.
+Every engineering artifact becomes a Knowledge Object.
+
+Typical structure:
 
 ```text
 Knowledge Object
 
 ├── Identifier
-├── Type
 ├── Metadata
-├── Content
-├── Keywords
-├── Relationships
+├── Structured Content
+├── Sections
+├── Headings
 ├── References
-├── Summary
-└── Version
+├── Relationships
+├── Repository Information
+└── Search Metadata
 ```
 
-Knowledge Objects become the canonical internal
-representation of platform knowledge.
-
----
-
-# Relationship Builder
-
-The Relationship Builder discovers connections between
-Knowledge Objects.
-
-Examples include:
-
-- References
-- Dependencies
-- Parent Documents
-- Child Documents
-- Related Specifications
-- Repository Membership
-- Source Associations
-
-Relationships form a directed graph.
+Knowledge Objects become the canonical representation of
+engineering knowledge throughout the platform.
 
 ---
 
 # Knowledge Graph
 
-Relationships are stored within a Knowledge Graph.
+Knowledge Objects are connected through a deterministic
+Knowledge Graph.
 
-```text
-EVE-0012
+Relationships include:
 
-↓
+- References
+- Referenced By
+- Parent
+- Children
+- Previous
+- Next
+- Related Documents
+- Implementation Files
+- Test Files
 
-references
-
-↓
-
-EVE-0010
-
-↓
-
-depends on
-
-↓
-
-EVE-0005
-
-↓
-
-uses
-
-↓
-
-EVE-0006
-```
-
-The graph enables deterministic traversal during context
-construction.
+The graph enables deterministic navigation without AI
+inference.
 
 ---
 
 # Knowledge Index
 
-The Knowledge Index provides efficient retrieval.
+The Knowledge Index organizes Knowledge Objects into
+efficient lookup structures.
 
-The index should support:
+Typical indexes include:
 
-- Identifier lookup
-- Title lookup
-- Keyword lookup
-- Tag lookup
-- Content lookup
-- Relationship lookup
-
-The implementation may evolve without affecting the public
-architecture.
-
----
-
-# Search Engine
-
-The Search Engine retrieves candidate Knowledge Objects.
-
-Search supports:
-
-- Identifier search
-- Title search
-- Keyword search
-- Full-text search
-- Relationship search
-
-Search returns candidate results only.
-
-Ranking occurs separately.
-
----
-
-# Ranking Engine
-
-The Ranking Engine orders search results.
-
-Ranking factors may include:
-
-- Exact identifier match
-- Exact title match
-- Heading match
-- Keyword match
-- Full-text relevance
-- Relationship score
-- Specification priority
-- Document freshness
-- Version compatibility
-
-Ranking algorithms may evolve independently.
-
----
-
-# Citation Engine
-
-The Citation Engine generates structured references.
-
-A citation may include:
-
-- Document Identifier
+- Identifier
 - Title
-- Section
+- Keywords
+- Tags
 - Repository
-- Version
+- Document Type
+- Headings
+- Sections
+- Search Tokens
 
-Citations improve transparency and traceability.
+The index references Knowledge Objects rather than
+duplicating their contents.
 
 ---
 
-# Context Integration
+# Integration with the Reasoning Pipeline
 
-The Context Builder requests information from the Knowledge
-Engine.
+The Knowledge Engine supplies deterministic knowledge to the
+Reasoning Pipeline.
 
 ```text
-Platform Request
+Knowledge Index
 
 ↓
 
-Knowledge Search
+Search Engine
 
 ↓
 
-Ranked Knowledge Objects
+Ranking Engine
 
 ↓
 
-Context Builder
+Citation Engine
+
+↓
+
+Context Assembler
 
 ↓
 
 Context Package
 ```
 
-The Context Builder determines what information is required.
+The Knowledge Engine provides knowledge.
 
-The Knowledge Engine determines where it exists.
+The Reasoning Pipeline performs engineering reasoning.
 
 ---
 
 # Repository Indexing
 
-Repository indexing should support incremental updates.
+Repository indexing occurs during platform initialization.
 
-The implementation should detect:
+Recommended sequence:
 
-- Added files
-- Modified files
-- Deleted files
+1. Discover repositories
+2. Parse documents
+3. Extract metadata
+4. Construct Knowledge Objects
+5. Build Knowledge Graph
+6. Build Knowledge Index
+7. Validate
+8. Freeze
 
-Only affected Knowledge Objects should be rebuilt whenever
-practical.
+No repository rebuilding should occur during request
+execution.
+
+---
+
+# Incremental Updates
+
+Future implementations may support incremental repository
+updates.
+
+Examples include:
+
+- Added documents
+- Modified documents
+- Deleted documents
+- Updated metadata
+- Relationship changes
+
+Incremental updates should rebuild only affected Knowledge
+Objects whenever practical.
 
 ---
 
@@ -390,129 +356,186 @@ The Knowledge Engine may cache:
 - Parsed documents
 - Metadata
 - Knowledge Objects
-- Relationship Graphs
-- Search Indexes
+- Graph nodes
+- Lookup indexes
 
-Caches shall never change platform behavior.
+Caches exist solely to improve performance.
 
-They exist solely to improve performance.
+They must never alter engineering behavior.
 
 ---
 
-# Performance Goals
+# Immutability
 
-The implementation should optimize for:
+After initialization, the Knowledge Engine becomes
+effectively read-only.
 
-- Fast startup
-- Fast incremental indexing
-- Low memory overhead
-- Deterministic search
-- Efficient graph traversal
+Lifecycle:
 
-Performance optimizations shall not change search results.
+```text
+Repository
+
+↓
+
+Parse
+
+↓
+
+Knowledge Objects
+
+↓
+
+Knowledge Graph
+
+↓
+
+Knowledge Index
+
+↓
+
+Validate
+
+↓
+
+Freeze
+
+↓
+
+Read Only
+```
+
+Immutable knowledge structures simplify deterministic
+reasoning and concurrent execution.
+
+---
+
+# Thread Safety
+
+The Knowledge Engine is designed for concurrent access.
+
+Recommendations:
+
+- Immutable Knowledge Objects
+- Immutable Graph
+- Immutable Index
+- Shared ownership
+- Lock-free reads
+
+Multiple requests should safely reuse the same Knowledge
+Engine instance.
+
+---
+
+# Performance
+
+Repository construction is a one-time startup operation.
+
+Runtime operations should consist only of:
+
+- Index lookups
+- Relationship traversal
+- Metadata retrieval
+
+Repository parsing should never occur during request
+processing.
 
 ---
 
 # Extensibility
 
-Future implementations may support:
+Future versions may support:
 
-- Vector search
-- Semantic embeddings
-- Hybrid ranking
-- Distributed indexes
-- Multiple repositories
-- External documentation
-- Knowledge federation
+- Multi-repository indexing
+- Repository federation
+- Semantic search
+- Hybrid search
+- Vector indexes
+- Distributed Knowledge Engines
+- Incremental background indexing
+- External documentation sources
 
-These additions should preserve the existing architecture.
+These additions should preserve deterministic retrieval.
 
 ---
 
-# Engineering Principles
+# Testing Strategy
 
-The Knowledge Engine follows these principles.
+Implementation should include:
 
-- Documentation First
-- Knowledge First
-- Deterministic Retrieval
-- Explainable Ranking
-- Separation of Responsibilities
-- Incremental Indexing
-- Transparency
+- Repository discovery tests
+- Parser tests
+- Metadata extraction tests
+- Knowledge Object tests
+- Graph construction tests
+- Index construction tests
+- Incremental indexing tests
+- Determinism tests
+- Concurrency tests
+- Performance regression tests
 
-The Knowledge Engine retrieves knowledge.
-
-It does not generate answers.
+The Knowledge Engine should be fully testable without AI
+providers.
 
 ---
 
 # Relationship to EVE-SPEC
 
-The Knowledge Engine realizes the Knowledge Layer defined by
-EVE-0004.
+This guide implements:
 
-It supplies the Context Builder defined by EVE-0005.
+- Knowledge Layer Specification
+- Repository Model
+- Knowledge Object Specification
+- Knowledge Graph Specification
+- Knowledge Index Specification
 
-It contributes Knowledge Objects to the Context Package
-defined by EVE-0006.
+Related implementation guides include:
 
-The Knowledge Engine remains independent of AI Providers
-defined by EVE-0007.
+- EVE-1005 — Knowledge Objects Implementation Guide
+- EVE-1006 — Knowledge Graph Implementation Guide
+- EVE-1007 — Knowledge Index Implementation Guide
+- EVE-1008 — Reasoning Pipeline Implementation Guide
+- EVE-1009 — Context Assembly Implementation Guide
+- EVE-1010 — AI Provider Implementation Guide
+
+Architectural rationale is documented by:
+
+- EVE-3003 — Knowledge-First AI Architecture
+- EVE-3006 — Repository as Source of Truth
+- EVE-3007 — Knowledge Graph Architecture
+- EVE-3009 — Provider-Independent Reasoning
 
 ---
 
-# Recommended Implementation Order
+# Best Practices
 
-Phase 1
+Recommended engineering practices:
 
-- Repository Discovery
-- Markdown Parser
-- Metadata Extraction
-- Knowledge Object Builder
-
-Phase 2
-
-- Relationship Builder
-- Knowledge Graph
-- Search Engine
-
-Phase 3
-
-- Ranking Engine
-- Citation Engine
-- Incremental Indexing
-
-Phase 4
-
-- Source Code Indexing
-- Repository Indexing
-- Multi-Repository Support
-
-Phase 5
-
-- Hybrid Search
-- Semantic Search
-- Distributed Knowledge
-
-Each phase should remain functional before advancing to the
-next.
+- Build the Knowledge Engine once.
+- Keep all knowledge immutable.
+- Separate parsing from indexing.
+- Separate indexing from reasoning.
+- Preserve deterministic behavior.
+- Build relationships explicitly.
+- Reuse shared immutable structures.
+- Never perform AI inference within the Knowledge Engine.
 
 ---
 
 # Summary
 
-The Knowledge Engine transforms platform resources into
-structured, searchable engineering knowledge.
+The Knowledge Engine is the authoritative engineering
+knowledge layer of E.V.E.
 
-Rather than relying on large language models to remember
-information, E.V.E. retrieves deterministic Knowledge
-Objects, constructs evidence-backed Context Packages, and
-supplies grounded information to AI Providers.
+By transforming repositories into immutable Knowledge
+Objects connected through a deterministic Knowledge Graph
+and organized by a Knowledge Index, it provides the
+Reasoning Pipeline with reliable, explainable engineering
+knowledge while remaining completely independent of AI
+providers.
 
-This separation allows the Core Platform to remain
-deterministic, explainable, maintainable, and independent of
-any particular AI model.
+Together with the Reasoning Pipeline, it enables E.V.E. to
+retrieve, relate, rank, cite, and assemble engineering
+knowledge before any language model is invoked.
 
 ---
 
@@ -520,15 +543,15 @@ any particular AI model.
 
 **Previous**
 
-EVE-1010 — Implementation Roadmap
+EVE-1010 — AI Provider Implementation Guide
 
-**Part**
+**Current**
 
-XI — Implementation Guides
+EVE-1011 — Knowledge Engine Implementation Guide
 
 **Next**
 
-EVE-1012 — Reserved
+None
 
 **Return**
 
@@ -537,7 +560,5 @@ EVE-1012 — Reserved
 ← EVE-SPEC
 
 ---
-
-## Motto
 
 *"Knowledge should evolve."*

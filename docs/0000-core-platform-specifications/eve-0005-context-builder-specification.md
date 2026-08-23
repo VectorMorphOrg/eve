@@ -2,42 +2,55 @@
 
 # Context Builder Specification
 
-**Project:** E.V.E. (Evolutionary Virtual Engineer)
+> Engineering Specification for the E.V.E. Deterministic Reasoning Pipeline
 
-**Document Version:** 1.0.0
+---
 
-**Published:** July 2026
+## Document Information
 
-**Authors:** VectorMorph Research Initiative (VMRI)
-
-**Status:** Foundational Specification
+| Property | Value |
+|----------|-------|
+| **Document ID** | EVE-0005 |
+| **Series** | 0000 — Engineering Specifications |
+| **Title** | Context Builder Specification |
+| **Project** | Evolutionary Virtual Engineer (E.V.E.) |
+| **Version** | 2.0.0 |
+| **Status** | Active |
+| **Published** | July 2026 |
 
 ---
 
 # Purpose
 
-This document defines the Context Builder of E.V.E.
+This specification defines the deterministic reasoning
+process used by the Evolutionary Virtual Engineer (E.V.E.)
+to transform engineering knowledge into AI-ready context.
 
-The Context Builder transforms structured knowledge into
-high-quality context suitable for downstream AI providers.
+The Context Builder is the engineering reasoning layer of
+the platform.
 
-The Context Builder is responsible for deciding what
-information should be presented—not how that information is
-expressed.
+It determines **what knowledge should be supplied** to an
+AI Provider.
+
+It never determines **how that knowledge is expressed**.
 
 ---
 
 # Design Philosophy
 
-Knowledge retrieval and language generation are separate
-problems.
+Engineering reasoning and language generation are separate
+responsibilities.
 
-The Knowledge Layer retrieves information.
+The platform performs engineering reasoning.
 
-The Context Builder selects, organizes, validates, and
-prepares that information.
+AI Providers perform language generation.
 
-The AI Provider generates natural language.
+The platform retrieves, validates, ranks, cites, and
+assembles engineering knowledge before any AI provider is
+invoked.
+
+This separation preserves deterministic behavior,
+provider independence, and explainability.
 
 ---
 
@@ -45,247 +58,302 @@ The AI Provider generates natural language.
 
 The Context Builder is responsible for:
 
-- Selecting relevant knowledge
-- Ranking retrieved documents
-- Building structured context
-- Preserving document hierarchy
-- Removing duplicate information
-- Enforcing context limits
-- Preparing citations
-- Maintaining deterministic ordering
+- Retrieving engineering knowledge
+- Ranking candidate information
+- Generating engineering citations
+- Selecting supporting evidence
+- Assembling structured context
+- Preserving deterministic ordering
+- Enforcing context budgets
+- Producing Context Packages
 
-The Context Builder never generates answers.
+The Context Builder never:
 
----
-
-# Inputs
-
-The Context Builder receives:
-
-- User request
-- Capability request
-- Knowledge Objects
-- Repository metadata
-- Configuration
-- System limits
+- Generates natural language
+- Performs prompt engineering
+- Invokes AI providers
+- Modifies engineering knowledge
 
 ---
 
-# Outputs
+# Architecture
 
-The Context Builder produces a structured Context Package.
+The Context Builder consists of a deterministic reasoning
+pipeline.
 
-A Context Package may contain:
-
-- Relevant documents
-- Relevant sections
-- Citations
-- Metadata
-- Repository information
-- Conversation context
-- System instructions
-
-The Context Package is consumed by the AI Provider.
-
----
-
-# Context Selection
-
-Only relevant knowledge should be selected.
-
-Priority should favor:
-
-- Official specifications
-- RFCs
-- Architecture documents
-- Documentation
-- Whitepapers
-
-Lower priority sources should never replace
-authoritative documentation.
-
----
-
-# Ranking
-
-Context should be ranked using objective criteria.
-
-Examples include:
-
-- Document relevance
-- Repository priority
-- Specification status
-- Version
-- User intent
-
-Future ranking algorithms may evolve without changing the
-overall architecture.
-
----
-
-# Context Assembly
-
-The Context Builder should assemble information into a
-logical structure.
-
-Example
-
-User Question
+```text
+Platform Request
 
 ↓
 
-Relevant Documents
+Search
 
 ↓
 
-Relevant Sections
+Ranking
 
 ↓
 
-Metadata
+Citation
 
 ↓
 
-Citations
+Context Assembly
 
 ↓
 
 Context Package
 
----
+↓
 
-# Context Limits
+AI Provider
+```
 
-Every AI Provider has finite context capacity.
-
-The Context Builder is responsible for:
-
-- Truncation
-- Prioritization
-- Compression
-- Deduplication
-
-Important information should never be removed before less
-important information.
+Each stage performs a single engineering responsibility.
 
 ---
 
-# Citation Preservation
+# Search
 
-Whenever possible, context should retain references to the
-original documentation.
+The Search stage retrieves candidate Knowledge Objects from
+the Knowledge Engine.
 
-Examples:
+Search may include:
 
-- EVE-0001
-- AEG-0000
-- RFC-0005
+- Identifier lookup
+- Title lookup
+- Keyword lookup
+- Full-text search
+- Relationship traversal
 
-Future implementations may support section-level citations.
+Search returns candidate results only.
 
 ---
 
-# Conversation Awareness
+# Ranking
 
-Future versions may incorporate conversation history.
+The Ranking stage orders candidate results according to
+deterministic engineering criteria.
 
-Conversation history should supplement documentation.
+Ranking may consider:
 
-It should never override documented knowledge.
+- Exact identifier matches
+- Specification priority
+- Repository priority
+- Relationship strength
+- Document status
+- Version compatibility
+
+Ranking algorithms may evolve without changing the platform
+architecture.
+
+---
+
+# Citation
+
+The Citation stage produces structured engineering
+references.
+
+Citation bundles may contain:
+
+- Document identifiers
+- Titles
+- Sections
+- Repository information
+- Related implementation artifacts
+
+Citations preserve transparency and traceability.
+
+---
+
+# Context Assembly
+
+The Context Assembly stage selects engineering evidence and
+produces a Context Package.
+
+Responsibilities include:
+
+- Evidence selection
+- Budget enforcement
+- Duplicate removal
+- Context ordering
+- Citation preservation
+- Diagnostics generation
+
+The resulting Context Package becomes the canonical input to
+all AI Providers.
+
+---
+
+# Inputs
+
+The Context Builder consumes:
+
+- Platform Request
+- Capability
+- Knowledge Objects
+- Knowledge Graph
+- Knowledge Index
+- Repository metadata
+- Configuration
+
+---
+
+# Output
+
+The Context Builder produces a Context Package.
+
+A Context Package may include:
+
+- User request
+- Capability
+- Selected Knowledge Objects
+- Selected document sections
+- Citations
+- Repository metadata
+- Constraints
+- Diagnostics
+- System instructions
+
+The Context Package is provider independent.
 
 ---
 
 # Determinism
 
-Given identical inputs, the Context Builder should produce
-identical Context Packages whenever practical.
+Given identical repositories and identical requests, the
+Context Builder should produce identical Context Packages.
 
-Deterministic behavior improves reproducibility and testing.
+Deterministic behavior improves:
+
+- Testing
+- Debugging
+- Explainability
+- Reproducibility
+
+Provider behavior is intentionally excluded from this
+guarantee.
+
+---
+
+# Context Budgets
+
+Every provider has finite context capacity.
+
+The Context Builder shall determine:
+
+- Evidence selection
+- Truncation
+- Prioritization
+- Deduplication
+
+Higher-priority engineering evidence should always be
+preferred over lower-priority information.
 
 ---
 
 # AI Independence
 
-The Context Builder should remain completely independent of
-the AI Provider.
+The Context Builder is completely independent of AI
+providers.
 
-It should not contain:
+It shall not contain:
 
-- Prompt engineering specific to one provider
+- Provider-specific prompts
 - Provider APIs
-- Model-specific logic
+- Sampling parameters
+- Model-specific behavior
+- Transport logic
 
-Its output should be portable.
+Provider-specific formatting is performed after Context
+Package construction.
 
 ---
 
 # Error Handling
 
-If insufficient documentation exists, the Context Builder
-should produce an incomplete Context Package rather than
-inventing information.
+When insufficient engineering knowledge exists, the Context
+Builder shall produce the best available Context Package.
 
-Missing knowledge should be explicitly identified.
+Unknown information shall never be fabricated.
+
+Missing engineering evidence should be explicitly reported.
 
 ---
 
 # Future Expansion
 
-Future versions may support:
+Future versions may introduce:
 
-- Semantic retrieval
-- Embedding ranking
-- Knowledge graphs
-- Cross-repository relationships
+- Semantic search
+- Hybrid retrieval
+- Distributed Knowledge Engines
+- Multi-repository reasoning
+- Conversation memory
 - User personalization
-- Session memory
-- Multi-agent context sharing
+- Knowledge federation
 
-These capabilities should preserve deterministic behavior
-whenever possible.
+These capabilities should preserve deterministic reasoning.
 
 ---
 
-# Context Package
+# Relationship to EVE-SPEC
 
-Although implementation details are intentionally left open,
-a Context Package should conceptually contain:
+This specification depends upon:
 
-- User Request
-- Capability
-- Relevant Knowledge Objects
-- Repository Metadata
-- Citations
-- Constraints
-- System Instructions
+- EVE-0004 — Knowledge Layer Specification
+- EVE-0006 — Context Package Specification
+- EVE-0007 — AI Provider Specification
 
-The Context Package represents the complete body of
-information supplied to the AI Provider.
+Implementation guidance is provided by:
+
+- EVE-1008 — Reasoning Pipeline Implementation Guide
+- EVE-1009 — Context Assembly Implementation Guide
+- EVE-1011 — Knowledge Engine Implementation Guide
+
+Architectural rationale is documented by:
+
+- EVE-3003 — Knowledge-First AI Architecture
+- EVE-3009 — Provider-Independent Reasoning
 
 ---
 
 # Summary
 
-The Context Builder is the bridge between documented
-knowledge and natural language generation.
+The Context Builder is the deterministic reasoning layer of
+the E.V.E. platform.
 
-It determines what information should be considered.
+It retrieves, ranks, cites, and assembles engineering
+knowledge into provider-independent Context Packages before
+any AI provider is invoked.
 
-It never determines what information is true.
-
-Truth originates from documentation.
-
-Artificial intelligence is responsible only for expressing
-that truth in a useful manner.
-
----
-
-# Motto
-
-> "Knowledge should evolve."
+By separating engineering reasoning from language
+generation, E.V.E. ensures that engineering knowledge
+remains deterministic, explainable, maintainable, and
+independent of any specific AI model.
 
 ---
 
-© 2026 VectorMorph Research Initiative (VMRI)
+## Navigation
 
-Released under the MIT License unless otherwise noted.
+**Previous**
+
+EVE-0004 — Knowledge Layer Specification
+
+**Current**
+
+EVE-0005 — Context Builder Specification
+
+**Next**
+
+EVE-0006 — Context Package Specification
+
+**Return**
+
+← Part I — Engineering Specifications
+
+← EVE-SPEC
+
+---
+
+*"Knowledge should evolve."*

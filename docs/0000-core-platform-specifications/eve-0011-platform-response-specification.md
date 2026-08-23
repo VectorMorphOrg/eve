@@ -370,7 +370,7 @@ I — Core Platform Specifications
 
 **Next**
 
-Reserved
+EVE-0012 — Validation Specification
 
 **Return**
 

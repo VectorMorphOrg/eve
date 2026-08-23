@@ -571,9 +571,9 @@ None of these should require redesigning the Core Platform.
 eve/
 
 ├── docs/
-│   ├── adr/
 │   ├── 0000-core-platform-specifications/
 │   ├── 1000-implementation-guides/
+│   ├── 3000-architecture-decision-records/
 │   └── ...
 │
 ├── include/

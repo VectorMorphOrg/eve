@@ -378,7 +378,7 @@ I — Core Platform Specifications
 
 **Next**
 
-EVE-0011 — Response Object Specification
+EVE-0011 — Platform Response Specification
 
 **Return**
 

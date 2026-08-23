@@ -2,53 +2,38 @@
 
 # Capability Catalog
 
-**Project:** Evolutionary Virtual Engineer (E.V.E.)
+> Authoritative Registry of E.V.E. Platform Capabilities
 
-**Specification:** EVE-SPEC
+---
 
-**Part:** VII — Reference Catalogs
+## Document Information
 
-**Document Version:** 1.0.0
-
-**Published:** July 2026
-
-**Authors:** VectorMorph Research Initiative (VMRI)
-
-**Status:** Draft
+| Property | Value |
+|----------|-------|
+| **Document ID** | EVE-0604 |
+| **Series** | 0600 — Reference Catalogs |
+| **Title** | Capability Catalog |
+| **Project** | Evolutionary Virtual Engineer (E.V.E.) |
+| **Version** | 2.0.0 |
+| **Status** | Active |
+| **Published** | July 2026 |
 
 ---
 
 # Purpose
 
-This document provides the authoritative catalog of platform
-capabilities supported by the Evolutionary Virtual Engineer
-(E.V.E.).
+This document is the authoritative registry of Platform
+Capabilities implemented by the Evolutionary Virtual
+Engineer (E.V.E.).
 
-Unlike engineering specifications, this catalog does not
-define capability behavior.
+Capabilities represent the public engineering operations
+that may be invoked through Platform Requests.
 
-Instead, it serves as a centralized inventory of the
-functional capabilities available throughout the E.V.E.
-platform.
+Unlike Engineering Specifications, this catalog does not
+define behavior.
 
-Behavioral requirements are defined within the corresponding
-engineering specifications.
-
----
-
-# Scope
-
-This catalog includes:
-
-- Core Platform Capabilities
-- Documentation Capabilities
-- Knowledge Capabilities
-- Repository Capabilities
-- AI Capabilities
-- Development Capabilities
-- Administrative Capabilities
-
-Future capabilities may be added as the platform evolves.
+It exists solely to provide stable capability identifiers
+and a centralized inventory of platform functionality.
 
 ---
 
@@ -68,101 +53,101 @@ Future capabilities may be added as the platform evolves.
 
 | Category | Description |
 |----------|-------------|
-| Core | Fundamental platform functions |
-| Documentation | Documentation management |
-| Knowledge | Knowledge discovery and retrieval |
-| Repository | Repository interaction |
-| AI | Artificial intelligence services |
+| Core | Platform infrastructure |
+| Documentation | Documentation retrieval |
+| Knowledge | Knowledge processing |
+| Repository | Repository management |
+| AI | AI Provider operations |
 | Development | Engineering workflows |
-| Administration | Platform management |
+| Administration | Platform administration |
 
 ---
 
 # Core Capabilities
 
-| ID | Capability | Description | Owner | Status |
-|----|------------|-------------|-------|--------|
-| CAP-0001 | Request Processing | Process standardized platform requests | Core Platform | 🚧 |
-| CAP-0002 | Response Generation | Produce standardized responses | Core Platform | 🚧 |
-| CAP-0003 | Context Construction | Assemble execution context | Context Builder | 🚧 |
-| CAP-0004 | Capability Routing | Route requests to platform services | Command Dispatcher | 🚧 |
-| CAP-0005 | Permission Validation | Validate authorization | Core Platform | 🚧 |
+| ID | Capability | Owner | Status |
+|----|------------|-------|--------|
+| CAP-0001 | Platform Request Processing | Core Platform | ✅ |
+| CAP-0002 | Platform Response Generation | Core Platform | ✅ |
+| CAP-0003 | Validation | Validation Engine | ✅ |
+| CAP-0004 | Capability Dispatch | Command Dispatcher | ✅ |
+| CAP-0005 | Capability Execution | Capability Engine | ✅ |
 
 ---
 
 # Documentation Capabilities
 
-| ID | Capability | Description | Owner | Status |
-|----|------------|-------------|-------|--------|
-| CAP-0100 | Document Discovery | Locate documentation | Knowledge Layer | 🚧 |
-| CAP-0101 | Specification Lookup | Retrieve specifications | Knowledge Layer | 🚧 |
-| CAP-0102 | Documentation Search | Search documentation | Knowledge Layer | 🚧 |
-| CAP-0103 | Document Navigation | Navigate documentation | Knowledge Layer | 🚧 |
-| CAP-0104 | Cross Reference Resolution | Resolve document relationships | Knowledge Layer | 🚧 |
+| ID | Capability | Owner | Status |
+|----|------------|-------|--------|
+| CAP-0100 | Documentation Discovery | Knowledge Engine | 🚧 |
+| CAP-0101 | Specification Lookup | Knowledge Engine | 🚧 |
+| CAP-0102 | Documentation Search | Documentation Search Handler | ✅ |
+| CAP-0103 | Documentation Navigation | Knowledge Engine | 🚧 |
+| CAP-0104 | Cross-Reference Resolution | Knowledge Engine | 🚧 |
 
 ---
 
 # Knowledge Capabilities
 
-| ID | Capability | Description | Owner | Status |
-|----|------------|-------------|-------|--------|
-| CAP-0200 | Knowledge Retrieval | Retrieve platform knowledge | Knowledge Layer | 🚧 |
-| CAP-0201 | Context Assembly | Build AI context | Context Builder | 🚧 |
-| CAP-0202 | Knowledge Validation | Validate documented information | Knowledge Layer | 🚧 |
-| CAP-0203 | Citation Generation | Generate references | Knowledge Layer | 🚧 |
-| CAP-0204 | Knowledge Summarization | Summarize documentation | AI Engine | 🚧 |
+| ID | Capability | Owner | Status |
+|----|------------|-------|--------|
+| CAP-0200 | Knowledge Retrieval | Search Engine | ✅ |
+| CAP-0201 | Search | Search Engine | ✅ |
+| CAP-0202 | Ranking | Ranking Engine | ✅ |
+| CAP-0203 | Citation Generation | Citation Engine | ✅ |
+| CAP-0204 | Context Assembly | Context Assembler | ✅ |
 
 ---
 
 # Repository Capabilities
 
-| ID | Capability | Description | Owner | Status |
-|----|------------|-------------|-------|--------|
-| CAP-0300 | Repository Discovery | Discover repositories | Repository Service | 🚧 |
-| CAP-0301 | Repository Inspection | Inspect repository metadata | Repository Service | 🚧 |
-| CAP-0302 | Issue Retrieval | Retrieve repository issues | Repository Service | 🚧 |
-| CAP-0303 | Release Discovery | Retrieve releases | Repository Service | 🚧 |
-| CAP-0304 | Repository Search | Search repositories | Repository Service | 🚧 |
+| ID | Capability | Owner | Status |
+|----|------------|-------|--------|
+| CAP-0300 | Repository Discovery | Repository Service | ✅ |
+| CAP-0301 | Repository Indexing | Knowledge Engine | ✅ |
+| CAP-0302 | Source Discovery | Repository Service | 🚧 |
+| CAP-0303 | Release Discovery | Repository Service | 🚧 |
+| CAP-0304 | Repository Search | Knowledge Engine | 🚧 |
 
 ---
 
-# AI Capabilities
+# AI Provider Capabilities
 
-| ID | Capability | Description | Owner | Status |
-|----|------------|-------------|-------|--------|
-| CAP-0400 | Prompt Construction | Build AI prompts | AI Engine | 🚧 |
-| CAP-0401 | Provider Selection | Select AI provider | AI Provider Layer | 🚧 |
-| CAP-0402 | Response Formatting | Format AI responses | AI Engine | 🚧 |
-| CAP-0403 | Context Optimization | Optimize context packages | Context Builder | 🚧 |
-| CAP-0404 | Conversation Continuity | Maintain conversation state | AI Engine | 🚧 |
+| ID | Capability | Owner | Status |
+|----|------------|-------|--------|
+| CAP-0400 | Provider Formatting | Provider Formatter | ✅ |
+| CAP-0401 | Provider Selection | Provider Manager | ✅ |
+| CAP-0402 | AI Response Generation | AI Provider | ✅ |
+| CAP-0403 | Streaming Responses | AI Provider | 🚧 |
+| CAP-0404 | Conversation Memory | Future Platform | 🚧 |
 
 ---
 
 # Development Capabilities
 
-| ID | Capability | Description | Owner | Status |
-|----|------------|-------------|-------|--------|
-| CAP-0500 | Roadmap Access | Retrieve roadmap information | Development Service | 🚧 |
-| CAP-0501 | ADR Discovery | Retrieve Architecture Decision Records | Knowledge Layer | 🚧 |
-| CAP-0502 | Project Search | Search project resources | Knowledge Layer | 🚧 |
-| CAP-0503 | Build Information | Retrieve build information | Development Service | 🚧 |
-| CAP-0504 | Testing Information | Retrieve testing information | Development Service | 🚧 |
+| ID | Capability | Owner | Status |
+|----|------------|-------|--------|
+| CAP-0500 | Project Roadmap | Development Services | 🚧 |
+| CAP-0501 | ADR Discovery | Knowledge Engine | 🚧 |
+| CAP-0502 | Repository Search | Knowledge Engine | 🚧 |
+| CAP-0503 | Build Information | Development Services | 🚧 |
+| CAP-0504 | Test Information | Development Services | 🚧 |
 
 ---
 
 # Administrative Capabilities
 
-| ID | Capability | Description | Owner | Status |
-|----|------------|-------------|-------|--------|
-| CAP-0600 | Configuration Access | Access platform configuration | Platform Services | 🚧 |
-| CAP-0601 | Metrics Collection | Collect runtime metrics | Platform Services | 🚧 |
-| CAP-0602 | Logging | Access platform logs | Platform Services | 🚧 |
-| CAP-0603 | System Health | Monitor platform health | Platform Services | 🚧 |
-| CAP-0604 | Platform Synchronization | Synchronize platform resources | Platform Services | 🚧 |
+| ID | Capability | Owner | Status |
+|----|------------|-------|--------|
+| CAP-0600 | Configuration Management | Configuration Service | ✅ |
+| CAP-0601 | Metrics | Platform Services | 🚧 |
+| CAP-0602 | Logging | Logging Service | 🚧 |
+| CAP-0603 | Health Monitoring | Provider Manager | ✅ |
+| CAP-0604 | Platform Synchronization | Platform Services | 🚧 |
 
 ---
 
-# Reserved Capability Identifiers
+# Reserved Capability Ranges
 
 | Range | Purpose |
 |--------|---------|
@@ -170,58 +155,56 @@ Future capabilities may be added as the platform evolves.
 | CAP-0800–0899 | Future Knowledge Capabilities |
 | CAP-0900–0999 | Experimental Capabilities |
 
-Reserved identifiers maintain a stable capability numbering
-scheme as E.V.E. evolves.
+Reserved ranges preserve long-term identifier stability.
 
 ---
 
-# Capability Naming Guidelines
+# Capability Naming
 
 Capabilities should:
 
-- Represent a single functional responsibility.
-- Be implementation independent.
-- Be reusable across interfaces.
+- Represent one engineering responsibility.
+- Remain interface independent.
+- Remain implementation independent.
+- Be uniquely identified.
 - Be documented before implementation.
-- Remain stable whenever practical.
+- Remain stable over time.
 
-Capabilities describe **what** the platform can do, not how
-it is implemented.
+Capability identifiers are considered public platform
+contracts.
 
 ---
 
 # Relationship to EVE-SPEC
 
-This catalog complements the Core Platform Specifications.
+Behavior is defined by:
 
-Individual specifications define capability behavior.
+- Part I — Engineering Specifications
 
-This document serves only as the authoritative inventory of
-platform capabilities.
+Implementation guidance is provided by:
 
----
+- Part XI — Implementation Guides
 
-# Future Expansion
-
-Future revisions of this catalog may include:
-
-- Capability dependencies
-- Required permissions
-- Input and output contracts
-- Performance characteristics
-- Related services
-- Supporting specifications
+This catalog serves only as the authoritative registry of
+Capability identifiers.
 
 ---
 
-# Summary
+# Current Implementation Status
 
-The Capability Catalog provides a centralized inventory of
-the functional capabilities supported by E.V.E.
+As of **v0.6.0-alpha**:
 
-It exists to improve discoverability, encourage consistent
-engineering practices, and establish a shared vocabulary for
-developers, contributors, and future implementations.
+- Platform Request architecture is implemented.
+- Validation Engine is implemented.
+- Capability Engine is implemented.
+- Documentation Search (CAP-0102) is operational.
+- Deterministic Reasoning Pipeline is operational.
+- Provider Formatter is implemented.
+- Ollama Provider is implemented.
+- End-to-end documentation search is operational.
+
+Additional capabilities will be added without changing
+existing identifiers.
 
 ---
 
@@ -231,9 +214,9 @@ developers, contributors, and future implementations.
 
 EVE-0603 — REST API Endpoint Catalog
 
-**Part**
+**Current**
 
-VII — Reference Catalogs
+EVE-0604 — Capability Catalog
 
 **Next**
 
@@ -246,7 +229,5 @@ EVE-0605 — Service Catalog
 ← EVE-SPEC
 
 ---
-
-## Motto
 
 *"Knowledge should evolve."*

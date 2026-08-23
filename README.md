@@ -181,10 +181,16 @@ Platform Response
 eve/
 
 ├── docs/
-│   ├── adr/
 │   ├── 0000-core-platform-specifications/
+│   ├── 0300-cli-specifications/
+│   ├── 0600-reference-catalogs/
 │   ├── 1000-implementation-guides/
+│   ├── 3000-architecture-decision-records/
 │   └── ...
+│
+├── audits/
+│   ├── document-map.md
+│   └── v0.6.0-alpha/
 │
 ├── ideas/
 ├── include/
@@ -195,6 +201,7 @@ eve/
 ├── README.md
 ├── ARCHITECTURE.md
 ├── PROJECT_STATUS.md
+├── ROADMAP.md
 ├── CHANGELOG.md
 └── CMakeLists.txt
 ```
@@ -207,15 +214,19 @@ eve/
 |----------|---------|
 | **README.md** | Project overview |
 | **ARCHITECTURE.md** | Complete system architecture |
-| **PROJECT_STATUS.md** | Current progress and roadmap |
+| **PROJECT_STATUS.md** | Current progress |
+| **ROADMAP.md** | Canonical release sequencing |
 | **docs/** | Formal EVE-SPEC specifications |
-| **docs/adr/** | Architecture Decision Records |
+| **docs/3000-architecture-decision-records/** | Architecture Decision Records |
+| **audits/document-map.md** | Repository file / path map |
 
 ---
 
 # Roadmap
 
-### Completed
+Canonical sequencing (Hybrid / Option C):
+
+### Completed — v0.6.0-alpha
 
 - Core Platform
 - Validation Engine
@@ -225,23 +236,28 @@ eve/
 - Provider Formatting
 - Live End-to-End Demonstration
 
-### In Progress
+### Next — v0.7.x Developer Platform
 
-- CLI Interface
+- Conversation Memory
+- Streaming Responses
+- OpenAI / Anthropic / LM Studio providers
+- Developer Guide series
+
+### Then — v0.8.x Interfaces
+
+- CLI (specifications already exist)
+- Discord
 - REST API
-- Discord Integration
 - Website
 
-### Planned
+### Later — v0.9.x+
 
-- OpenAI Provider
-- Anthropic Provider
-- LM Studio Provider
-- Conversation Memory
 - Multi-Repository Support
+- Semantic / Hybrid Search
+- Plugin System
 - Distributed Capability Network
 
----
+See `ROADMAP.md` for the authoritative sequence.
 
 # Engineering Philosophy
 

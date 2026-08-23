@@ -2,29 +2,38 @@
 
 # AI Provider Specification
 
-**Project:** E.V.E. (Evolutionary Virtual Engineer)
+> Engineering Specification for the E.V.E. AI Provider Layer
 
-**Document Version:** 1.0.0
+---
 
-**Published:** July 2026
+## Document Information
 
-**Authors:** VectorMorph Research Initiative (VMRI)
-
-**Status:** Foundational Specification
+| Property | Value |
+|----------|-------|
+| **Document ID** | EVE-0007 |
+| **Series** | 0000 — Engineering Specifications |
+| **Title** | AI Provider Specification |
+| **Project** | Evolutionary Virtual Engineer (E.V.E.) |
+| **Version** | 2.0.0 |
+| **Status** | Active |
+| **Published** | July 2026 |
 
 ---
 
 # Purpose
 
-This document defines the AI Provider Layer of E.V.E.
+This specification defines the AI Provider Layer of the
+Evolutionary Virtual Engineer (E.V.E.).
 
 The AI Provider Layer is responsible for transforming a
-validated Context Package into a natural language response.
+provider-independent Provider Request into a natural-language
+response.
 
-The AI Provider does not retrieve documentation, determine
-capabilities, or assemble context.
+Engineering reasoning is completed before the AI Provider is
+invoked.
 
-Its sole responsibility is language generation.
+The provider consumes deterministic engineering context and
+returns language.
 
 ---
 
@@ -33,11 +42,14 @@ Its sole responsibility is language generation.
 Artificial intelligence is one interchangeable component of
 the E.V.E. architecture.
 
-Knowledge determines truth.
+Engineering knowledge determines truth.
 
-The Context Builder determines relevance.
+The Reasoning Pipeline determines relevance.
 
-The AI Provider determines presentation.
+The Provider Formatter prepares provider-independent
+requests.
+
+The AI Provider generates natural language.
 
 Replacing an AI Provider should require no architectural
 changes outside the Provider Layer.
@@ -48,37 +60,46 @@ changes outside the Provider Layer.
 
 The AI Provider shall:
 
-- Accept validated Context Packages
-- Generate natural language
-- Preserve citations
-- Respect constraints
-- Preserve factual accuracy
-- Return structured responses
+- Accept validated Provider Requests
+- Generate natural-language responses
+- Respect provider options
+- Preserve engineering context
+- Report provider diagnostics
+- Return standardized AI Responses
 - Report provider failures
 
 The AI Provider shall not:
 
-- Read project documentation
-- Search repositories
-- Access GitHub
-- Assemble context
-- Modify Context Packages
+- Search documentation
+- Read repositories
+- Rank engineering evidence
+- Generate citations
+- Assemble Context Packages
+- Construct prompts
+- Modify engineering knowledge
 - Invent undocumented information
 
 ---
 
-# Position within the Architecture
+# Architecture
 
-```
-Knowledge Layer
+The AI Provider Layer begins after deterministic reasoning
+has completed.
 
-↓
-
-Context Builder
+```text
+Reasoning Pipeline
 
 ↓
 
 Context Package
+
+↓
+
+Provider Formatter
+
+↓
+
+Provider Request
 
 ↓
 
@@ -86,175 +107,215 @@ AI Provider
 
 ↓
 
-Natural Language Response
-```
-
-The AI Provider is the final processing stage before user
-presentation.
-
----
-
-# Inputs
-
-The AI Provider receives exactly one validated Context
-Package.
-
-No additional project knowledge shall be retrieved during
-response generation.
-
----
-
-# Outputs
-
-The AI Provider returns a Response Object.
-
-A Response Object may contain:
-
-- Generated Response
-- Citations
-- Confidence (optional)
-- Warnings
-- Provider Metadata
-
-Implementations may extend the Response Object while
-preserving compatibility.
-
----
-
-# AI Provider Interface
-
-Every provider shall expose the same logical interface.
-
-```
-Input
+AI Response
 
 ↓
 
-Context Package
-
-↓
-
-Generate Response
-
-↓
-
-Response Object
+Platform Response
 ```
 
-The implementation may vary.
-
-The logical interface shall remain consistent.
+The AI Provider is responsible only for language generation.
 
 ---
 
-# AI Adapter Architecture
+# Provider Request
 
-Every supported AI system shall be implemented as an
-independent adapter.
+Every AI Provider receives the same Provider Request.
 
-```
-AI Provider Interface
+A Provider Request may contain:
+
+- System Instructions
+- Platform Request
+- Context Package
+- Provider Capabilities
+- Provider Options
+- Metadata
+
+Provider Requests are provider independent.
+
+---
+
+# AI Response
+
+Every provider returns a normalized AI Response.
+
+Typical response information includes:
+
+- Generated text
+- Provider identifier
+- Model identifier
+- Provider metadata
+- Diagnostics
+- Timing
+- Error information
+
+Platform interfaces consume normalized AI Responses rather
+than provider-specific formats.
+
+---
+
+# Provider Interface
+
+Every provider shall implement the common provider
+interface.
+
+Typical responsibilities include:
+
+- Provider identification
+- Capability advertisement
+- Default options
+- Health checking
+- Response generation
+
+Implementations may differ internally while preserving the
+same logical contract.
+
+---
+
+# Provider Architecture
+
+Each supported provider is implemented as an independent
+adapter.
+
+```text
+Provider Interface
+
         │
-        ├── OpenAI Adapter
-        ├── Anthropic Adapter
-        ├── Ollama Adapter
-        ├── LM Studio Adapter
-        ├── llama.cpp Adapter
-        ├── Gemini Adapter
-        └── Future Adapter
+
+        ├── Null Provider
+        ├── Ollama
+        ├── OpenAI
+        ├── Anthropic
+        ├── LM Studio
+        ├── llama.cpp
+        ├── Gemini
+        └── Future Providers
 ```
 
-Each adapter translates between the canonical Context
-Package and the provider's native API.
+Adapters translate between the canonical Provider Request
+and provider-specific APIs.
 
 ---
 
-# Supported Providers
+# Provider Formatter
 
-The architecture is designed to support providers including:
+Prompt construction is performed by the Provider Formatter.
 
-- OpenAI
-- Anthropic
-- Ollama
-- LM Studio
-- llama.cpp
-- Gemini
-- DeepSeek
-- Future Providers
+Responsibilities include:
 
-Provider support may expand without requiring architectural
-changes.
+- Formatting system instructions
+- Formatting user requests
+- Preserving engineering evidence
+- Preserving citations
+- Adapting to provider capabilities
+- Producing Provider Requests
+
+The Provider Formatter performs no engineering reasoning.
 
 ---
 
-# Prompt Construction
+# Provider Capabilities
 
-Prompt construction belongs to the AI Provider.
+Providers advertise supported capabilities.
 
-The Context Builder constructs Context Packages.
+Examples include:
 
-The AI Provider converts Context Packages into provider-
-specific prompts.
+- System prompts
+- Multiple messages
+- Streaming
+- Tool calling
+- Function calling
+- JSON responses
+- Image input
+- Reasoning mode
 
-Prompt engineering should remain isolated within each
-provider implementation.
+The Provider Formatter adapts automatically based upon these
+capabilities.
+
+---
+
+# Provider Options
+
+Provider configuration may include:
+
+- Model
+- Temperature
+- Top-p
+- Maximum tokens
+- Context length
+- Seed
+- Stop sequences
+- Timeout
+
+These options remain provider independent whenever
+possible.
 
 ---
 
 # Provider Independence
 
-Provider-specific behavior shall remain isolated.
+Provider-specific behavior remains isolated.
 
 Examples include:
 
-- API formatting
+- API serialization
 - Authentication
 - Model identifiers
-- Token limits
-- Streaming
-- Tool calling
+- Network transport
+- Streaming protocols
+- Provider-specific diagnostics
 
-These differences should never affect the remainder of the
-E.V.E. architecture.
+These differences shall never affect deterministic
+engineering reasoning.
 
 ---
 
 # Error Handling
 
-The AI Provider shall detect and report:
+Providers shall detect and report:
 
 - Provider unavailable
-- Authentication failure
-- Context too large
+- Connection failure
 - Timeout
+- Invalid model
 - Invalid response
+- Authentication failure
 - Rate limiting
 
-Errors should be converted into standardized platform
-responses.
+Errors shall be normalized before reaching the Core
+Platform.
 
 ---
 
 # Determinism
 
-Given identical Context Packages and identical provider
-configuration, responses should remain as consistent as the
-underlying model allows.
+The Provider Layer intentionally separates deterministic
+engineering reasoning from probabilistic language
+generation.
 
-Provider variability should be minimized whenever practical.
+Deterministic components include:
+
+- Search
+- Ranking
+- Citation generation
+- Context Assembly
+- Provider Formatting
+
+Non-deterministic behavior begins only when the AI Provider
+generates tokens.
 
 ---
 
 # Streaming
 
-Future providers may support:
+Providers may support:
 
 - Token streaming
-- Incremental responses
 - Progressive rendering
 - Interruptible generation
+- Incremental responses
 
-Streaming remains an implementation detail.
+Streaming should remain transparent to the Core Platform.
 
 ---
 
@@ -264,42 +325,40 @@ Future providers may support:
 
 - Function Calling
 - Tool Invocation
-- External APIs
-- Code Execution
 - Image Understanding
 - Audio Processing
+- External APIs
 
-Tool usage should remain provider independent whenever
-possible.
+Tool integration should preserve provider independence.
 
 ---
 
-# Multi-Provider Operation
+# Multi-Provider Support
 
-Future versions of E.V.E. may support multiple active AI
-Providers.
-
-Examples include:
+Future versions of E.V.E. may support:
 
 - Local fallback
+- Provider failover
 - Cost optimization
 - Model specialization
-- Automatic failover
+- Provider routing
 
-Provider selection should occur before response generation.
+Provider selection occurs before response generation.
 
 ---
 
 # Security
 
-AI Providers shall never receive:
+AI Providers shall receive only validated Provider Requests.
 
-- Private credentials
-- Repository secrets
-- Hidden configuration
-- Internal system state
+Providers shall never receive:
 
-Only validated Context Packages shall be transmitted.
+- Repository credentials
+- Platform secrets
+- Hidden system state
+- Internal implementation details
+
+Only deterministic engineering context is transmitted.
 
 ---
 
@@ -309,38 +368,72 @@ Future revisions may support:
 
 - Local model orchestration
 - Multi-model consensus
-- Specialized reasoning models
-- Offline operation
 - Distributed inference
+- Offline operation
+- Streaming providers
 - Agent collaboration
 
-Future capabilities should preserve provider
-interchangeability.
+These additions shall preserve provider interchangeability.
+
+---
+
+# Relationship to EVE-SPEC
+
+This specification depends upon:
+
+- EVE-0005 — Context Builder Specification
+- EVE-0006 — Context Package Specification
+
+Implementation guidance is provided by:
+
+- EVE-1010 — AI Provider Implementation Guide
+
+Architectural rationale is documented by:
+
+- EVE-3005 — AI Provider Abstraction
+- EVE-3009 — Provider-Independent Reasoning
 
 ---
 
 # Summary
 
-The AI Provider Layer is responsible solely for transforming
-validated Context Packages into natural language responses.
+The AI Provider Layer is responsible solely for generating
+natural language from deterministic engineering context.
 
-Knowledge remains authoritative.
+Engineering reasoning is performed entirely by the E.V.E.
+platform before the provider is invoked.
 
-Context determines relevance.
+The Provider Formatter transforms Context Packages into
+provider-independent Provider Requests, allowing every AI
+backend to operate as a thin, replaceable adapter.
 
-Artificial intelligence determines presentation.
-
-This separation allows E.V.E. to evolve independently of any
-particular language model or AI vendor.
-
----
-
-# Motto
-
-> "Knowledge should evolve."
+This architecture preserves deterministic engineering
+reasoning, provider independence, and long-term
+maintainability while allowing E.V.E. to evolve alongside
+future AI technologies.
 
 ---
 
-© 2026 VectorMorph Research Initiative (VMRI)
+## Navigation
 
-Released under the MIT License unless otherwise noted.
+**Previous**
+
+EVE-0006 — Context Package Specification
+
+**Current**
+
+EVE-0007 — AI Provider Specification
+
+**Next**
+
+EVE-0008 — Persona and Communication Specification
+
+**Return**
+
+← Part I — Engineering Specifications
+
+← EVE-SPEC
+
+---
+
+*"Knowledge should evolve."*

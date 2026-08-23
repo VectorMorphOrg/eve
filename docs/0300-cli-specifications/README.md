@@ -2,75 +2,82 @@
 
 # 0300 CLI Specifications
 
-> Command-Line Interface Architecture for EVE-SPEC
+> Command Line Interface Specification Series
 
 ---
 
-## Part Information
+## Series Information
 
 | Property | Value |
 |----------|-------|
 | **Part** | IV |
 | **Series** | 0300 |
 | **Title** | CLI Specifications |
-| **Status** | Planned |
-| **Documents** | 0 |
+| **Status** | Specification Complete — Implementation Planned (v0.8.x) |
 | **Depends On** | Part I — Core Platform Specifications |
-| **Referenced By** | 1000 Implementation Guides |
+| **Implementation Guide** | Part XII — EVE-2000 Series (planned) |
+| **Interfaces** | Command Line Interface (CLI) |
 
 ---
 
 # Overview
 
-The CLI Specifications define how the Evolutionary
-Virtual Engineer (E.V.E.) integrates with command-line
-environments.
+Part IV defines the official Command Line Interface (CLI)
+for the Evolutionary Virtual Engineer (E.V.E.).
 
-These specifications establish the command-line interface,
-user interaction model, scripting capabilities, and platform
-integration used to access the E.V.E. Core Platform from
-terminal environments.
+The CLI is an interface layer built on top of the Core
+Platform and deterministic Reasoning Pipeline.
 
-The CLI provides a lightweight, automation-friendly interface
-for developers, researchers, and system administrators.
+Its responsibility is to expose platform capabilities
+through a deterministic, scriptable,
+provider-independent command-line experience.
+
+The CLI performs no engineering reasoning.
+
+All engineering reasoning is performed by the deterministic
+Core Platform. The CLI translates terminal input into
+Platform Requests, invokes the Core Platform, and formats
+Platform Responses for presentation to the user.
 
 ---
 
 # Purpose
 
-Part IV defines the command-line interface for E.V.E.
+This specification series defines:
 
-Topics include:
-
-- CLI Architecture
-- Command Structure
-- Argument Parsing
-- Interactive Shell
+- CLI architecture
+- Command system
+- Argument parsing
+- Response formatting
+- Interactive shell
 - Configuration
-- Output Formatting
-- Automation
-- Platform Integration
+- Logging
+- Exit codes
+- Future CLI extensibility
 
-Business logic remains within the Core Platform.
-
-The CLI functions as a presentation and interaction layer.
+Together these specifications define the complete behavior
+of the E.V.E. Command Line Interface.
 
 ---
 
-# Planned Documents
+# Reading Order
 
 | ID | Title | Status |
 |----|-------|--------|
-| EVE-0300 | CLI Interface Specification | ⏳ Planned |
-| EVE-0301 | CLI Command Specification | ⏳ Planned |
-| EVE-0302 | CLI Configuration Specification | ⏳ Planned |
-| EVE-0303 | CLI Output Formatting Specification | ⏳ Planned |
-
-Additional specifications may be added as the CLI evolves.
+| **EVE-0300** | CLI Interface Specification | ✅ Active |
+| **EVE-0301** | Command Specification | ✅ Active |
+| **EVE-0302** | Argument Parsing Specification | ✅ Active |
+| **EVE-0303** | Response Formatting Specification | ✅ Active |
+| **EVE-0304** | Interactive Shell Specification | ✅ Active |
+| **EVE-0305** | Configuration Specification | ✅ Active |
+| **EVE-0306** | Logging Specification | ✅ Active |
+| **EVE-0307** | Exit Code Specification | ✅ Active |
+| **EVE-0308** | Plugin Command Specification | ⏳ Reserved |
+| **EVE-0309** | CLI Session Specification | ⏳ Reserved |
 
 ---
 
-# Architecture
+# CLI Architecture
 
 ```text
 User
@@ -81,7 +88,7 @@ Command Line
 
 ↓
 
-CLI Interface
+CLI Parser
 
 ↓
 
@@ -89,15 +96,23 @@ Platform Request
 
 ↓
 
-Command Dispatcher
+Validation Engine
 
 ↓
 
-Core Platform
+Capability Engine
 
 ↓
 
-Response Object
+Reasoning Pipeline
+
+↓
+
+AI Provider
+
+↓
+
+Platform Response
 
 ↓
 
@@ -105,64 +120,85 @@ CLI Formatter
 
 ↓
 
-Terminal Output
+Terminal
 ```
-
-The CLI performs command parsing and presentation.
-
-Knowledge, reasoning, and platform behavior remain within
-the Core Platform.
 
 ---
 
-# Engineering Principles
+# Design Principles
 
-The CLI Specifications follow these principles.
+The CLI follows the same engineering principles as the Core
+Platform.
 
-- Thin Interface Layer
-- Scriptable by Design
-- Platform Independence
-- Standardized Platform Requests
-- Standardized Response Objects
-- Consistent Command Structure
-- Clear Terminal Output
-- Separation of Responsibilities
+- Provider Independent
+- Capability Oriented
+- Deterministic
+- Interface Only
+- Script Friendly
+- Cross Platform
+- Extensible
+- Maintainable
 
 ---
 
 # Relationship to EVE-SPEC
 
-Part IV extends the Core Platform by defining the official
-command-line interface.
+The CLI consumes the Core Platform defined in Part I.
 
-The CLI shall consume standardized platform services without
-duplicating business logic.
+Implementation guidance is provided by:
 
-Part IV shall not redefine platform behavior established by
-Part I.
+- Part II — Implementation Guides
+
+Architectural rationale is documented in:
+
+- Part XIII — Architecture Decision Records
+
+The CLI remains a thin interface layer. It owns user
+interaction but delegates engineering execution to the Core
+Platform.
 
 ---
 
 # Current Progress
 
-| Area | Status |
-|------|--------|
-| CLI Architecture | ⏳ Planned |
-| Command Structure | ⏳ Planned |
-| Configuration | ⏳ Planned |
-| Output Formatting | ⏳ Planned |
-| Interactive Shell | ⏳ Planned |
+This table tracks **specification** completeness for Part IV.
+It does **not** claim that a CLI binary is implemented.
+
+CLI **implementation** is sequenced for **v0.8.x** under the
+canonical Hybrid roadmap (`ROADMAP.md`).
+
+| Area | Specification Status |
+|------|----------------------|
+| CLI Architecture | ✅ Complete |
+| Command System | ✅ Complete |
+| Argument Parsing | ✅ Complete |
+| Response Formatting | ✅ Complete |
+| Interactive Shell | ✅ Complete |
+| Configuration | ✅ Complete |
+| Logging | ✅ Complete |
+| Exit Codes | ✅ Complete |
+| Plugin Commands | 🚧 Reserved |
+| CLI Sessions | 🚧 Reserved |
+| CLI Implementation (software) | 🚧 Planned (v0.8.x) |
 
 ---
 
-# Related Parts
+# Future Expansion
 
-- Part I — Core Platform Specifications
-- Part II — Discord Specifications
-- Part III — Website Specifications
-- Part V — REST API Specifications
-- Part VII — Reference Catalogs
-- Part XI — Implementation Guides
+Future revisions of the CLI may introduce:
+
+- Plugin commands
+- Persistent CLI sessions
+- Shell auto-completion
+- Rich terminal interface (TUI)
+- Streaming AI responses
+- Conversation memory
+- Workspace management
+- Distributed Capability Network integration
+
+These capabilities will extend the existing CLI without
+modifying the Core Platform or deterministic Reasoning
+Pipeline.
 
 ---
 
@@ -174,15 +210,11 @@ Part III — Website Specifications
 
 **Current**
 
-Part IV — 0300 CLI Specifications
+Part IV — CLI Specifications
 
 **Next**
 
-Part V — 0400 REST API Specifications
-
-**Return**
-
-← EVE-SPEC (`/docs`)
+Part V — REST API Specifications
 
 ---
 
@@ -190,6 +222,8 @@ Part V — 0400 REST API Specifications
 
 **Part:** IV — CLI Specifications
 
-**Status:** Planned
+**Series:** 0300
+
+**Status:** Specification Complete — Implementation Planned (v0.8.x)
 
 *"Knowledge should evolve."*

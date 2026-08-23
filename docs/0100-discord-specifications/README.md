@@ -13,7 +13,7 @@
 | **Part** | II |
 | **Series** | 0100 |
 | **Title** | Discord Specifications |
-| **Status** | Active |
+| **Status** | Specification Complete — Implementation Planned (v0.8.x) |
 | **Documents** | 4 |
 | **Depends On** | Part I — Core Platform Specifications |
 | **Referenced By** | 1000 Implementation Guides |
@@ -143,13 +143,22 @@ Part I.
 
 # Current Progress
 
+This table tracks **specification** progress only.
+
+It does **not** claim that a Discord bot or Discord interface
+binary is implemented.
+
+Discord **implementation** is sequenced for **v0.8.x** under
+the approved Hybrid roadmap.
+
 | Area | Status |
 |------|--------|
-| Discord Interface | ✅ Complete |
-| Command Mapping | ✅ Complete |
-| Permissions | ✅ Complete |
-| Response Formatting | ✅ Complete |
-| Command Catalog | 🚧 Planned (Part VII) |
+| Discord Interface Specification | ✅ Specification Complete |
+| Command Mapping Specification | ✅ Specification Complete |
+| Permissions Specification | ✅ Specification Complete |
+| Response Formatting Specification | ✅ Specification Complete |
+| Discord Command Catalog (Part VII) | ✅ Catalog Present |
+| Discord Implementation (software) | 🚧 Planned (v0.8.x) |
 
 ---
 
@@ -188,6 +197,6 @@ Part III — 0200 Website Specifications
 
 **Part:** II — Discord Specifications
 
-**Status:** Active
+**Status:** Specification Complete — Implementation Planned (v0.8.x)
 
 *"Knowledge should evolve."*

@@ -235,7 +235,7 @@ VII — Reference Catalogs
 
 **Next**
 
-Reserved
+EVE-0604 — Capability Catalog
 
 **Return**
 

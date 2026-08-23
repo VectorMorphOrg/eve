@@ -2,170 +2,193 @@
 
 # 3000 Architecture Decision Records
 
-> Engineering Decision History for EVE-SPEC
+> Architecture Decision Record Series
 
 ---
 
-## Part Information
+## Series Information
 
 | Property | Value |
 |----------|-------|
 | **Part** | XIII |
 | **Series** | 3000 |
-| **Title** | Architecture Decision Records (ADRs) |
-| **Status** | Planned |
-| **Documents** | 0 |
-| **Depends On** | Parts I–XII |
-| **Referenced By** | Contributors and Maintainers |
+| **Title** | Architecture Decision Records |
+| **Status** | Complete |
+| **Purpose** | Record the architectural decisions that define E.V.E.'s long-term engineering direction. |
+| **Depends On** | Part I — Engineering Specifications |
+| **Supported By** | Part XI — Implementation Guides |
+| **Implemented By** | Source Code |
 
 ---
 
 # Overview
 
-The Architecture Decision Records (ADRs) document the
-significant engineering decisions made during the design and
-development of the Evolutionary Virtual Engineer (E.V.E.)
-platform.
+The Architecture Decision Record (ADR) series documents the
+major architectural decisions that shape the Evolutionary
+Virtual Engineer (E.V.E.).
 
-Unlike Engineering Specifications, ADRs explain **why**
-architectural decisions were made, what alternatives were
-considered, and the consequences of each decision.
+Unlike Engineering Specifications, which define **what** the
+platform must do, Architecture Decision Records explain
+**why** the platform is designed the way it is.
 
-ADRs preserve project history and engineering rationale for
-future contributors.
+Unlike Implementation Guides, which describe recommended
+engineering approaches, Architecture Decision Records record
+the long-term rationale behind major engineering decisions.
+
+Together they provide the historical context that explains
+how and why the E.V.E. architecture evolved.
 
 ---
 
 # Purpose
 
-Part XIII documents the engineering reasoning behind major
-platform decisions.
+This series records decisions regarding:
 
-Topics include:
+- Engineering methodology
+- Platform architecture
+- Capability-Oriented Architecture
+- Knowledge-First AI
+- Validation-first execution
+- Provider abstraction
+- Repository architecture
+- Knowledge Graph architecture
+- Future distributed systems
 
-- Architectural Decisions
-- Design Tradeoffs
-- Technology Selection
-- Rejected Alternatives
-- Engineering Rationale
-- Long-Term Consequences
-- Lessons Learned
-- Project Evolution
-
-Architecture Decision Records explain **why** the platform
-was designed the way it was.
-
-Engineering Specifications define **what** the platform
-shall do.
+Architecture Decision Records preserve engineering rationale
+rather than implementation details.
 
 ---
 
-# Planned Documents
+# Reading Order
 
 | ID | Title | Status |
 |----|-------|--------|
-| ADR-3000 | Documentation-First Development | ⏳ Planned |
-| ADR-3001 | AI Provider Abstraction | ⏳ Planned |
-| ADR-3002 | Context Package Architecture | ⏳ Planned |
-| ADR-3003 | Platform Request Architecture | ⏳ Planned |
-| ADR-3004 | Capability & Service Separation | ⏳ Planned |
-| ADR-3005 | Knowledge Layer Architecture | ⏳ Planned |
-| ADR-3006 | Interface Independence | ⏳ Planned |
-| ADR-3007 | Repository Organization | ⏳ Planned |
-| ADR-3008 | EVE-SPEC Documentation Structure | ⏳ Planned |
-| ADR-3009 | Future Architectural Decisions | ⏳ Planned |
-
-Additional Architecture Decision Records may be created
-whenever significant engineering decisions are made.
+| **EVE-3001** | Documentation First Development | ✅ Accepted |
+| **EVE-3002** | Capability-Oriented Architecture | ✅ Accepted |
+| **EVE-3003** | Knowledge-First AI Architecture | ✅ Accepted |
+| **EVE-3004** | Validation Pipeline | ✅ Accepted |
+| **EVE-3005** | AI Provider Abstraction | ✅ Accepted |
+| **EVE-3006** | Repository as Source of Truth | ✅ Accepted |
+| **EVE-3007** | Knowledge Graph Architecture | ✅ Accepted |
+| **EVE-3008** | Distributed Capability Network | ⏳ Reserved |
+| **EVE-3009** | Provider-Independent Reasoning | ✅ Accepted |
 
 ---
 
-# Decision Lifecycle
+# Documentation Hierarchy
+
+Architecture Decision Records form one layer of the E.V.E.
+documentation hierarchy.
 
 ```text
-Problem
+Ideas
 
 ↓
 
-Research
+Architecture Decision Records
 
 ↓
 
-Alternatives
+Engineering Specifications
 
 ↓
 
-Decision
+Reference Catalogs
 
 ↓
 
-Implementation
+Implementation Guides
 
 ↓
 
-Review
+Developer Guides
 
 ↓
 
-Historical Record
+Architecture Documentation
+
+↓
+
+Source Code
+
+↓
+
+Tests
 ```
 
-Every significant architectural decision should be
-documented to preserve project knowledge.
+Each layer has one engineering responsibility.
 
 ---
 
-# Engineering Principles
+# Design Principles
 
-The Architecture Decision Records follow these principles.
+The Architecture Decision Records reflect the core
+engineering philosophy of E.V.E.
 
-- Transparency
-- Traceability
-- Historical Accuracy
-- Engineering Rationale
+- Documentation First Development
+- Capability-Oriented Architecture
+- Knowledge-First AI
+- Validation-First Execution
+- Provider Independence
+- Repository as Source of Truth
+- Deterministic Engineering
 - Long-Term Maintainability
-- Documentation First
-- Continuous Improvement
-- Knowledge Preservation
 
-Every important decision should be documented with its
-context and consequences.
+These principles guide every subsequent engineering
+specification and implementation.
 
 ---
 
 # Relationship to EVE-SPEC
 
-Part XIII complements the Engineering Specifications by
-recording the reasoning behind architectural decisions.
+Architecture Decision Records provide architectural
+justification for the Engineering Specifications contained
+within Part I.
 
-Architecture Decision Records shall never override the
-requirements established within Engineering Specifications.
+Implementation guidance is provided by:
 
-When conflicts occur, the Engineering Specifications remain
-authoritative.
-
----
-
-# Current Progress
-
-| Area | Status |
-|------|--------|
-| Documentation-First ADR | ⏳ Planned |
-| AI Provider ADR | ⏳ Planned |
-| Context Package ADR | ⏳ Planned |
-| Platform Request ADR | ⏳ Planned |
-| Knowledge Layer ADR | ⏳ Planned |
-| Interface Independence ADR | ⏳ Planned |
-| Repository Organization ADR | ⏳ Planned |
-| Documentation Structure ADR | ⏳ Planned |
-
----
-
-# Related Parts
-
-- Part I — Core Platform Specifications
 - Part XI — Implementation Guides
+
+Contributor workflows are documented in:
+
 - Part XII — Developer Guides
+
+Together these documentation layers explain:
+
+- Why the architecture exists
+- What the platform must do
+- How it should be implemented
+- How contributors extend it
+
+---
+
+# Current Status
+
+| Metric | Value |
+|---------|-------|
+| **Architecture Decision Records** | 9 |
+| **Accepted** | 8 |
+| **Reserved** | 1 |
+| **Architecture Status** | Stable through v0.6.0-alpha |
+
+---
+
+# Future Expansion
+
+Future Architecture Decision Records may address:
+
+- Plugin Architecture
+- Distributed Knowledge Engine
+- Multi-Agent Collaboration
+- Security Architecture
+- Repository Federation
+- Distributed Scheduling
+- Cloud Deployment
+- High Availability
+
+New Architecture Decision Records should complement the
+existing architecture rather than redefine accepted
+engineering principles.
 
 ---
 
@@ -173,19 +196,15 @@ authoritative.
 
 **Previous**
 
-Part XII — 2000 Developer Guides
+Part XII — Developer Guides
 
 **Current**
 
-Part XIII — 3000 Architecture Decision Records
+Part XIII — Architecture Decision Records
 
 **Next**
 
-Part XIV — 9000 Archive
-
-**Return**
-
-← EVE-SPEC (`/docs`)
+Ideas & Future Concepts
 
 ---
 
@@ -193,6 +212,8 @@ Part XIV — 9000 Archive
 
 **Part:** XIII — Architecture Decision Records
 
-**Status:** Planned
+**Series:** 3000
+
+**Status:** Complete
 
 *"Knowledge should evolve."*
