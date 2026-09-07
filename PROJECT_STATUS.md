@@ -54,8 +54,9 @@ Current objectives:
 **Continuing v0.7.x targets:**
 
 - Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
-- Remaining Part XII developer guides (EVE-2005–EVE-2009;
-  EVE-2000–EVE-2003 deferred to interface work)
+- Remaining Part XII developer guides (EVE-2005 delivered;
+  EVE-2006–EVE-2009 Planned; EVE-2000–EVE-2003 deferred to
+  interface work)
 
 **Later:**
 
@@ -335,8 +336,8 @@ Limitations (intentional):
 - Anthropic Provider
 - OpenAI-Compatible API (AI-0200) — deferred
 - Developer Guide series (EVE-2004 delivered in v0.7.0-alpha;
-  EVE-2005–EVE-2009 and interface guides EVE-2000–EVE-2003
-  remain Planned)
+  EVE-2005 delivered; EVE-2006–EVE-2009 and interface guides
+  EVE-2000–EVE-2003 remain Planned)
 
 ---
 
@@ -417,12 +418,14 @@ The Core Platform is operational.
 
 **v0.7.0-alpha** delivers conversation memory, provider-layer
 streaming (Null + Ollama + LM Studio AI-0102 + HTTP streaming
-transport), and EVE-2004.
+transport), and EVE-2004. Post-release V0.7.x also delivers
+EVE-2005.
 
 Continuing v0.7.x Developer Platform work:
 
 - Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
-- Remaining Part XII developer guides (series incomplete)
+- Remaining Part XII developer guides (EVE-2006–EVE-2009
+  Planned; series incomplete)
 
 **Then — v0.8.x Interfaces**
 

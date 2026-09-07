@@ -13,8 +13,9 @@ This project follows
 ### Planned - continuing v0.7.x Developer Platform
 
 - Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
-- Remaining Part XII developer guides (EVE-2005-EVE-2009;
-  EVE-2000-EVE-2003 deferred to interface work)
+- Remaining Part XII developer guides (EVE-2005 delivered;
+  EVE-2006-EVE-2009 Planned; EVE-2000-EVE-2003 deferred to
+  interface work)
 
 ### Planned - v0.8.x Interfaces
 
@@ -252,7 +253,7 @@ V0.7.x roadmap or Part XII developer-guide series.
 
 | Version | Status | Summary |
 |----------|--------|---------|
-| **Unreleased** | 🚧 | Continuing v0.7.x providers/guides; Interfaces |
+| **Unreleased** | 🚧 | Continuing v0.7.x providers/guides (2006–2009); Interfaces |
 | **0.7.0-alpha** | ✅ | Memory, streaming, LM Studio, EVE-2004 |
 | **0.6.0-alpha** | ✅ | Complete AI Pipeline & Architecture Stabilization |
 | **0.5.0-alpha** | ✅ | Provider Abstraction & Reasoning Pipeline |

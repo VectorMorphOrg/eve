@@ -86,7 +86,8 @@ Focus:
   - OpenAI-Compatible API (AI-0200) — deferred (not AI-0102)
   - llama.cpp (optional)
 - Remaining Developer Guide series (EVE-2000 Part XII)
-  - EVE-2005–EVE-2009 Planned
+  - EVE-2005 Capability Development Guide — delivered
+  - EVE-2006–EVE-2009 Planned
   - EVE-2000–EVE-2003 deferred until interface implementations
 - Documentation freeze continuation
 
