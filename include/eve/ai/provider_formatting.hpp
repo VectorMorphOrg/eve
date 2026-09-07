@@ -75,5 +75,6 @@ public:
 
 [[nodiscard]] ProviderCapabilities null_provider_capabilities();
 [[nodiscard]] ProviderCapabilities ollama_provider_capabilities();
+[[nodiscard]] ProviderCapabilities lm_studio_provider_capabilities();
 
 }  // namespace eve::ai

@@ -40,6 +40,7 @@ add_executable(eve_tests
     null_provider_streaming_test.cpp
     http_transport_streaming_test.cpp
     ollama_streaming_test.cpp
+    lm_studio_provider_test.cpp
 )
 
 target_link_libraries(eve_tests

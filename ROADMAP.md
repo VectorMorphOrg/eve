@@ -67,11 +67,15 @@ Focus:
 - Conversation Memory
 - Streaming Responses
 - Additional AI Providers
+  - LM Studio (AI-0102) — implemented (local HTTP Chat
+    Completions; sync + genuine SSE streaming)
   - OpenAI
   - Anthropic
-  - LM Studio
+  - OpenAI-Compatible API (AI-0200) — deferred (not AI-0102)
   - llama.cpp (optional)
-- Complete Developer Guide series (EVE-2000)
+- Complete Developer Guide series (EVE-2000 Part XII)
+  - EVE-2004 Provider Development Guide — implemented
+  - remaining Part XII guides — Planned
 - Documentation freeze continuation
 
 Goal:

@@ -51,8 +51,10 @@ Current objectives:
 
 **Remaining v0.7.x targets:**
 
-- Additional AI Providers (OpenAI, Anthropic, LM Studio)
-- 2000 Developer Guide series
+- Additional AI Providers (OpenAI, Anthropic; LM Studio AI-0102
+  complete)
+- 2000 Developer Guide series (EVE-2004 Active; remaining
+  Part XII guides Planned)
 
 **Later:**
 
@@ -183,11 +185,12 @@ User
 |----------|--------|
 | Null Provider | ✅ Complete |
 | Ollama Provider | ✅ Complete |
+| LM Studio Provider (AI-0102) | ✅ Complete |
 | Provider Formatter | ✅ Complete |
 | Live Ollama Integration | ✅ Complete |
 | OpenAI | ⏳ Planned |
 | Anthropic | ⏳ Planned |
-| LM Studio | ⏳ Planned |
+| OpenAI-Compatible API (AI-0200) | ⏳ Planned |
 
 ---
 
@@ -268,6 +271,7 @@ None of the interface binaries are implemented in v0.6.0-alpha.
 - Provider Manager
 - Null Provider
 - Ollama Provider
+- LM Studio Provider (AI-0102; v0.7 unreleased)
 - Provider Formatter
 - Live End-to-End Demonstration
 - Conversation Memory Service (CAP-0102 integrated; in-memory)
@@ -301,6 +305,11 @@ Limitations (intentional):
 - Additive HTTP `send_stream` + chunked-transfer decoding
 - Ollama genuine streaming (`stream: true`, NDJSON buffering;
   `supports_streaming = true`)
+- LM Studio (AI-0102) synchronous Chat Completions and genuine
+  SSE streaming (`supports_streaming = true`; ProviderManager
+  dispatches streaming directly; local HTTP default
+  `http://localhost:1234`; optional bearer via
+  `lm_studio_api_key`)
 
 Limitations (intentional):
 
@@ -312,6 +321,10 @@ Limitations (intentional):
 - Live Ollama streaming is not part of the normal non-live
   suite
 - Synchronous `send()` does not use streaming chunked decoding
+- LM Studio / current transport: local `http://` only (no
+  hosted HTTPS/TLS)
+- AI-0200 generic OpenAI-compatible provider remains deferred
+  (not an alias for AI-0102)
 
 ---
 
@@ -319,8 +332,9 @@ Limitations (intentional):
 
 - OpenAI Provider
 - Anthropic Provider
-- LM Studio Provider
-- Developer Guide series (EVE-2000)
+- OpenAI-Compatible API (AI-0200) — deferred
+- Developer Guide series (EVE-2004 Active; EVE-2005–EVE-2009
+  and interface guides EVE-2000–EVE-2003 remain Planned)
 
 ---
 
@@ -401,14 +415,15 @@ The Core Platform is operational.
 
 Conversation Memory foundation for CAP-0102 is implemented
 (in-memory, process-scoped). Provider-layer Streaming
-Responses are implemented (Null + Ollama + HTTP streaming
-transport). Documentation has been synchronized to that
-reality.
+Responses are implemented (Null + Ollama + LM Studio AI-0102
++ HTTP streaming transport). Documentation has been
+synchronized to that reality.
 
 Remaining v0.7.x Developer Platform work:
 
-- Additional AI Providers
-- EVE-2000 Developer Guide series
+- Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
+- EVE-2000 Developer Guide series (EVE-2004 implemented;
+  series incomplete)
 
 **Then — v0.8.x Interfaces**
 
@@ -432,11 +447,13 @@ complete. Interface **implementations** remain planned for
 v0.8.x.
 
 Verified non-live test posture for the memory + streaming
-workstreams:
++ LM Studio workstreams:
 
-- 247 PASS / 3 FAIL (`-LiveOllama*`; 250 tests total)
+- 275 PASS / 3 FAIL (`-LiveOllama*`; 278 tests total)
 - Known pre-existing failures remain in
-  `RepositoryDiscoveryTest` (three cases)
+  `RepositoryDiscoveryTest` (three cases):
+  `SkipsUnsupportedFiles`, `ExcludesIgnoredDirectories`,
+  `ReturnsDeterministicOrdering`
 
 ---
 

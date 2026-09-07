@@ -50,6 +50,7 @@ add_library(eve_core
     src/eve/ai/provider_formatter.cpp
     src/eve/ai/http_transport.cpp
     src/eve/ai/ollama_provider.cpp
+    src/eve/ai/lm_studio_provider.cpp
     src/eve/core/core_platform.cpp
     src/eve/core/platform_bootstrap.cpp
 )

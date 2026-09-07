@@ -48,6 +48,18 @@ This project follows
   line buffering across transport boundaries;
   `supports_streaming = true`)
 
+### Added — v0.7 Additional AI Providers (LM Studio AI-0102)
+
+- LM Studio provider (AI-0102) over local HTTP Chat Completions
+  (`/v1/chat/completions`; default base URL
+  `http://localhost:1234`)
+- Synchronous generation (`stream: false`)
+- Genuine SSE streaming (`stream: true`; terminal
+  `data: [DONE]`; `supports_streaming = true`)
+- ProviderManager direct streaming dispatch for AI-0102
+- Optional bearer authentication via `lm_studio_api_key`
+- Provider-specific configuration under `lm_studio_*` keys
+
 ### Limitations — Streaming
 
 - No async streaming runtime, cancellation, or WebSocket
@@ -58,10 +70,13 @@ This project follows
 - Live Ollama streaming is not part of the normal non-live
   suite
 - Synchronous `send()` does not use streaming chunked decoding
+- Local `http://` transport only (no hosted HTTPS/TLS)
+- AI-0200 (generic OpenAI-compatible API) remains unimplemented
+  and is not an alias for AI-0102
 
 ### Planned — remaining v0.7.x Developer Platform
 
-- Additional AI Providers (OpenAI, Anthropic, LM Studio)
+- Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
 - 2000 Developer Guide series
 
 ### Planned — v0.8.x Interfaces

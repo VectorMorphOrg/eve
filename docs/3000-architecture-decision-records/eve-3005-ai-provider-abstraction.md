@@ -265,19 +265,23 @@ Platform.
 
 # Supported Providers
 
-As of **v0.6.0-alpha**, implemented providers include:
+As of **v0.6.0-alpha**, with unreleased v0.7 provider work on
+main, implemented providers include:
 
 - Null Provider
 - Ollama Provider
+- LM Studio Provider (AI-0102; local HTTP Chat Completions,
+  synchronous generation and genuine SSE streaming;
+  `supports_streaming = true`)
 
 Future providers may include:
 
 - OpenAI
 - Anthropic
 - Google Gemini
-- LM Studio
 - llama.cpp
-- OpenAI-Compatible APIs
+- OpenAI-Compatible APIs (AI-0200; generic servers — distinct
+  from AI-0102 and not yet implemented)
 - Additional local or hosted providers
 
 All providers implement the same Provider Interface.

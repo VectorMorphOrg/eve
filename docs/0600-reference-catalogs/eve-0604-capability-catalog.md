@@ -210,7 +210,12 @@ Memory and Streaming work on main):
 - Provider Formatter is implemented.
 - Ollama Provider is implemented (including provider-level
   streaming).
+- LM Studio Provider (AI-0102) is implemented (local HTTP
+  Chat Completions; synchronous generation and genuine SSE
+  streaming; `supports_streaming = true`).
 - Null Provider supports deterministic streaming.
+- AI-0200 (generic OpenAI-compatible API) remains planned and
+  is not an alias for AI-0102.
 - End-to-end documentation search is operational.
 - Conversation Memory Service is implemented (in-memory,
   session-scoped, used by CAP-0102).

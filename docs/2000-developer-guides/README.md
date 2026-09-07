@@ -54,12 +54,16 @@ Topics include:
 | EVE-2001 | REST API Developer Guide | Planned |
 | EVE-2002 | Discord Integration Guide | Planned |
 | EVE-2003 | Website Integration Guide | Planned |
-| EVE-2004 | Provider Development Guide | Planned |
+| EVE-2004 | Provider Development Guide | ✅ Active |
 | EVE-2005 | Capability Development Guide | Planned |
 | EVE-2006 | Service Development Guide | Planned |
 | EVE-2007 | Knowledge Repository Guide | Planned |
 | EVE-2008 | Testing Guide | Planned |
 | EVE-2009 | Release Process Guide | Planned |
+
+Interface guides (EVE-2000–EVE-2003) remain Planned until the
+corresponding v0.8.x interface implementations. The Part XII
+series is **not** complete.
 
 ---
 
@@ -100,7 +104,7 @@ platform.**
 | REST Guide | ⏳ |
 | Discord Guide | ⏳ |
 | Website Guide | ⏳ |
-| Provider Guide | ⏳ |
+| Provider Guide (EVE-2004) | ✅ |
 | Capability Guide | ⏳ |
 | Service Guide | ⏳ |
 | Repository Guide | ⏳ |

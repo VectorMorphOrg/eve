@@ -284,14 +284,19 @@ A fully operational engineering assistant using local AI.
 
 ## Phase 6 — Developer Platform
 
-**Status:** 🚧 Planned (v0.7.x)
+**Status:** 🚧 In Progress (v0.7.x)
 
 Components
 
 - Conversation Memory
 - Streaming Responses
-- Additional AI Providers (OpenAI, Anthropic, LM Studio)
-- Developer Guide series (EVE-2000)
+- Additional AI Providers
+  - LM Studio (AI-0102) — implemented
+  - OpenAI / Anthropic — remaining
+  - OpenAI-Compatible API (AI-0200) — deferred
+- Developer Guide series (EVE-2000 Part XII)
+  - EVE-2004 Provider Development Guide — implemented
+  - remaining Part XII guides — Planned
 
 Goal
 

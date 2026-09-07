@@ -65,13 +65,16 @@ specification.
 | **IX** | 0800 | Deployment Specifications | 🚧 Planned |
 | **X** | 0900 | Security Specifications | 🚧 Planned |
 | **XI** | 1000 | Implementation Guides | ✅ Complete |
-| **XII** | 2000 | Developer Guides | 🚧 Planned |
+| **XII** | 2000 | Developer Guides | ⏳ Partial |
 | **XIII** | 3000 | Architecture Decision Records | ✅ Complete |
 | **XIV** | 9000 | Archive | ⚠ Reserved |
 
 **Status notes:**
 
 - ✅ Complete — document series content exists and is usable
+- ⏳ Partial — series started; one or more guides Active, series
+  not complete (for example Part XII: EVE-2004 Active;
+  EVE-2000–EVE-2003 and EVE-2005–EVE-2009 remain Planned)
 - 🚧 Planned — series not written yet, or only empty stubs
 - ⚠ Reserved — reserved archive series
 

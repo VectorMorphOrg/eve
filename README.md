@@ -240,8 +240,9 @@ Canonical sequencing (Hybrid / Option C):
 
 - Conversation Memory
 - Streaming Responses
-- OpenAI / Anthropic / LM Studio providers
-- Developer Guide series
+- LM Studio provider (AI-0102) — implemented
+- OpenAI / Anthropic providers (future)
+- Developer Guide series (EVE-2004 implemented; series incomplete)
 
 ### Then — v0.8.x Interfaces
 

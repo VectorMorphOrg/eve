@@ -206,6 +206,19 @@ ProviderCapabilities ollama_provider_capabilities() {
     };
 }
 
+ProviderCapabilities lm_studio_provider_capabilities() {
+    return ProviderCapabilities{
+        .supports_streaming = true,
+        .supports_system_prompts = true,
+        .supports_tool_calling = false,
+        .supports_json_responses = false,
+        .supports_image_input = false,
+        .supports_reasoning_mode = false,
+        .supports_function_calling = false,
+        .supports_multiple_messages = true,
+    };
+}
+
 ProviderRequest ProviderFormatter::format(
     const context::ContextPackage& package,
     ProviderCapabilities capabilities,

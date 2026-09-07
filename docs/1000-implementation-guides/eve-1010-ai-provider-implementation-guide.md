@@ -358,13 +358,29 @@ Callbacks are synchronous and non-retained.
 - Ollama — `stream: true` request, NDJSON line buffering across
   arbitrary HTTP callback boundaries, terminal `done`
   semantics, metadata preserved on the final AIResponse
+- LM Studio (AI-0102) — OpenAI-compatible Chat Completions over
+  local HTTP (`/v1/chat/completions`, default base URL
+  `http://localhost:1234`); synchronous `generate()` with
+  `stream: false`; genuine SSE `generate_stream()` with
+  `stream: true` and terminal `data: [DONE]`;
+  `supports_streaming = true` so ProviderManager dispatches
+  streaming directly; optional bearer API key via
+  `lm_studio_api_key` and related `lm_studio_*` configuration
 
-Synchronous `generate()` remains supported. Ollama
-`generate()` continues to use `stream: false`.
+Synchronous `generate()` remains supported. Ollama and
+LM Studio `generate()` continue to use `stream: false`.
 
 Providers without streaming advertise
 `supports_streaming = false`. ProviderManager falls back to
 synchronous generation plus one final StreamChunk.
+
+AI-0200 (generic OpenAI-compatible API) remains unimplemented
+and is not an alias for AI-0102. Shared OpenAI-compatible
+abstraction extraction remains deferred.
+
+LM Studio streaming inherits current transport limits: local
+`http://` only (no hosted HTTPS/TLS), no cancellation, no
+async streaming runtime, and no WebSocket transport.
 
 ## Memory
 
@@ -415,9 +431,10 @@ Example providers include:
 
 - Null Provider
 - Ollama
-- OpenAI
-- Anthropic
-- LM Studio
+- LM Studio (AI-0102; implemented)
+- OpenAI (planned)
+- Anthropic (planned)
+- OpenAI-Compatible API / AI-0200 (planned; not AI-0102)
 
 Changing providers should not require modifications to the
 Reasoning Pipeline.

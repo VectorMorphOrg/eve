@@ -75,7 +75,7 @@ stable provider identifiers.
 |----|----------|-------------|--------|
 | AI-0100 | Ollama | Local inference runtime | ✅ |
 | AI-0101 | llama.cpp | Local GGUF inference | 🚧 |
-| AI-0102 | LM Studio | Desktop inference platform | 🚧 |
+| AI-0102 | LM Studio | Desktop inference platform | ✅ |
 | AI-0103 | Future Local Runtime | Reserved | 🚧 |
 
 ---
@@ -149,10 +149,20 @@ Formatter.
 |----------|----|-----------|----------------|-------------------|
 | Null Provider | AI-0000 | ✅ | ❌ | ❌ |
 | Ollama | AI-0100 | ✅ | ✅ | ✅ |
+| LM Studio | AI-0102 | ✅ | ✅ | ✅ |
 
 Unimplemented catalog providers remain streaming-unsupported
 until they provide a genuine `generate_stream()`
 implementation.
+
+AI-0102 uses OpenAI-compatible Chat Completions over local
+HTTP (`/v1/chat/completions`), including synchronous
+generation and genuine SSE streaming
+(`supports_streaming = true`). Optional bearer API key
+authentication is supported via provider-specific
+`lm_studio_*` configuration. AI-0200 (generic OpenAI-
+compatible API) remains a separate, unimplemented catalog
+entry and is not an alias for AI-0102.
 
 ---
 
@@ -233,14 +243,33 @@ AI Providers.
 
 # Current Implementation Status
 
-As of **v0.6.0-alpha**, with unreleased v0.7 streaming work on
-main, the following providers are implemented:
+As of **v0.6.0-alpha**, with unreleased v0.7 streaming and
+additional-provider work on main, the following providers are
+implemented:
 
 - AI-0000 — Null Provider
   (`supports_streaming = true`; deterministic multi-chunk
   streaming)
 - AI-0100 — Ollama
   (`supports_streaming = true`; HTTP streaming + NDJSON)
+- AI-0102 — LM Studio
+  (`supports_streaming = true`; local HTTP Chat Completions
+  with synchronous generation and genuine SSE streaming;
+  default base URL `http://localhost:1234`; optional
+  `Authorization: Bearer` via `lm_studio_api_key`;
+  ProviderManager dispatches streaming directly)
+
+AI-0200 — OpenAI-Compatible API remains planned (generic
+OpenAI-compatible servers). It is not implemented and is not
+an alias for AI-0102.
+
+Known provider/transport limitations for AI-0102:
+
+- Local `http://` only with the current transport (no hosted
+  HTTPS/TLS)
+- No cancellation, async streaming, or WebSocket transport
+- Streaming memory persistence remains deferred
+- Discord/CLI/REST/Website streaming interfaces remain deferred
 
 The provider architecture additionally includes:
 
