@@ -343,9 +343,9 @@ Examples already in-tree:
 - Documentation / search services
 - Conversation memory service (consumed by CAP-0102)
 
-For contributor workflow on services themselves, see the
-planned [EVE-2006](eve-2006-service-development-guide.md)
-(stub until written) and the authoritative
+For contributor workflow on services themselves, see
+[EVE-2006](eve-2006-service-development-guide.md)
+and the authoritative
 [EVE-1004](../1000-implementation-guides/eve-1004-service-layer-implementation-guide.md) /
 [eve-0605](../0600-reference-catalogs/eve-0605-service-catalog.md).
 
@@ -429,7 +429,7 @@ EVE-2005 — Capability Development Guide
 
 **Next**
 
-EVE-2006 — Service Development Guide (planned)
+EVE-2006 — Service Development Guide
 
 **Return**
 
