@@ -299,6 +299,20 @@ When conversation memory is enabled for a request, the loaded
 Conversation Context is attached to the Context Package after
 knowledge assembly and before Provider Formatting.
 
+## Streaming Relationship
+
+Provider streaming callbacks (`StreamChunk`) are transient and
+are not conversation memory.
+
+Conversation Memory Service is not invoked by ProviderManager
+or providers during `generate_stream()`.
+
+Only a completed canonical assistant `generated_text` is
+suitable for eventual memory persistence by an appropriate
+caller. CAP-0102 currently persists memory on its synchronous
+success path and does not implement streaming-specific memory
+handling.
+
 ---
 
 # Constraints

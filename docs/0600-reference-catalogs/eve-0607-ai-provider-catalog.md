@@ -143,6 +143,17 @@ including:
 Capability differences are handled by the Provider
 Formatter.
 
+## Implemented Capability Matrix (current)
+
+| Provider | ID | Streaming | System Prompts | Multiple Messages |
+|----------|----|-----------|----------------|-------------------|
+| Null Provider | AI-0000 | ✅ | ❌ | ❌ |
+| Ollama | AI-0100 | ✅ | ✅ | ✅ |
+
+Unimplemented catalog providers remain streaming-unsupported
+until they provide a genuine `generate_stream()`
+implementation.
+
 ---
 
 # Provider Architecture
@@ -222,18 +233,23 @@ AI Providers.
 
 # Current Implementation Status
 
-As of **v0.6.0-alpha**, the following providers are
-implemented:
+As of **v0.6.0-alpha**, with unreleased v0.7 streaming work on
+main, the following providers are implemented:
 
 - AI-0000 — Null Provider
+  (`supports_streaming = true`; deterministic multi-chunk
+  streaming)
 - AI-0100 — Ollama
+  (`supports_streaming = true`; HTTP streaming + NDJSON)
 
 The provider architecture additionally includes:
 
-- Provider Manager
+- Provider Manager (`generate` and `generate_stream`)
 - Provider Formatter
-- HTTP Transport
+- HTTP Transport (`send` and additive `send_stream`, including
+  chunked-transfer decoding on the streaming path)
 - Provider Request model
+- StreamChunk / StreamConsumer contract
 - AI Response normalization
 
 Additional providers may be implemented without changing the
@@ -247,8 +263,7 @@ Future revisions of this catalog may include:
 
 - Supported model families
 - Context window sizes
-- Provider capability matrix
-- Streaming support
+- Expanded capability matrix detail
 - Tool support
 - Vision support
 - Authentication methods

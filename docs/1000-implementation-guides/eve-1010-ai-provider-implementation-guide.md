@@ -296,6 +296,85 @@ Responsibilities include:
 
 Providers should never implement networking directly.
 
+## Streaming Transport
+
+The transport contract is additive:
+
+- `send()` — complete blocking response body
+- `send_stream()` — incremental HTTP response body bytes via
+  `HttpBodyConsumer`
+
+`send_stream()` delivers decoded HTTP body bytes only. It must
+not parse Ollama NDJSON or emit StreamChunks.
+
+When `Transfer-Encoding: chunked` is present on the streaming
+path, chunk framing is removed before body bytes are delivered
+to the consumer. Content-Length and connection-close behavior
+remain for non-chunked responses.
+
+Synchronous `send()` remains unchanged and does not use the
+streaming chunked decoder.
+
+Known transport limitations:
+
+- No async/event-loop transport
+- HTTP trailer fields are not exposed
+- No deterministic real TCP integration fixture currently
+  exercises `SocketHttpTransport` → `OllamaProvider` together
+
+---
+
+# Streaming Generation
+
+Providers may implement additive streaming:
+
+```text
+ProviderManager::generate_stream
+        ↓
+ProviderFormatter (once)
+        ↓
+IAIProvider::generate_stream
+        ↓
+IHttpTransport::send_stream   (network providers)
+        ↓
+Provider-specific stream parsing
+        ↓
+StreamConsumer (StreamChunk callbacks)
+        ↓
+canonical AIResponse
+```
+
+## StreamChunk
+
+- `text_delta` — incremental assistant text
+- `done` — completion signal
+
+Callbacks are synchronous and non-retained.
+
+## Current Implementations
+
+- Null Provider — deterministic fixed-window multi-chunk
+  streaming; shares `generate()` text for exact equivalence
+- Ollama — `stream: true` request, NDJSON line buffering across
+  arbitrary HTTP callback boundaries, terminal `done`
+  semantics, metadata preserved on the final AIResponse
+
+Synchronous `generate()` remains supported. Ollama
+`generate()` continues to use `stream: false`.
+
+Providers without streaming advertise
+`supports_streaming = false`. ProviderManager falls back to
+synchronous generation plus one final StreamChunk.
+
+## Memory
+
+Streaming providers must not write conversation memory.
+StreamChunks are transient. Only final canonical
+`generated_text` is suitable for eventual persistence by a
+caller such as CAP-0102.
+
+CAP-0102 itself remains a synchronous capability path.
+
 ---
 
 # Provider Registration
@@ -426,11 +505,15 @@ Implementation should include:
 - Request serialization tests
 - Response parsing tests
 - HTTP transport tests
+- HTTP streaming / chunked-decoding tests
+- Provider streaming contract tests
 - Health check tests
 - Mock provider tests
 - Live provider integration tests
 
 Every provider should satisfy the common provider contract.
+Live Ollama streaming is not part of the normal non-live
+suite.
 
 ---
 

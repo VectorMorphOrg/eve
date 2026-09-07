@@ -37,19 +37,20 @@ The platform is responsible for generating knowledge.
 
 # Current Milestone
 
-## v0.7.0 Conversation Memory Foundation (in progress on main)
+## v0.7.x Developer Platform (in progress on main)
 
 Current objectives:
 
-- Complete Conversation Memory foundation for CAP-0102
 - Preserve Core Platform architecture as implemented
-- Continue remaining v0.7.x Developer Platform work
+- Complete remaining unreleased v0.7.x Developer Platform work
 
-**Status: Conversation Memory foundation implemented (docs sync)**
+**Status:**
+
+- Conversation Memory foundation — implemented (docs sync)
+- Streaming Responses (provider-layer) — implemented (docs sync)
 
 **Remaining v0.7.x targets:**
 
-- Streaming Responses
 - Additional AI Providers (OpenAI, Anthropic, LM Studio)
 - 2000 Developer Guide series
 
@@ -290,11 +291,32 @@ Limitations (intentional):
 - No streaming-specific memory handling
 - No Discord/CLI/REST/Website memory UX
 
+### v0.7 Streaming Responses (provider-layer)
+
+- StreamChunk / StreamConsumer contract
+- Additive `IAIProvider::generate_stream` /
+  `ProviderManager::generate_stream`
+- NullProvider deterministic multi-chunk streaming
+  (`supports_streaming = true`)
+- Additive HTTP `send_stream` + chunked-transfer decoding
+- Ollama genuine streaming (`stream: true`, NDJSON buffering;
+  `supports_streaming = true`)
+
+Limitations (intentional):
+
+- No async streaming / cancellation / WebSocket
+- No streaming memory persistence
+- No Discord/CLI/REST/Website streaming interfaces
+- No deterministic real TCP SocketHttpTransport →
+  OllamaProvider integration fixture
+- Live Ollama streaming is not part of the normal non-live
+  suite
+- Synchronous `send()` does not use streaming chunked decoding
+
 ---
 
 ## Next — remaining v0.7.x Developer Platform
 
-- Streaming Responses
 - OpenAI Provider
 - Anthropic Provider
 - LM Studio Provider
@@ -378,12 +400,13 @@ Deterministic Reasoning Pipeline
 The Core Platform is operational.
 
 Conversation Memory foundation for CAP-0102 is implemented
-(in-memory, process-scoped). Documentation has been
-synchronized to that reality.
+(in-memory, process-scoped). Provider-layer Streaming
+Responses are implemented (Null + Ollama + HTTP streaming
+transport). Documentation has been synchronized to that
+reality.
 
 Remaining v0.7.x Developer Platform work:
 
-- Streaming Responses
 - Additional AI Providers
 - EVE-2000 Developer Guide series
 
@@ -408,9 +431,10 @@ Interface **specifications** (CLI, Discord) may already be
 complete. Interface **implementations** remain planned for
 v0.8.x.
 
-Verified non-live test posture for the memory workstream:
+Verified non-live test posture for the memory + streaming
+workstreams:
 
-- 200 PASS / 3 FAIL (`-LiveOllama*`)
+- 247 PASS / 3 FAIL (`-LiveOllama*`; 250 tests total)
 - Known pre-existing failures remain in
   `RepositoryDiscoveryTest` (three cases)
 

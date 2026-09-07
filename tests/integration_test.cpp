@@ -36,7 +36,9 @@ public:
     [[nodiscard]] ProviderId id() const override { return ProviderId{"AI-CAPTURE"}; }
     [[nodiscard]] std::string name() const override { return "ConversationCaptureProvider"; }
     [[nodiscard]] ai::ProviderCapabilities capabilities() const override {
-        return ai::null_provider_capabilities();
+        auto caps = ai::null_provider_capabilities();
+        caps.supports_streaming = false;
+        return caps;
     }
     [[nodiscard]] ai::ProviderOptions default_options() const override { return {}; }
 

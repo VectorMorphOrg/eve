@@ -198,21 +198,26 @@ Capability identifiers.
 
 # Current Implementation Status
 
-As of **v0.6.0-alpha** (with v0.7 Conversation Memory work
-in progress on main):
+As of **v0.6.0-alpha** (with unreleased v0.7 Conversation
+Memory and Streaming work on main):
 
 - Platform Request architecture is implemented.
 - Validation Engine is implemented.
 - Capability Engine is implemented.
-- Documentation Search (CAP-0102) is operational.
+- Documentation Search (CAP-0102) is operational
+  (synchronous capability path).
 - Deterministic Reasoning Pipeline is operational.
 - Provider Formatter is implemented.
-- Ollama Provider is implemented.
+- Ollama Provider is implemented (including provider-level
+  streaming).
+- Null Provider supports deterministic streaming.
 - End-to-end documentation search is operational.
 - Conversation Memory Service is implemented (in-memory,
   session-scoped, used by CAP-0102).
 - CAP-0404 explicit memory-management capabilities remain
   deferred.
+- CAP-0102 does not expose streaming response delivery to
+  Discord/CLI/REST/Website interfaces (those remain v0.8.x).
 
 Additional capabilities will be added without changing
 existing identifiers.

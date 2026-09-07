@@ -29,6 +29,7 @@ struct OllamaProviderConfig {
 struct OllamaChatResponse {
     std::string model;
     std::string content;
+    bool done{false};
     std::optional<std::size_t> prompt_eval_count;
     std::optional<std::size_t> eval_count;
     std::optional<std::int64_t> total_duration_ns;
@@ -36,7 +37,9 @@ struct OllamaChatResponse {
 };
 
 [[nodiscard]] std::string escape_json_string(std::string_view value);
-[[nodiscard]] std::string serialize_ollama_chat_request(const ProviderRequest& request);
+[[nodiscard]] std::string serialize_ollama_chat_request(
+    const ProviderRequest& request,
+    bool stream = false);
 [[nodiscard]] OllamaChatResponse parse_ollama_chat_response(std::string_view body);
 [[nodiscard]] std::string build_chat_url(std::string_view base_url);
 
@@ -52,6 +55,9 @@ public:
     [[nodiscard]] ProviderOptions default_options() const override;
     [[nodiscard]] std::expected<AIResponse, ProviderError> generate(
         const ProviderRequest& request) const override;
+    [[nodiscard]] std::expected<AIResponse, ProviderError> generate_stream(
+        const ProviderRequest& request,
+        const StreamConsumer& consumer) const override;
 
     [[nodiscard]] std::expected<void, ProviderError> health_check() const;
     [[nodiscard]] const OllamaProviderConfig& config() const noexcept;

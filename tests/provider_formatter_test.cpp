@@ -506,6 +506,210 @@ TEST(ProviderFormatterTest, ProviderManagerFormatsBeforeProviderExecution) {
     EXPECT_EQ(response->generated_text, "Formatted response.");
 }
 
+TEST(StreamContractTest, StreamChunkCarriesTextDeltaAndDone) {
+    const StreamChunk chunk{
+        .text_delta = "hello",
+        .done = true,
+    };
+    EXPECT_EQ(chunk.text_delta, "hello");
+    EXPECT_TRUE(chunk.done);
+}
+
+TEST(StreamContractTest, StreamConsumerReceivesExactChunkValues) {
+    std::string observed_delta;
+    bool observed_done = false;
+    bool called = false;
+
+    const StreamConsumer consumer = [&](const StreamChunk& chunk) {
+        called = true;
+        observed_delta = chunk.text_delta;
+        observed_done = chunk.done;
+    };
+
+    consumer(StreamChunk{.text_delta = "partial", .done = false});
+
+    EXPECT_TRUE(called);
+    EXPECT_EQ(observed_delta, "partial");
+    EXPECT_FALSE(observed_done);
+}
+
+class StreamingFallbackStubProvider final : public IAIProvider {
+public:
+    [[nodiscard]] ProviderId id() const override { return ProviderId{"AI-STREAM-STUB"}; }
+    [[nodiscard]] std::string name() const override { return "StreamingFallbackStub"; }
+    [[nodiscard]] ProviderCapabilities capabilities() const override {
+        auto caps = null_provider_capabilities();
+        caps.supports_streaming = false;
+        return caps;
+    }
+    [[nodiscard]] ProviderOptions default_options() const override { return {}; }
+
+    [[nodiscard]] std::expected<AIResponse, ProviderError> generate(
+        const ProviderRequest& request) const override {
+        ++generate_calls;
+        last_request_message_count = request.messages.size();
+        last_had_system = !request.messages.empty() &&
+            request.messages.front().role == ProviderMessageRole::System;
+        if (fail) {
+            return std::unexpected(ProviderError{
+                .provider_id = id().value,
+                .message = "forced provider failure",
+            });
+        }
+        return AIResponse{
+            .generated_text = generated_text,
+            .provider_id = id().value,
+        };
+    }
+
+    mutable std::size_t generate_calls{0};
+    mutable std::size_t last_request_message_count{0};
+    mutable bool last_had_system{false};
+    bool fail{false};
+    std::string generated_text{"stub-final-text"};
+};
+
+class UnsupportedStreamingStubProvider final : public IAIProvider {
+public:
+    [[nodiscard]] ProviderId id() const override { return ProviderId{"AI-NO-STREAM"}; }
+    [[nodiscard]] std::string name() const override { return "UnsupportedStreamingStub"; }
+    [[nodiscard]] ProviderCapabilities capabilities() const override {
+        auto caps = null_provider_capabilities();
+        caps.supports_streaming = false;
+        return caps;
+    }
+    [[nodiscard]] ProviderOptions default_options() const override { return {}; }
+
+    [[nodiscard]] std::expected<AIResponse, ProviderError> generate(
+        const ProviderRequest& /*request*/) const override {
+        return AIResponse{
+            .generated_text = "unused",
+            .provider_id = id().value,
+        };
+    }
+};
+
+TEST(StreamContractTest, IAIProviderDefaultGenerateStreamIsUnsupported) {
+    UnsupportedStreamingStubProvider provider;
+    ASSERT_FALSE(provider.capabilities().supports_streaming);
+
+    const ProviderFormatter formatter;
+    const auto request = formatter.format(
+        make_test_package(),
+        provider.capabilities(),
+        provider.default_options(),
+        ProviderMetadata{
+            .provider_id = provider.id(),
+            .provider_name = provider.name(),
+            .request_id = RequestId{"REQ-STREAM"},
+            .package_id = PackageId{"PKG-STREAM"},
+        });
+
+    int callback_calls = 0;
+    const auto result = provider.generate_stream(
+        request,
+        [&](const StreamChunk&) { ++callback_calls; });
+
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error().provider_id, "AI-NO-STREAM");
+    EXPECT_NE(result.error().message.find("not supported"), std::string::npos);
+    EXPECT_EQ(callback_calls, 0);
+}
+
+TEST(StreamContractTest, ProviderManagerFallsBackToSynchronousGenerate) {
+    auto stub = std::make_shared<StreamingFallbackStubProvider>();
+    ProviderManager manager;
+    manager.register_provider(stub);
+    manager.set_active_provider(ProviderId{"AI-STREAM-STUB"});
+
+    int callback_calls = 0;
+    std::string observed_delta;
+    bool observed_done = false;
+
+    const auto response = manager.generate_stream(
+        make_test_package(),
+        [&](const StreamChunk& chunk) {
+            ++callback_calls;
+            observed_delta = chunk.text_delta;
+            observed_done = chunk.done;
+        });
+
+    ASSERT_TRUE(response.has_value());
+    EXPECT_EQ(stub->generate_calls, 1U);
+    EXPECT_EQ(callback_calls, 1);
+    EXPECT_EQ(observed_delta, response->generated_text);
+    EXPECT_EQ(observed_delta, "stub-final-text");
+    EXPECT_TRUE(observed_done);
+    EXPECT_EQ(response->generated_text, "stub-final-text");
+    EXPECT_EQ(response->provider_id, "AI-STREAM-STUB");
+}
+
+TEST(StreamContractTest, ProviderManagerGenerateStreamFormatsPackage) {
+    auto transport = std::make_shared<MockHttpTransport>();
+    bool saw_formatted_body = false;
+    transport->handler = [&](const HttpRequest& request) -> std::expected<HttpResponse, HttpError> {
+        saw_formatted_body =
+            request.body.find("\"role\": \"system\"") != std::string::npos &&
+            request.body.find("ENGINEERING RULES") != std::string::npos;
+        return HttpResponse{
+            .status_code = 200,
+            .body = R"({"model":"qwen2.5:14b","message":{"role":"assistant","content":"stream-fallback."},"done":true})",
+        };
+    };
+
+    ProviderManager manager;
+    manager.register_provider(std::make_shared<OllamaProvider>(test_config(), transport));
+    manager.set_active_provider(ProviderId{"AI-0100"});
+
+    int callback_calls = 0;
+    int done_calls = 0;
+    const auto response = manager.generate_stream(
+        make_test_package(),
+        [&](const StreamChunk& chunk) {
+            ++callback_calls;
+            if (chunk.done) {
+                ++done_calls;
+            }
+        });
+
+    ASSERT_TRUE(response.has_value());
+    EXPECT_TRUE(saw_formatted_body);
+    EXPECT_EQ(response->generated_text, "stream-fallback.");
+    EXPECT_GE(callback_calls, 1);
+    EXPECT_EQ(done_calls, 1);
+}
+
+TEST(StreamContractTest, ProviderManagerGenerateStreamPropagatesErrorsWithoutCallback) {
+    auto stub = std::make_shared<StreamingFallbackStubProvider>();
+    stub->fail = true;
+    ProviderManager manager;
+    manager.register_provider(stub);
+    manager.set_active_provider(ProviderId{"AI-STREAM-STUB"});
+
+    int callback_calls = 0;
+    const auto response = manager.generate_stream(
+        make_test_package(),
+        [&](const StreamChunk&) { ++callback_calls; });
+
+    ASSERT_FALSE(response.has_value());
+    EXPECT_EQ(response.error().message, "forced provider failure");
+    EXPECT_EQ(stub->generate_calls, 1U);
+    EXPECT_EQ(callback_calls, 0);
+}
+
+TEST(StreamContractTest, ProviderManagerSynchronousGenerateUnchanged) {
+    ProviderManager manager;
+    manager.register_provider(std::make_shared<NullProvider>());
+    manager.set_active_provider(ProviderId{"AI-0000"});
+
+    const auto package = make_test_package();
+    const auto sync = manager.generate(package);
+    ASSERT_TRUE(sync.has_value());
+    EXPECT_NE(sync->generated_text.find("No AI provider is configured"), std::string::npos);
+    EXPECT_EQ(sync->provider_id, "AI-0000");
+    ASSERT_FALSE(sync->warnings.empty());
+}
+
 TEST(OllamaProviderTest, RegistersWithProviderManager) {
     ProviderManager manager;
     manager.register_provider(std::make_shared<NullProvider>());

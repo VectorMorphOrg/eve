@@ -29,11 +29,38 @@ This project follows
 - Process-lifetime in-memory storage only
 - No summarization, memory search, TTL, or durable backend
 - No CAP-0404 explicit memory-management capability handlers
-- Streaming-specific memory handling deferred
+- No streaming-specific memory handling
+
+### Added — v0.7 Streaming Responses (provider-layer)
+
+- `StreamChunk` / `StreamConsumer` provider contract
+- Additive `IAIProvider::generate_stream` and
+  `ProviderManager::generate_stream`
+- ProviderManager synchronous fallback for non-streaming
+  providers
+- NullProvider deterministic multi-chunk streaming
+  (`supports_streaming = true`)
+- Additive HTTP `IHttpTransport::send_stream` with
+  incremental body delivery
+- HTTP chunked Transfer-Encoding decoding on the streaming
+  path
+- OllamaProvider genuine streaming (`stream: true`, NDJSON
+  line buffering across transport boundaries;
+  `supports_streaming = true`)
+
+### Limitations — Streaming
+
+- No async streaming runtime, cancellation, or WebSocket
+- No streaming memory persistence
+- No Discord/CLI/REST/Website streaming interfaces
+- No deterministic real TCP SocketHttpTransport →
+  OllamaProvider integration fixture
+- Live Ollama streaming is not part of the normal non-live
+  suite
+- Synchronous `send()` does not use streaming chunked decoding
 
 ### Planned — remaining v0.7.x Developer Platform
 
-- Streaming responses
 - Additional AI Providers (OpenAI, Anthropic, LM Studio)
 - 2000 Developer Guide series
 

@@ -37,6 +37,9 @@ add_executable(eve_tests
     citation_engine_test.cpp
     context_assembler_test.cpp
     provider_formatter_test.cpp
+    null_provider_streaming_test.cpp
+    http_transport_streaming_test.cpp
+    ollama_streaming_test.cpp
 )
 
 target_link_libraries(eve_tests

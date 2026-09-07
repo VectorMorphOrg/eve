@@ -82,6 +82,32 @@ std::optional<std::int64_t> extract_json_int64_value(std::string_view body, std:
     return value;
 }
 
+std::optional<bool> extract_json_bool_value(std::string_view body, std::string_view key) {
+    const std::string spaced_pattern = std::format("\"{}\": ", key);
+    const std::string compact_pattern = std::format("\"{}\":", key);
+
+    std::size_t start = body.find(spaced_pattern);
+    std::size_t value_start = 0;
+    if (start != std::string_view::npos) {
+        value_start = start + spaced_pattern.size();
+    } else {
+        start = body.find(compact_pattern);
+        if (start == std::string_view::npos) {
+            return std::nullopt;
+        }
+        value_start = start + compact_pattern.size();
+    }
+
+    const auto data = body.substr(value_start);
+    if (data.starts_with("true")) {
+        return true;
+    }
+    if (data.starts_with("false")) {
+        return false;
+    }
+    return std::nullopt;
+}
+
 std::string unescape_json_string(std::string_view value) {
     std::string unescaped;
     unescaped.reserve(value.size());
@@ -211,30 +237,30 @@ std::string escape_json_string(std::string_view value) {
     return escaped;
 }
 
-std::string serialize_ollama_chat_request(const ProviderRequest& request) {
+std::string serialize_ollama_chat_request(const ProviderRequest& request, bool stream) {
     const auto& options = request.options;
     const auto context_length = options.context_length.value_or(32768U);
 
-    std::ostringstream stream;
-    stream << '{';
-    stream << "\"model\": \"" << escape_json_string(options.model) << "\",";
-    stream << "\"stream\": false,";
-    stream << "\"messages\": [";
+    std::ostringstream out;
+    out << '{';
+    out << "\"model\": \"" << escape_json_string(options.model) << "\",";
+    out << "\"stream\": " << (stream ? "true" : "false") << ',';
+    out << "\"messages\": [";
     for (std::size_t index = 0; index < request.messages.size(); ++index) {
         if (index > 0) {
-            stream << ',';
+            out << ',';
         }
         const auto& message = request.messages[index];
-        stream << "{\"role\": \"" << escape_json_string(to_string(message.role)) << "\",";
-        stream << "\"content\": \"" << escape_json_string(message.content) << "\"}";
+        out << "{\"role\": \"" << escape_json_string(to_string(message.role)) << "\",";
+        out << "\"content\": \"" << escape_json_string(message.content) << "\"}";
     }
-    stream << "],";
-    stream << "\"options\": {";
-    stream << "\"temperature\": " << options.temperature << ',';
-    stream << "\"top_p\": " << options.top_p << ',';
-    stream << "\"num_ctx\": " << context_length;
-    stream << "}}";
-    return stream.str();
+    out << "],";
+    out << "\"options\": {";
+    out << "\"temperature\": " << options.temperature << ',';
+    out << "\"top_p\": " << options.top_p << ',';
+    out << "\"num_ctx\": " << context_length;
+    out << "}}";
+    return out.str();
 }
 
 OllamaChatResponse parse_ollama_chat_response(std::string_view body) {
@@ -277,6 +303,9 @@ OllamaChatResponse parse_ollama_chat_response(std::string_view body) {
     response.prompt_eval_count = extract_json_number_value(body, "prompt_eval_count");
     response.eval_count = extract_json_number_value(body, "eval_count");
     response.total_duration_ns = extract_json_int64_value(body, "total_duration");
+    if (const auto done = extract_json_bool_value(body, "done")) {
+        response.done = *done;
+    }
     return response;
 }
 
@@ -380,6 +409,158 @@ std::expected<AIResponse, ProviderError> OllamaProvider::generate(
     }
 
     return generate_from_chat_response(parse_ollama_chat_response(http_response->body), request);
+}
+
+std::expected<AIResponse, ProviderError> OllamaProvider::generate_stream(
+    const ProviderRequest& request,
+    const StreamConsumer& consumer) const {
+    const auto payload = serialize_ollama_chat_request(request, true);
+
+    HttpRequest http_request{
+        .method = "POST",
+        .url = build_chat_url(config_.base_url),
+        .body = payload,
+        .timeout = config_.timeout,
+    };
+
+    std::string line_buffer;
+    std::string accumulated;
+    OllamaChatResponse terminal{};
+    bool saw_done = false;
+    std::optional<ProviderError> stream_error;
+
+    auto process_line = [&](std::string_view line) {
+        if (stream_error.has_value() || saw_done) {
+            return;
+        }
+
+        while (!line.empty() && (line.back() == '\r' || line.back() == ' ' || line.back() == '\t')) {
+            line.remove_suffix(1);
+        }
+        while (!line.empty() && (line.front() == ' ' || line.front() == '\t')) {
+            line.remove_prefix(1);
+        }
+        if (line.empty()) {
+            return;
+        }
+        if (line.front() != '{') {
+            stream_error = ProviderError{
+                .provider_id = id().value,
+                .message = "Malformed Ollama NDJSON stream.",
+            };
+            return;
+        }
+
+        const auto record = parse_ollama_chat_response(line);
+        if (record.error.has_value()) {
+            stream_error = ProviderError{
+                .provider_id = id().value,
+                .message = *record.error,
+            };
+            return;
+        }
+
+        if (!record.content.empty()) {
+            accumulated += record.content;
+            if (consumer) {
+                consumer(StreamChunk{
+                    .text_delta = record.content,
+                    .done = false,
+                });
+            }
+        }
+
+        if (record.done) {
+            terminal = record;
+            saw_done = true;
+            if (consumer) {
+                consumer(StreamChunk{
+                    .text_delta = {},
+                    .done = true,
+                });
+            }
+        } else if (!record.model.empty()) {
+            terminal.model = record.model;
+        }
+    };
+
+    auto feed = [&](std::string_view data) {
+        if (stream_error.has_value()) {
+            return;
+        }
+        line_buffer.append(data);
+        while (true) {
+            const auto newline = line_buffer.find('\n');
+            if (newline == std::string::npos) {
+                break;
+            }
+            process_line(std::string_view{line_buffer}.substr(0, newline));
+            line_buffer.erase(0, newline + 1);
+            if (stream_error.has_value()) {
+                return;
+            }
+        }
+    };
+
+    const auto http_response = transport_->send_stream(http_request, feed);
+    if (!http_response) {
+        return std::unexpected(ProviderError{
+            .provider_id = id().value,
+            .message = http_response.error().message,
+        });
+    }
+
+    if (stream_error.has_value()) {
+        return std::unexpected(*stream_error);
+    }
+
+    if (!line_buffer.empty()) {
+        process_line(line_buffer);
+        line_buffer.clear();
+        if (stream_error.has_value()) {
+            return std::unexpected(*stream_error);
+        }
+    }
+
+    if (http_response->status_code < 200 || http_response->status_code >= 300) {
+        if (terminal.error.has_value()) {
+            return std::unexpected(ProviderError{
+                .provider_id = id().value,
+                .message = *terminal.error,
+            });
+        }
+        const auto parsed_error = parse_ollama_chat_response(http_response->body);
+        if (parsed_error.error.has_value()) {
+            return std::unexpected(ProviderError{
+                .provider_id = id().value,
+                .message = *parsed_error.error,
+            });
+        }
+        return std::unexpected(ProviderError{
+            .provider_id = id().value,
+            .message = std::format(
+                "Ollama request failed with HTTP {}.",
+                http_response->status_code),
+        });
+    }
+
+    if (!saw_done) {
+        return std::unexpected(ProviderError{
+            .provider_id = id().value,
+            .message = "Ollama stream ended without a terminal done record.",
+        });
+    }
+
+    const auto& model = request.options.model;
+    return AIResponse{
+        .generated_text = accumulated,
+        .provider_id = id().value,
+        .model = terminal.model.empty() ? std::optional<std::string>{model}
+                                        : std::optional<std::string>{terminal.model},
+        .prompt_eval_count = terminal.prompt_eval_count,
+        .eval_count = terminal.eval_count,
+        .total_duration_ns = terminal.total_duration_ns,
+    };
 }
 
 std::expected<void, ProviderError> OllamaProvider::health_check() const {

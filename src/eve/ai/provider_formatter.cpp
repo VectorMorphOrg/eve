@@ -182,7 +182,7 @@ std::string to_string(ProviderMessageRole role) {
 
 ProviderCapabilities null_provider_capabilities() {
     return ProviderCapabilities{
-        .supports_streaming = false,
+        .supports_streaming = true,
         .supports_system_prompts = false,
         .supports_tool_calling = false,
         .supports_json_responses = false,
@@ -195,7 +195,7 @@ ProviderCapabilities null_provider_capabilities() {
 
 ProviderCapabilities ollama_provider_capabilities() {
     return ProviderCapabilities{
-        .supports_streaming = false,
+        .supports_streaming = true,
         .supports_system_prompts = true,
         .supports_tool_calling = false,
         .supports_json_responses = false,

@@ -308,14 +308,105 @@ generates tokens.
 
 # Streaming
 
-Providers may support:
+The AI Provider Layer supports additive provider streaming.
 
-- Token streaming
-- Progressive rendering
-- Interruptible generation
-- Incremental responses
+## StreamChunk
 
-Streaming should remain transparent to the Core Platform.
+A provider-independent incremental text event:
+
+- `text_delta` — incremental assistant text
+- `done` — whether this chunk signals stream completion
+
+StreamChunks are transient callback events. Providers must not
+retain the consumer after `generate_stream()` returns.
+
+Streaming does not introduce asynchronous execution, threads,
+cancellation tokens, or WebSocket transport.
+
+## IAIProvider
+
+Providers expose:
+
+- `generate(ProviderRequest)` — synchronous generation
+  (unchanged)
+- `generate_stream(ProviderRequest, StreamConsumer)` —
+  additive streaming generation
+
+The default `generate_stream()` implementation reports that
+streaming is unsupported via `ProviderError`.
+
+Providers that advertise `supports_streaming = true` must
+implement genuine streaming.
+
+## ProviderManager
+
+`ProviderManager::generate_stream()`:
+
+1. Resolves the active provider
+2. Formats the Context Package once through Provider Formatter
+3. Dispatches to `IAIProvider::generate_stream()` when
+   `supports_streaming` is true
+4. Falls back to synchronous `generate()` when streaming is
+   unsupported, then invokes the consumer once with
+   `StreamChunk{ text_delta = generated_text, done = true }`
+5. Returns the canonical `AIResponse`
+
+ProviderManager does not parse provider-specific stream
+payloads and does not write conversation memory.
+
+## Implemented Providers
+
+As of the unreleased v0.7 streaming workstream on main:
+
+| Provider | ID | `supports_streaming` | Behavior |
+|----------|----|----------------------|----------|
+| Null Provider | AI-0000 | true | Deterministic multi-chunk streaming |
+| Ollama | AI-0100 | true | HTTP `send_stream` + NDJSON parsing |
+
+## HTTP Transport Boundary
+
+Streaming HTTP delivery belongs at `IHttpTransport`:
+
+- Additive `send_stream()` delivers incremental HTTP body bytes
+- Chunked Transfer-Encoding is decoded before the provider
+  consumes body bytes
+- The HTTP layer remains unaware of Ollama / NDJSON /
+  StreamChunk semantics
+
+## Memory Invariant
+
+Streaming chunks are transient.
+
+Providers and ProviderManager do not persist conversation
+memory from stream deltas.
+
+Only a completed canonical `AIResponse.generated_text` is
+suitable for eventual memory persistence by an appropriate
+caller (today: CAP-0102 synchronous path).
+
+## Platform Surfaces
+
+Provider-level streaming does not imply Discord, CLI, REST, or
+Website streaming interfaces are implemented. Those remain
+v0.8.x interface work.
+
+## Known Limitations
+
+- No async streaming runtime
+- No cancellation
+- No WebSocket streaming
+- No streaming memory persistence
+- No deterministic real TCP
+  `SocketHttpTransport` → `OllamaProvider` integration fixture
+- Live Ollama streaming is not part of the normal non-live
+  suite
+- HTTP trailer fields are not exposed
+- Synchronous `send()` does not use the streaming chunked
+  decoder (unchanged by design)
+
+Streaming should remain transparent to Core Platform request
+processing unless a future interface layer explicitly consumes
+stream callbacks.
 
 ---
 
