@@ -73,8 +73,8 @@ specification.
 
 - ✅ Complete — document series content exists and is usable
 - ⏳ Partial — series started; one or more guides Active, series
-  not complete (for example Part XII: EVE-2004 Active;
-  EVE-2000–EVE-2003 and EVE-2005–EVE-2009 remain Planned)
+  not complete (for example Part XII: EVE-2004 and EVE-2005
+  Active; EVE-2000–EVE-2003 and EVE-2006–EVE-2009 remain Planned)
 - 🚧 Planned — series not written yet, or only empty stubs
 - ⚠ Reserved — reserved archive series
 

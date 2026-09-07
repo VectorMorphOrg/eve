@@ -55,7 +55,7 @@ Topics include:
 | EVE-2002 | Discord Integration Guide | Planned |
 | EVE-2003 | Website Integration Guide | Planned |
 | EVE-2004 | Provider Development Guide | ✅ Active |
-| EVE-2005 | Capability Development Guide | Planned |
+| EVE-2005 | Capability Development Guide | ✅ Active |
 | EVE-2006 | Service Development Guide | Planned |
 | EVE-2007 | Knowledge Repository Guide | Planned |
 | EVE-2008 | Testing Guide | Planned |
@@ -105,7 +105,7 @@ platform.**
 | Discord Guide | ⏳ |
 | Website Guide | ⏳ |
 | Provider Guide (EVE-2004) | ✅ |
-| Capability Guide | ⏳ |
+| Capability Guide (EVE-2005) | ✅ |
 | Service Guide | ⏳ |
 | Repository Guide | ⏳ |
 | Testing Guide | ⏳ |

@@ -394,7 +394,7 @@ EVE-2004 — Provider Development Guide
 
 **Next**
 
-EVE-2005 — Capability Development Guide (planned)
+EVE-2005 — Capability Development Guide
 
 **Return**
 
