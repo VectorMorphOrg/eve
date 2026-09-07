@@ -138,6 +138,32 @@ std::string build_context_prompt(const context::ContextPackage& package) {
     return stream.str();
 }
 
+[[nodiscard]] ProviderMessageRole to_provider_role(context::ConversationRole role) {
+    switch (role) {
+        case context::ConversationRole::User:
+            return ProviderMessageRole::User;
+        case context::ConversationRole::Assistant:
+            return ProviderMessageRole::Assistant;
+    }
+    return ProviderMessageRole::User;
+}
+
+void append_conversation_history(
+    std::vector<ProviderMessage>& messages,
+    const context::ContextPackage& package) {
+    const auto& conversation = package.conversation();
+    if (!conversation.has_value()) {
+        return;
+    }
+
+    for (const auto& turn : conversation->recent_messages) {
+        messages.push_back(ProviderMessage{
+            .role = to_provider_role(turn.role),
+            .content = turn.content,
+        });
+    }
+}
+
 }  // namespace
 
 std::string to_string(ProviderMessageRole role) {
@@ -204,6 +230,8 @@ ProviderRequest ProviderFormatter::format(
             .content = system_prompt,
         });
     }
+
+    append_conversation_history(request.messages, package);
 
     if (capabilities.supports_multiple_messages && !context_prompt.empty()) {
         std::string first_user_message = user_request_prompt;

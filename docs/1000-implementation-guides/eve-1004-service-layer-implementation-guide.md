@@ -131,6 +131,7 @@ Examples include:
 - Search Service
 - Knowledge Service
 - Provider Manager
+- Conversation Memory Service
 - Repository Service
 - Documentation Service
 - Metrics Service
@@ -138,6 +139,58 @@ Examples include:
 
 Additional services may be introduced without affecting the
 Core Platform architecture.
+
+---
+
+# Conversation Memory Service
+
+Conversation Memory Service owns session-scoped conversation
+history for the Core Platform.
+
+Responsibilities:
+
+- Load Conversation Context by `session_id`
+- Append successful User/Assistant turns
+- Reset a session
+- Enforce message-count and character retention limits
+
+Characteristics of the current implementation:
+
+- Constructed once during Platform Bootstrap
+- Injected into AI-invoking capability handlers
+  (currently CAP-0102)
+- Platform-scoped shared lifetime for one platform instance
+- In-memory storage only (no disk/database backend)
+- Mutex-protected session map
+- Not a Knowledge Store and not part of retrieval
+
+Platform Bootstrap constructs Conversation Memory Service
+using optional Configuration Service values:
+
+- `memory_max_recent_messages` (default: 12)
+- `memory_max_conversation_chars` (default: 8000)
+
+Absent or invalid configuration falls back to those defaults.
+Configuration does not enable durable persistence.
+
+CAP-0102 orchestration (not CorePlatform / Dispatcher):
+
+```text
+session_id present
+  → memory.load(session_id)
+  → attach ConversationContext to Context Package
+  → Provider Formatter / provider generation
+  → Success or PartialSuccess
+  → memory.append(session_id, query, generated_text)
+```
+
+Persisted turn contents are:
+
+- User: CAP-0102 parameter `query`
+- Assistant: `AIResponse.generated_text`
+
+Formatter prompts and `PlatformResponse.content.primary` are
+not persisted.
 
 ---
 
@@ -180,7 +233,7 @@ Recommended lifetimes:
 
 | Lifetime | Usage |
 |----------|-------|
-| Singleton | Configuration, Logging, Provider Manager |
+| Singleton | Configuration, Logging, Provider Manager, Conversation Memory |
 | Shared Immutable | Knowledge Engine, Reasoning Pipeline |
 | Per Request | Temporary execution context |
 | Transient | Lightweight helper objects |

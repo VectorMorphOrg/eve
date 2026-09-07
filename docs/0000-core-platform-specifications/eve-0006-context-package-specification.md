@@ -234,15 +234,70 @@ Future implementations may support section-level citations.
 
 Conversation context is optional.
 
-When enabled it may include:
+When present, Conversation Context is a structured snapshot
+of session-scoped conversation history attached to a Context
+Package.
 
-- Session Summary
+## Structure
+
+Conversation Context may include:
+
+- Session Summary (optional; unused by the current
+  implementation)
 - Recent Messages
-- Conversation Metadata
+
+Each recent message is a Conversation Turn with:
+
+- Role — `User` or `Assistant`
+- Content — exact turn text
+
+Conversation Roles are context-layer types. They are not
+provider message types. The Provider Formatter translates
+Conversation Turns into Provider Messages.
+
+## Role Relative to Documentation
 
 Conversation context supplements documentation.
 
 It never overrides documentation.
+
+Conversation memory is not repository knowledge. It does not
+participate in Repository Discovery, Knowledge Object
+construction, Knowledge Graph traversal, Knowledge Index
+lookup, Search, Ranking, or Citation generation.
+
+## Session Scope and Lifetime
+
+Conversation history is keyed by the Platform Request
+`session_id` (User Information).
+
+- Missing or empty `session_id` disables conversation memory
+  for that request.
+- A non-empty `session_id` selects the conversation session.
+- Unknown sessions begin with empty history.
+- History is retained in process memory only for the lifetime
+  of the platform instance.
+
+The current implementation does not provide disk, database,
+or cross-process conversation persistence.
+
+## Retention
+
+Conversation Memory Service enforces retention limits before
+history enters a Context Package:
+
+- Maximum recent message count (default: 12)
+- Maximum total conversation character count (default: 8000)
+
+Retention removes oldest complete User/Assistant pairs.
+Optional configuration keys may override these defaults
+without changing storage semantics.
+
+## Attachment
+
+When conversation memory is enabled for a request, the loaded
+Conversation Context is attached to the Context Package after
+knowledge assembly and before Provider Formatting.
 
 ---
 
@@ -439,7 +494,8 @@ Future revisions may support:
 - Tool Invocation Metadata
 - Multi-Agent Coordination
 - User Preferences
-- Long-Term Memory
+- Long-Term / Durable Conversation Persistence
+- Automatic Session Summarization
 - Confidence Scoring
 
 These additions should preserve compatibility with existing

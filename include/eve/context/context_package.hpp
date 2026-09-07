@@ -32,9 +32,19 @@ struct Citation {
     std::optional<std::string> section;
 };
 
+enum class ConversationRole {
+    User,
+    Assistant,
+};
+
+struct ConversationTurn {
+    ConversationRole role{ConversationRole::User};
+    std::string content;
+};
+
 struct ConversationContext {
     std::optional<std::string> session_summary;
-    std::vector<std::string> recent_messages;
+    std::vector<ConversationTurn> recent_messages;
 };
 
 struct ContextConstraints {
@@ -67,7 +77,8 @@ public:
         std::vector<Citation> citations,
         ContextConstraints constraints,
         SystemInstructions system,
-        PackageDiagnostics diagnostics = {});
+        PackageDiagnostics diagnostics = {},
+        std::optional<ConversationContext> conversation = std::nullopt);
 
     [[nodiscard]] const PackageMetadata& metadata() const noexcept { return metadata_; }
     [[nodiscard]] const PlatformRequest& request() const noexcept { return request_; }

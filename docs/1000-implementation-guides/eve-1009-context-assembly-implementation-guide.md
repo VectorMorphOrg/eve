@@ -73,6 +73,12 @@ The Context Assembler does **not**:
 - Generate citations
 - Invoke AI providers
 - Generate natural language
+- Own conversation session persistence
+
+Conversation history may be attached to a Context Package
+after knowledge assembly. That attachment is performed by the
+AI-invoking capability path (CAP-0102), not by the Context
+Assembler knowledge-selection logic.
 
 ---
 
@@ -445,6 +451,42 @@ Recommended engineering practices:
 - Keep provider formatting separate.
 - Record complete diagnostics.
 - Keep engineering reasoning independent of AI providers.
+- Attach conversation memory after knowledge assembly.
+- Keep conversation memory outside Knowledge Objects.
+
+---
+
+# Conversation Memory Attachment
+
+Knowledge assembly remains knowledge-first:
+
+```text
+Search
+  → Rank
+  → Cite
+  → Assemble Context Package (knowledge)
+```
+
+When a non-empty `session_id` is present on the Platform
+Request, CAP-0102 then:
+
+```text
+ConversationMemoryService::load(session_id)
+  → ConversationContext
+  → attach to Context Package
+  → Provider Formatter
+  → Provider Request
+  → provider generation
+```
+
+On Success or PartialSuccess, CAP-0102 persists:
+
+```text
+memory.append(session_id, query, generated_text)
+```
+
+Conversation memory does not alter search queries, ranking,
+citations, or knowledge budgets.
 
 ---
 

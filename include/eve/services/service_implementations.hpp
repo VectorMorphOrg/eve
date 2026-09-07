@@ -6,6 +6,8 @@
 
 #include <filesystem>
 #include <map>
+#include <mutex>
+#include <unordered_map>
 
 namespace eve::services {
 
@@ -19,6 +21,8 @@ public:
     [[nodiscard]] std::vector<std::filesystem::path> documentation_paths() const override;
     [[nodiscard]] std::string active_ai_provider() const override;
     [[nodiscard]] std::size_t context_limit_chars() const override;
+    [[nodiscard]] std::size_t memory_max_recent_messages() const override;
+    [[nodiscard]] std::size_t memory_max_conversation_chars() const override;
     [[nodiscard]] std::optional<std::string> get(std::string_view key) const override;
 
 private:
@@ -84,6 +88,36 @@ public:
 
 private:
     const IKnowledgeStore& knowledge_store_;
+};
+
+class ConversationMemoryService final : public IConversationMemoryService {
+public:
+    static constexpr std::size_t default_max_recent_messages = 12;
+    static constexpr std::size_t default_max_conversation_chars = 8000;
+
+    explicit ConversationMemoryService(
+        std::size_t max_recent_messages = default_max_recent_messages,
+        std::size_t max_conversation_chars = default_max_conversation_chars);
+
+    [[nodiscard]] context::ConversationContext load(
+        std::string_view session_id) const override;
+
+    void append(
+        std::string_view session_id,
+        std::string_view user_text,
+        std::string_view assistant_text) override;
+
+    void reset(std::string_view session_id) override;
+
+private:
+    [[nodiscard]] static std::size_t conversation_char_count(
+        const context::ConversationContext& conversation);
+    void apply_retention(context::ConversationContext& conversation) const;
+
+    std::size_t max_recent_messages_;
+    std::size_t max_conversation_chars_;
+    mutable std::mutex mutex_;
+    std::unordered_map<std::string, context::ConversationContext> sessions_;
 };
 
 }  // namespace eve::services

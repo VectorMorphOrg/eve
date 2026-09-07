@@ -119,7 +119,13 @@ and a centralized inventory of platform functionality.
 | CAP-0401 | Provider Selection | Provider Manager | ✅ |
 | CAP-0402 | AI Response Generation | AI Provider | ✅ |
 | CAP-0403 | Streaming Responses | AI Provider | 🚧 |
-| CAP-0404 | Conversation Memory | Future Platform | 🚧 |
+| CAP-0404 | Conversation Memory | ConversationMemoryService | 🚧 |
+
+CAP-0404 remains reserved for future explicit conversation-
+memory management capabilities. In-memory conversation memory
+infrastructure is already operational and is consumed by
+CAP-0102 (Documentation Search). Dedicated CAP-0404 command
+handlers are not implemented.
 
 ---
 
@@ -192,7 +198,8 @@ Capability identifiers.
 
 # Current Implementation Status
 
-As of **v0.6.0-alpha**:
+As of **v0.6.0-alpha** (with v0.7 Conversation Memory work
+in progress on main):
 
 - Platform Request architecture is implemented.
 - Validation Engine is implemented.
@@ -202,6 +209,10 @@ As of **v0.6.0-alpha**:
 - Provider Formatter is implemented.
 - Ollama Provider is implemented.
 - End-to-end documentation search is operational.
+- Conversation Memory Service is implemented (in-memory,
+  session-scoped, used by CAP-0102).
+- CAP-0404 explicit memory-management capabilities remain
+  deferred.
 
 Additional capabilities will be added without changing
 existing identifiers.

@@ -154,6 +154,23 @@ Examples include:
 
 Interfaces determine which information is available.
 
+## Session Identifier and Conversation Memory
+
+`session_id` is the session key for Conversation Memory.
+
+- Missing or empty `session_id` disables conversation memory
+  for the request. Behavior is single-shot with respect to
+  conversation history.
+- A non-empty `session_id` selects the conversation session
+  used by Conversation Memory Service.
+- `session_id` identifies a session; it does not itself provide
+  durable storage. Persistence beyond process lifetime is not
+  implemented.
+
+Conversation references in Execution Context
+(`conversation_refs`) are reserved and are not used by the
+current Conversation Memory implementation.
+
 ---
 
 # Capability

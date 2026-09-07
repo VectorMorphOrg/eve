@@ -37,19 +37,24 @@ The platform is responsible for generating knowledge.
 
 # Current Milestone
 
-## v0.6.0-alpha — Documentation Reconciliation / Release Freeze
+## v0.7.0 Conversation Memory Foundation (in progress on main)
 
 Current objectives:
 
-- Reconcile documentation to the canonical Hybrid roadmap
+- Complete Conversation Memory foundation for CAP-0102
 - Preserve Core Platform architecture as implemented
-- Prepare for v0.7.x Developer Platform work
+- Continue remaining v0.7.x Developer Platform work
 
-**Status: 🚧 In Progress (documentation only)**
+**Status: Conversation Memory foundation implemented (docs sync)**
 
-**Next release target after freeze:**
+**Remaining v0.7.x targets:**
 
-- **v0.7.x** — Conversation Memory, Streaming, Additional AI Providers
+- Streaming Responses
+- Additional AI Providers (OpenAI, Anthropic, LM Studio)
+- 2000 Developer Guide series
+
+**Later:**
+
 - **v0.8.x** — CLI, Discord, REST API, Website
 - **v0.9.x** — Multi-Repository, Semantic/Hybrid Search, Plugins
 
@@ -264,21 +269,31 @@ None of the interface binaries are implemented in v0.6.0-alpha.
 - Ollama Provider
 - Provider Formatter
 - Live End-to-End Demonstration
+- Conversation Memory Service (CAP-0102 integrated; in-memory)
 
 ---
 
 ## Current
 
-### Documentation Reconciliation / Release Freeze
+### v0.7 Conversation Memory Foundation
 
-- Align ROADMAP, PROJECT_STATUS, and EVE-SPEC indexes
-- Preserve implemented Core Platform boundaries
+- Conversation Memory Service (in-memory, session-scoped)
+- CAP-0102 load / attach / persist lifecycle
+- Provider Formatter conversation history translation
+- Optional retention configuration
+
+Limitations (intentional):
+
+- No disk/database conversation persistence
+- No summarization / memory search / TTL
+- No CAP-0404 explicit memory-management commands
+- No streaming-specific memory handling
+- No Discord/CLI/REST/Website memory UX
 
 ---
 
-## Next — v0.7.x Developer Platform
+## Next — remaining v0.7.x Developer Platform
 
-- Conversation Memory
 - Streaming Responses
 - OpenAI Provider
 - Anthropic Provider
@@ -362,16 +377,15 @@ Deterministic Reasoning Pipeline
 
 The Core Platform is operational.
 
-Current engineering effort is the **v0.6.0-alpha
-documentation / release freeze**.
+Conversation Memory foundation for CAP-0102 is implemented
+(in-memory, process-scoped). Documentation has been
+synchronized to that reality.
 
-After freeze, work follows the approved Hybrid roadmap:
+Remaining v0.7.x Developer Platform work:
 
-**Next — v0.7.x Developer Platform**
-
-- Conversation Memory
 - Streaming Responses
 - Additional AI Providers
+- EVE-2000 Developer Guide series
 
 **Then — v0.8.x Interfaces**
 
@@ -392,7 +406,13 @@ After freeze, work follows the approved Hybrid roadmap:
 
 Interface **specifications** (CLI, Discord) may already be
 complete. Interface **implementations** remain planned for
-v0.8.x and are not the immediate post-freeze target.
+v0.8.x.
+
+Verified non-live test posture for the memory workstream:
+
+- 200 PASS / 3 FAIL (`-LiveOllama*`)
+- Known pre-existing failures remain in
+  `RepositoryDiscoveryTest` (three cases)
 
 ---
 

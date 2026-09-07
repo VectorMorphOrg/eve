@@ -10,9 +10,29 @@ This project follows
 
 ## [Unreleased]
 
-### Planned — v0.7.x Developer Platform
+### Added — v0.7.0 Conversation Memory Foundation
 
-- Conversation memory
+- Conversation Memory Service (`IConversationMemoryService`,
+  in-memory implementation)
+- Structured Conversation Context (`ConversationTurn`,
+  User/Assistant roles)
+- CAP-0102 session load / Context Package attachment
+- Provider Formatter history → ProviderMessages translation
+- Successful-turn persistence (`query` + `generated_text`)
+- Optional configuration keys:
+  `memory_max_recent_messages`,
+  `memory_max_conversation_chars`
+  (defaults: 12 messages / 8000 characters)
+
+### Limitations — Conversation Memory
+
+- Process-lifetime in-memory storage only
+- No summarization, memory search, TTL, or durable backend
+- No CAP-0404 explicit memory-management capability handlers
+- Streaming-specific memory handling deferred
+
+### Planned — remaining v0.7.x Developer Platform
+
 - Streaming responses
 - Additional AI Providers (OpenAI, Anthropic, LM Studio)
 - 2000 Developer Guide series

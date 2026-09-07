@@ -32,7 +32,8 @@ public:
 context::ContextPackage make_test_package(
     std::vector<KnowledgeObject> objects = {},
     std::vector<context::Citation> citations = {},
-    context::SystemInstructions system = {.language = "en"}) {
+    context::SystemInstructions system = {.language = "en"},
+    std::optional<context::ConversationContext> conversation = std::nullopt) {
     const auto request = PlatformRequest::create(
         CapabilityId{"CAP-0102"},
         InterfaceType::Internal,
@@ -65,7 +66,9 @@ context::ContextPackage make_test_package(
         {context::RepositoryMetadata{.name = "eve"}},
         std::move(citations),
         context::ContextConstraints{},
-        std::move(system));
+        std::move(system),
+        {},
+        std::move(conversation));
 }
 
 ProviderOptions test_options() {
@@ -216,6 +219,123 @@ TEST(ProviderFormatterTest, MinimalContextIncludesUserRequestOnlyInFirstUserMess
     ASSERT_GE(request.messages.size(), 2U);
     EXPECT_NE(request.messages[1].content.find("query: Platform Request"), std::string::npos);
     EXPECT_EQ(request.messages[1].content.find("CONTEXT:"), std::string::npos);
+}
+
+TEST(ProviderFormatterTest, NoConversationPreservesExistingMessageBehavior) {
+    const ProviderFormatter formatter;
+    const auto without = formatter.format(
+        make_test_package(),
+        ollama_provider_capabilities(),
+        test_options(),
+        test_metadata());
+
+    ASSERT_EQ(without.messages.size(), 3U);
+    EXPECT_EQ(without.messages[0].role, ProviderMessageRole::System);
+    EXPECT_EQ(without.messages[1].role, ProviderMessageRole::User);
+    EXPECT_NE(without.messages[1].content.find("query: Platform Request"), std::string::npos);
+    EXPECT_EQ(without.messages[2].role, ProviderMessageRole::User);
+    EXPECT_NE(without.messages[2].content.find("CONTEXT:"), std::string::npos);
+}
+
+TEST(ProviderFormatterTest, EmptyConversationEmitsNoHistoricalMessages) {
+    const ProviderFormatter formatter;
+    const auto request = formatter.format(
+        make_test_package({}, {}, {.language = "en"}, context::ConversationContext{}),
+        ollama_provider_capabilities(),
+        test_options(),
+        test_metadata());
+
+    ASSERT_EQ(request.messages.size(), 3U);
+    EXPECT_EQ(request.messages[0].role, ProviderMessageRole::System);
+    EXPECT_EQ(request.messages[1].role, ProviderMessageRole::User);
+    EXPECT_NE(request.messages[1].content.find("query: Platform Request"), std::string::npos);
+    EXPECT_EQ(request.messages[2].role, ProviderMessageRole::User);
+    EXPECT_NE(request.messages[2].content.find("CONTEXT:"), std::string::npos);
+    for (const auto& message : request.messages) {
+        EXPECT_NE(message.role, ProviderMessageRole::Assistant);
+    }
+}
+
+TEST(ProviderFormatterTest, ConversationHistoryMapsRolesPreservesOrderAndExactContent) {
+    context::ConversationContext conversation{
+        .recent_messages =
+            {
+                context::ConversationTurn{
+                    .role = context::ConversationRole::User,
+                    .content = "prior-user",
+                },
+                context::ConversationTurn{
+                    .role = context::ConversationRole::Assistant,
+                    .content = "prior-assistant",
+                },
+                context::ConversationTurn{
+                    .role = context::ConversationRole::User,
+                    .content = "second-user",
+                },
+                context::ConversationTurn{
+                    .role = context::ConversationRole::Assistant,
+                    .content = "second-assistant",
+                },
+            },
+    };
+
+    const ProviderFormatter formatter;
+    const auto request = formatter.format(
+        make_test_package({}, {}, {.language = "en"}, conversation),
+        ollama_provider_capabilities(),
+        test_options(),
+        test_metadata());
+
+    ASSERT_EQ(request.messages.size(), 7U);
+    EXPECT_EQ(request.messages[0].role, ProviderMessageRole::System);
+
+    EXPECT_EQ(request.messages[1].role, ProviderMessageRole::User);
+    EXPECT_EQ(request.messages[1].content, "prior-user");
+    EXPECT_EQ(request.messages[2].role, ProviderMessageRole::Assistant);
+    EXPECT_EQ(request.messages[2].content, "prior-assistant");
+    EXPECT_EQ(request.messages[3].role, ProviderMessageRole::User);
+    EXPECT_EQ(request.messages[3].content, "second-user");
+    EXPECT_EQ(request.messages[4].role, ProviderMessageRole::Assistant);
+    EXPECT_EQ(request.messages[4].content, "second-assistant");
+
+    EXPECT_EQ(request.messages[5].role, ProviderMessageRole::User);
+    EXPECT_NE(request.messages[5].content.find("query: Platform Request"), std::string::npos);
+    EXPECT_EQ(request.messages[5].content.find("prior-user"), std::string::npos);
+    EXPECT_EQ(request.messages[5].content.find("CONTEXT:"), std::string::npos);
+
+    EXPECT_EQ(request.messages[6].role, ProviderMessageRole::User);
+    EXPECT_NE(request.messages[6].content.find("CONTEXT:"), std::string::npos);
+    EXPECT_EQ(request.messages[6].content.find("prior-user"), std::string::npos);
+}
+
+TEST(ProviderFormatterTest, ConversationHistorySitsBetweenSystemAndCurrentRequest) {
+    context::ConversationContext conversation{
+        .recent_messages =
+            {
+                context::ConversationTurn{
+                    .role = context::ConversationRole::User,
+                    .content = "history-only",
+                },
+                context::ConversationTurn{
+                    .role = context::ConversationRole::Assistant,
+                    .content = "history-reply",
+                },
+            },
+    };
+
+    const ProviderFormatter formatter;
+    const auto request = formatter.format(
+        make_test_package({}, {}, {.language = "en"}, conversation),
+        ollama_provider_capabilities(),
+        test_options(),
+        test_metadata());
+
+    ASSERT_EQ(request.messages.size(), 5U);
+    EXPECT_EQ(request.messages[0].role, ProviderMessageRole::System);
+    EXPECT_EQ(request.messages[1].content, "history-only");
+    EXPECT_EQ(request.messages[2].content, "history-reply");
+    EXPECT_NE(request.messages[3].content.find("query: Platform Request"), std::string::npos);
+    EXPECT_NE(request.messages[4].content.find("CONTEXT:"), std::string::npos);
 }
 
 TEST(ProviderFormatterTest, AdaptsWhenSystemPromptsUnsupported) {

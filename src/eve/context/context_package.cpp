@@ -33,7 +33,8 @@ ContextPackage ContextPackage::create(
     std::vector<Citation> citations,
     ContextConstraints constraints,
     SystemInstructions system,
-    PackageDiagnostics diagnostics) {
+    PackageDiagnostics diagnostics,
+    std::optional<ConversationContext> conversation) {
     PackageMetadata metadata{
         .package_id = generate_package_id(),
         .request_id = request.metadata().request_id,
@@ -45,7 +46,7 @@ ContextPackage ContextPackage::create(
         std::move(knowledge_objects),
         std::move(repositories),
         std::move(citations),
-        std::nullopt,
+        std::move(conversation),
         std::move(constraints),
         std::move(system),
         std::move(diagnostics));

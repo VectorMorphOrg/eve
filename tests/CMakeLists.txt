@@ -18,6 +18,8 @@ add_executable(eve_tests
     platform_response_test.cpp
     knowledge_store_test.cpp
     context_package_test.cpp
+    conversation_memory_test.cpp
+    configuration_memory_test.cpp
     capability_engine_test.cpp
     integration_test.cpp
     live_ollama_integration_test.cpp

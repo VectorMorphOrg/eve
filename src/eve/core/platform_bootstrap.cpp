@@ -52,6 +52,10 @@ CorePlatform PlatformBootstrap::create(
         *knowledge_store,
         provider_manager);
 
+    auto conversation_memory = std::make_shared<services::ConversationMemoryService>(
+        configuration->memory_max_recent_messages(),
+        configuration->memory_max_conversation_chars());
+
     const context::ContextBuilder context_builder(configuration->context_limit_chars());
 
     auto registry = std::make_shared<capability::CapabilityRegistry>();
@@ -67,6 +71,7 @@ CorePlatform PlatformBootstrap::create(
         *status,
         *reasoning_pipeline,
         provider_manager,
+        conversation_memory,
         configuration->context_limit_chars());
 
     registry->register_alias("search", CapabilityId{"CAP-0102"});

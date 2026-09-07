@@ -68,9 +68,11 @@ public:
     DocumentationSearchHandler(
         const ReasoningPipeline& reasoning_pipeline,
         std::shared_ptr<const ai::ProviderManager> provider_manager,
+        std::shared_ptr<services::IConversationMemoryService> conversation_memory,
         std::size_t context_limit_chars)
         : reasoning_pipeline_(reasoning_pipeline),
           provider_manager_(std::move(provider_manager)),
+          conversation_memory_(std::move(conversation_memory)),
           context_limit_chars_(context_limit_chars) {}
 
     [[nodiscard]] CapabilityId id() const override { return CapabilityId{"CAP-0102"}; }
@@ -131,14 +133,33 @@ public:
         };
 
         const auto assembly = reasoning_pipeline_.assemble(assembly_request);
-        const auto& package = assembly.package;
+        const auto& assembled = assembly.package;
 
-        if (const auto validation_error = validate_context_package(package)) {
+        if (const auto validation_error = validate_context_package(assembled)) {
             return std::unexpected(CapabilityError{
                 .capability_id = id().value,
                 .message = validation_error->message,
             });
         }
+
+        std::optional<context::ConversationContext> conversation;
+        if (const auto& session_id = request.user().session_id;
+            session_id.has_value() && !session_id->empty()) {
+            conversation = conversation_memory_->load(*session_id);
+        }
+
+        const context::ContextPackage package =
+            conversation.has_value()
+                ? context::ContextPackage::create(
+                      assembled.request(),
+                      assembled.knowledge_objects(),
+                      assembled.repositories(),
+                      assembled.citations(),
+                      assembled.constraints(),
+                      assembled.system(),
+                      assembled.diagnostics(),
+                      std::move(conversation))
+                : assembled;
 
         const auto ai_response = provider_manager_->generate(package);
         if (!ai_response) {
@@ -192,7 +213,14 @@ public:
             package.knowledge_objects().size());
 
         std::vector<DiagnosticMessage> diagnostics = ai_response->warnings;
-        if (diagnostics.empty()) {
+        const bool partial = !diagnostics.empty();
+
+        if (const auto& session_id = request.user().session_id;
+            session_id.has_value() && !session_id->empty()) {
+            conversation_memory_->append(*session_id, *query, ai_response->generated_text);
+        }
+
+        if (!partial) {
             return PlatformResponse::success(request, std::move(content), std::move(references))
                 .with_trace(std::move(trace));
         }
@@ -207,6 +235,7 @@ public:
 private:
     const ReasoningPipeline& reasoning_pipeline_;
     std::shared_ptr<const ai::ProviderManager> provider_manager_;
+    std::shared_ptr<services::IConversationMemoryService> conversation_memory_;
     std::size_t context_limit_chars_;
 };
 
@@ -235,11 +264,13 @@ void register_documentation_handlers(
     const services::IStatusService& status,
     const ReasoningPipeline& reasoning_pipeline,
     std::shared_ptr<const ai::ProviderManager> provider_manager,
+    std::shared_ptr<services::IConversationMemoryService> conversation_memory,
     std::size_t context_limit_chars) {
     (void)documentation;
     registry.register_handler(std::make_shared<DocumentationSearchHandler>(
         reasoning_pipeline,
         std::move(provider_manager),
+        std::move(conversation_memory),
         context_limit_chars));
     registry.register_handler(std::make_shared<StatusReportingHandler>(status));
 }

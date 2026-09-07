@@ -27,6 +27,7 @@ add_library(eve_core
     src/eve/services/search_service.cpp
     src/eve/services/status_service.cpp
     src/eve/services/diagnostics_service.cpp
+    src/eve/services/conversation_memory_service.cpp
     src/eve/knowledge/knowledge_object.cpp
     src/eve/knowledge/in_memory_knowledge_store.cpp
     src/eve/knowledge/document_indexer.cpp

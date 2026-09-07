@@ -1,6 +1,7 @@
 #include "eve/services/service_implementations.hpp"
 
 #include <fstream>
+#include <map>
 #include <sstream>
 
 namespace eve::services {
@@ -68,6 +69,17 @@ ConfigurationService::ConfigurationService(std::filesystem::path config_path) {
         values_["ollama_top_p"] = extract_json_number_string(content, "ollama_top_p");
         values_["ollama_context_length"] = extract_json_number_string(content, "ollama_context_length");
         values_["ollama_timeout_ms"] = extract_json_number_string(content, "ollama_timeout_ms");
+
+        if (const auto value =
+                extract_json_number_string(content, "memory_max_recent_messages");
+            !value.empty()) {
+            values_["memory_max_recent_messages"] = value;
+        }
+        if (const auto value =
+                extract_json_number_string(content, "memory_max_conversation_chars");
+            !value.empty()) {
+            values_["memory_max_conversation_chars"] = value;
+        }
     }
 
     if (values_.empty()) {
@@ -103,6 +115,39 @@ std::string ConfigurationService::active_ai_provider() const {
 
 std::size_t ConfigurationService::context_limit_chars() const {
     return static_cast<std::size_t>(std::stoull(values_.at("context_limit_chars")));
+}
+
+namespace {
+
+std::size_t read_optional_size_t(
+    const std::map<std::string, std::string>& values,
+    std::string_view key,
+    std::size_t fallback) {
+    const auto iterator = values.find(std::string{key});
+    if (iterator == values.end() || iterator->second.empty()) {
+        return fallback;
+    }
+    try {
+        return static_cast<std::size_t>(std::stoull(iterator->second));
+    } catch (...) {
+        return fallback;
+    }
+}
+
+}  // namespace
+
+std::size_t ConfigurationService::memory_max_recent_messages() const {
+    return read_optional_size_t(
+        values_,
+        "memory_max_recent_messages",
+        ConversationMemoryService::default_max_recent_messages);
+}
+
+std::size_t ConfigurationService::memory_max_conversation_chars() const {
+    return read_optional_size_t(
+        values_,
+        "memory_max_conversation_chars",
+        ConversationMemoryService::default_max_conversation_chars);
 }
 
 std::optional<std::string> ConfigurationService::get(std::string_view key) const {

@@ -171,10 +171,38 @@ Responsibilities include:
 - Build user prompts
 - Preserve citations
 - Preserve engineering evidence
+- Translate Conversation Context history into Provider Messages
 - Adapt to provider capabilities
 - Apply provider options
 
 The formatter performs no engineering reasoning.
+
+Providers do not own conversation sessions. Session history
+enters the provider only as ordinary Provider Messages.
+
+## Message Ordering
+
+When Conversation Context is present, the formatter emits:
+
+```text
+System message (when supported)
+  → historical Conversation Turns (oldest → newest)
+  → current user request message
+  → knowledge CONTEXT message(s)
+```
+
+Role mapping:
+
+- ConversationRole::User → ProviderMessageRole::User
+- ConversationRole::Assistant → ProviderMessageRole::Assistant
+
+Historical message content is the exact Conversation Turn
+content. The formatter does not summarize, rewrite, or label
+history, and does not duplicate the current request into
+history.
+
+When Conversation Context is absent or empty, formatter
+behavior matches the previous single-shot path.
 
 ---
 

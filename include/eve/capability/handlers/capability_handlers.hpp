@@ -25,6 +25,7 @@ void register_documentation_handlers(
     const services::IStatusService& status,
     const ReasoningPipeline& reasoning_pipeline,
     std::shared_ptr<const ai::ProviderManager> provider_manager,
+    std::shared_ptr<services::IConversationMemoryService> conversation_memory,
     std::size_t context_limit_chars);
 
 }  // namespace eve::capability::handlers
