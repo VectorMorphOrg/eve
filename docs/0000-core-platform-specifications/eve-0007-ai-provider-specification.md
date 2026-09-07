@@ -356,7 +356,7 @@ payloads and does not write conversation memory.
 
 ## Implemented Providers
 
-As of the unreleased v0.7 streaming workstream on main:
+As of the v0.7.0-alpha streaming workstream:
 
 | Provider | ID | `supports_streaming` | Behavior |
 |----------|----|----------------------|----------|

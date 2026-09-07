@@ -243,7 +243,7 @@ AI Providers.
 
 # Current Implementation Status
 
-As of **v0.6.0-alpha**, with unreleased v0.7 streaming and
+As of **v0.7.0-alpha**, with continuing v0.7.x provider work,
 additional-provider work on main, the following providers are
 implemented:
 

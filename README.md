@@ -21,11 +21,11 @@ The platform generates knowledge.
 
 | Property | Value |
 |----------|-------|
-| **Version** | v0.6.0-alpha |
+| **Version** | v0.7.0-alpha |
 | **Status** | Operational Alpha |
 | **Language** | C++23 |
 | **Specification** | EVE-SPEC |
-| **Tests** | 172 / 172 Passing |
+| **Tests** | 278 non-live / 275 PASS / 3 known failures |
 | **License** | MIT |
 
 ---
@@ -236,13 +236,18 @@ Canonical sequencing (Hybrid / Option C):
 - Provider Formatting
 - Live End-to-End Demonstration
 
-### Next — v0.7.x Developer Platform
+### Completed — v0.7.0-alpha
 
-- Conversation Memory
-- Streaming Responses
-- LM Studio provider (AI-0102) — implemented
+- Conversation Memory foundation
+- Provider-layer streaming (Null, Ollama, HTTP chunked)
+- LM Studio provider (AI-0102; sync + SSE)
+- EVE-2004 Provider Development Guide
+
+### Continuing — v0.7.x
+
 - OpenAI / Anthropic providers (future)
-- Developer Guide series (EVE-2004 implemented; series incomplete)
+- AI-0200 generic OpenAI-compatible provider (deferred)
+- Remaining Part XII developer guides
 
 ### Then — v0.8.x Interfaces
 
@@ -309,6 +314,6 @@ engineering assistance regardless of which language model is used.
 
 **Repository:** VectorMorphOrg/eve
 
-**Version:** v0.6.0-alpha
+**Version:** v0.7.0-alpha
 
 *"Knowledge should evolve."*

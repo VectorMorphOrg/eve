@@ -10,28 +10,55 @@ This project follows
 
 ## [Unreleased]
 
-### Added — v0.7.0 Conversation Memory Foundation
+### Planned - continuing v0.7.x Developer Platform
+
+- Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
+- Remaining Part XII developer guides (EVE-2005-EVE-2009;
+  EVE-2000-EVE-2003 deferred to interface work)
+
+### Planned - v0.8.x Interfaces
+
+- CLI interface implementation (specifications already exist)
+- Discord interface
+- REST API
+- Website interface
+
+### Planned - v0.9.x+
+
+- Plugin architecture
+- Multi-repository support
+- Semantic / hybrid search
+
+---
+
+## [0.7.0-alpha] - September 2026
+
+Alpha Core Platform / Developer Platform release. This is not
+a production interface release and does not complete the full
+V0.7.x roadmap or Part XII developer-guide series.
+
+### Added - Conversation Memory Foundation
 
 - Conversation Memory Service (`IConversationMemoryService`,
   in-memory implementation)
 - Structured Conversation Context (`ConversationTurn`,
   User/Assistant roles)
 - CAP-0102 session load / Context Package attachment
-- Provider Formatter history → ProviderMessages translation
+- Provider Formatter history -> ProviderMessages translation
 - Successful-turn persistence (`query` + `generated_text`)
 - Optional configuration keys:
   `memory_max_recent_messages`,
   `memory_max_conversation_chars`
   (defaults: 12 messages / 8000 characters)
 
-### Limitations — Conversation Memory
+### Limitations - Conversation Memory
 
 - Process-lifetime in-memory storage only
 - No summarization, memory search, TTL, or durable backend
 - No CAP-0404 explicit memory-management capability handlers
 - No streaming-specific memory handling
 
-### Added — v0.7 Streaming Responses (provider-layer)
+### Added - Streaming Responses (provider-layer)
 
 - `StreamChunk` / `StreamConsumer` provider contract
 - Additive `IAIProvider::generate_stream` and
@@ -48,7 +75,7 @@ This project follows
   line buffering across transport boundaries;
   `supports_streaming = true`)
 
-### Added — v0.7 Additional AI Providers (LM Studio AI-0102)
+### Added - LM Studio AI-0102
 
 - LM Studio provider (AI-0102) over local HTTP Chat Completions
   (`/v1/chat/completions`; default base URL
@@ -60,12 +87,17 @@ This project follows
 - Optional bearer authentication via `lm_studio_api_key`
 - Provider-specific configuration under `lm_studio_*` keys
 
-### Limitations — Streaming
+### Added - Developer Guides
+
+- EVE-2004 - Provider Development Guide (Part XII; series
+  incomplete)
+
+### Limitations - Streaming / Transport
 
 - No async streaming runtime, cancellation, or WebSocket
 - No streaming memory persistence
 - No Discord/CLI/REST/Website streaming interfaces
-- No deterministic real TCP SocketHttpTransport →
+- No deterministic real TCP SocketHttpTransport ->
   OllamaProvider integration fixture
 - Live Ollama streaming is not part of the normal non-live
   suite
@@ -74,23 +106,23 @@ This project follows
 - AI-0200 (generic OpenAI-compatible API) remains unimplemented
   and is not an alias for AI-0102
 
-### Planned — remaining v0.7.x Developer Platform
+### Testing
 
-- Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
-- 2000 Developer Guide series
+- Non-live suite (`--gtest_filter=-LiveOllama*`):
+  278 tests / 275 PASS / 3 FAIL
+- Known baseline failures (unchanged):
+  `RepositoryDiscoveryTest.SkipsUnsupportedFiles`
+  `RepositoryDiscoveryTest.ExcludesIgnoredDirectories`
+  `RepositoryDiscoveryTest.ReturnsDeterministicOrdering`
 
-### Planned — v0.8.x Interfaces
+### Deferred (not in this alpha cut)
 
-- CLI interface implementation (specifications already exist)
-- Discord interface
-- REST API
-- Website interface
-
-### Planned — v0.9.x+
-
-- Plugin architecture
-- Multi-repository support
-- Semantic / hybrid search
+- OpenAI / Anthropic providers
+- AI-0200 generic OpenAI-compatible provider
+- llama.cpp
+- Remaining Part XII guides (EVE-2000-EVE-2003, EVE-2005-EVE-2009)
+- CAP-0404; durable memory; streaming memory
+- Discord / CLI / REST / Website implementations
 
 ---
 
@@ -220,7 +252,8 @@ This project follows
 
 | Version | Status | Summary |
 |----------|--------|---------|
-| **Unreleased** | 🚧 | Developer Guides, Interfaces, Additional Providers |
+| **Unreleased** | 🚧 | Continuing v0.7.x providers/guides; Interfaces |
+| **0.7.0-alpha** | ✅ | Memory, streaming, LM Studio, EVE-2004 |
 | **0.6.0-alpha** | ✅ | Complete AI Pipeline & Architecture Stabilization |
 | **0.5.0-alpha** | ✅ | Provider Abstraction & Reasoning Pipeline |
 | **0.4.0-alpha** | ✅ | Knowledge Engine Architecture |

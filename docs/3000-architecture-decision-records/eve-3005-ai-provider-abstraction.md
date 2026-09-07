@@ -265,7 +265,7 @@ Platform.
 
 # Supported Providers
 
-As of **v0.6.0-alpha**, with unreleased v0.7 provider work on
+As of **v0.7.0-alpha**, with continuing v0.7.x provider work on
 main, implemented providers include:
 
 - Null Provider

@@ -10,7 +10,7 @@
 |----------|-------|
 | **Project** | Evolutionary Virtual Engineer (E.V.E.) |
 | **Repository** | VectorMorphOrg/eve |
-| **Current Version** | **v0.6.0-alpha** |
+| **Current Version** | **v0.7.0-alpha** |
 | **Status** | **Operational Alpha** |
 | **Architecture** | C++23 |
 | **Specification** | EVE-SPEC |
@@ -37,24 +37,25 @@ The platform is responsible for generating knowledge.
 
 # Current Milestone
 
-## v0.7.x Developer Platform (in progress on main)
+## v0.7.0-alpha Developer Platform (delivered)
 
 Current objectives:
 
 - Preserve Core Platform architecture as implemented
-- Complete remaining unreleased v0.7.x Developer Platform work
+- Continue remaining post-cut v0.7.x Developer Platform work
 
-**Status:**
+**Delivered in v0.7.0-alpha:**
 
-- Conversation Memory foundation — implemented (docs sync)
-- Streaming Responses (provider-layer) — implemented (docs sync)
+- Conversation Memory foundation
+- Streaming Responses (provider-layer)
+- LM Studio AI-0102 (sync + genuine SSE)
+- EVE-2004 Provider Development Guide
 
-**Remaining v0.7.x targets:**
+**Continuing v0.7.x targets:**
 
-- Additional AI Providers (OpenAI, Anthropic; LM Studio AI-0102
-  complete)
-- 2000 Developer Guide series (EVE-2004 Active; remaining
-  Part XII guides Planned)
+- Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
+- Remaining Part XII developer guides (EVE-2005–EVE-2009;
+  EVE-2000–EVE-2003 deferred to interface work)
 
 **Later:**
 
@@ -226,8 +227,8 @@ None of the interface binaries are implemented in v0.6.0-alpha.
 
 | Metric | Value |
 |---------|-------|
-| **Current Release** | **v0.6.0-alpha** |
-| **Passing Tests** | **172** |
+| **Current Release** | **v0.7.0-alpha** |
+| **Passing Tests** | **275 / 278 non-live** |
 | **Core Platform** | ✅ Complete |
 | **Knowledge Engine** | ✅ Complete |
 | **Reasoning Pipeline** | ✅ Complete |
@@ -271,7 +272,7 @@ None of the interface binaries are implemented in v0.6.0-alpha.
 - Provider Manager
 - Null Provider
 - Ollama Provider
-- LM Studio Provider (AI-0102; v0.7 unreleased)
+- LM Studio Provider (AI-0102; v0.7.0-alpha)
 - Provider Formatter
 - Live End-to-End Demonstration
 - Conversation Memory Service (CAP-0102 integrated; in-memory)
@@ -280,7 +281,7 @@ None of the interface binaries are implemented in v0.6.0-alpha.
 
 ## Current
 
-### v0.7 Conversation Memory Foundation
+### v0.7.0-alpha Conversation Memory Foundation
 
 - Conversation Memory Service (in-memory, session-scoped)
 - CAP-0102 load / attach / persist lifecycle
@@ -295,7 +296,7 @@ Limitations (intentional):
 - No streaming-specific memory handling
 - No Discord/CLI/REST/Website memory UX
 
-### v0.7 Streaming Responses (provider-layer)
+### v0.7.0-alpha Streaming Responses (provider-layer)
 
 - StreamChunk / StreamConsumer contract
 - Additive `IAIProvider::generate_stream` /
@@ -328,13 +329,14 @@ Limitations (intentional):
 
 ---
 
-## Next — remaining v0.7.x Developer Platform
+## Next — continuing v0.7.x Developer Platform
 
 - OpenAI Provider
 - Anthropic Provider
 - OpenAI-Compatible API (AI-0200) — deferred
-- Developer Guide series (EVE-2004 Active; EVE-2005–EVE-2009
-  and interface guides EVE-2000–EVE-2003 remain Planned)
+- Developer Guide series (EVE-2004 delivered in v0.7.0-alpha;
+  EVE-2005–EVE-2009 and interface guides EVE-2000–EVE-2003
+  remain Planned)
 
 ---
 
@@ -413,17 +415,14 @@ Deterministic Reasoning Pipeline
 
 The Core Platform is operational.
 
-Conversation Memory foundation for CAP-0102 is implemented
-(in-memory, process-scoped). Provider-layer Streaming
-Responses are implemented (Null + Ollama + LM Studio AI-0102
-+ HTTP streaming transport). Documentation has been
-synchronized to that reality.
+**v0.7.0-alpha** delivers conversation memory, provider-layer
+streaming (Null + Ollama + LM Studio AI-0102 + HTTP streaming
+transport), and EVE-2004.
 
-Remaining v0.7.x Developer Platform work:
+Continuing v0.7.x Developer Platform work:
 
 - Additional AI Providers (OpenAI, Anthropic; AI-0200 deferred)
-- EVE-2000 Developer Guide series (EVE-2004 implemented;
-  series incomplete)
+- Remaining Part XII developer guides (series incomplete)
 
 **Then — v0.8.x Interfaces**
 
@@ -584,10 +583,10 @@ providers.
 
 **Repository:** VectorMorphOrg/eve
 
-**Version:** **v0.6.0-alpha**
+**Version:** **v0.7.0-alpha**
 
 **Status:** **Operational Alpha**
 
-**Last Updated:** July 2026
+**Last Updated:** September 2026
 
 *"Knowledge should evolve."*

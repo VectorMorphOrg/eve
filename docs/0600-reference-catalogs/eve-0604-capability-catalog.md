@@ -198,8 +198,8 @@ Capability identifiers.
 
 # Current Implementation Status
 
-As of **v0.6.0-alpha** (with unreleased v0.7 Conversation
-Memory and Streaming work on main):
+As of **v0.7.0-alpha** (with continuing v0.7.x Conversation
+Memory and Streaming work):
 
 - Platform Request architecture is implemented.
 - Validation Engine is implemented.

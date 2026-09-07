@@ -2,7 +2,7 @@
 
 **Project:** Evolutionary Virtual Engineer (E.V.E.)
 
-**Current Release:** v0.6.0-alpha
+**Current Release:** v0.7.0-alpha
 
 **Status:** Active Development
 
@@ -22,7 +22,7 @@ Implementation Roadmap defined by EVE-SPEC.
 
 ---
 
-# v0.6.0-alpha (Current)
+# v0.6.0-alpha (Historical)
 
 ## Engineering Foundation / Documentation Freeze
 
@@ -58,24 +58,36 @@ Focus of this release:
 
 ---
 
-# v0.7.x
+# v0.7.0-alpha (Current)
 
-## Developer Platform
+## Developer Platform — alpha cut
+
+Delivered in this release:
+
+- Conversation Memory foundation
+- Streaming Responses (provider-layer)
+- LM Studio (AI-0102) — local HTTP Chat Completions;
+  sync + genuine SSE streaming
+- EVE-2004 Provider Development Guide
+
+This alpha does **not** complete the full V0.7.x roadmap.
+
+---
+
+# v0.7.x (Continuing)
+
+## Developer Platform — remaining work
 
 Focus:
 
-- Conversation Memory
-- Streaming Responses
 - Additional AI Providers
-  - LM Studio (AI-0102) — implemented (local HTTP Chat
-    Completions; sync + genuine SSE streaming)
   - OpenAI
   - Anthropic
   - OpenAI-Compatible API (AI-0200) — deferred (not AI-0102)
   - llama.cpp (optional)
-- Complete Developer Guide series (EVE-2000 Part XII)
-  - EVE-2004 Provider Development Guide — implemented
-  - remaining Part XII guides — Planned
+- Remaining Developer Guide series (EVE-2000 Part XII)
+  - EVE-2005–EVE-2009 Planned
+  - EVE-2000–EVE-2003 deferred until interface implementations
 - Documentation freeze continuation
 
 Goal:

@@ -10,7 +10,7 @@
 |----------|-------|
 | **Project** | Evolutionary Virtual Engineer (E.V.E.) |
 | **Repository** | VectorMorphOrg/eve |
-| **Current Architecture** | v0.6.0-alpha |
+| **Current Architecture** | v0.7.0-alpha |
 | **Specification** | EVE-SPEC |
 | **Language** | C++23 |
 | **Architecture Style** | Layered, Capability-Oriented, Deterministic |
@@ -643,7 +643,7 @@ serves as the language layer—not the reasoning engine.
 
 **Repository:** VectorMorphOrg/eve
 
-**Architecture:** v0.6.0-alpha
+**Architecture:** v0.7.0-alpha
 
 **Status:** Operational Foundation Complete
 
